@@ -8,7 +8,7 @@
 !v::	使用chrome时，按Alt+v,查看框架源代码
 ^+x::	使用chrome时，按Ctrl+Shift+X,查看框架源代码
 
----idea中---
+---eclipse中---
 #w::	在eclipse里面，win+w打开主干合并代码的文件目录
 ^+CapsLock::	Ctrl+Shift+CapsLock --》 Ctrl + PgUp（上一个视图）
 ^CapsLock::	Ctrl+CapsLock --》 Ctrl + PgDn（下一个视图）
