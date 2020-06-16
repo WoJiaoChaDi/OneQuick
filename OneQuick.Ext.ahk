@@ -238,7 +238,8 @@ return
 	;这将把输入对话框中的光标移动到更人性化的位置：
 	SetTimer, MoveCaret, 10
 	;显示提供了缺省热字符串的输入对话框：
-	InputBox, Hotstring, MyHotstring, 在光标处输入你的缩写。`n需要的话，你也可以编辑替换文本。 , , , 150, , , , , :R:`::%Hotstring%
+	;InputBox, Hotstring, MyHotstring, 在光标处输入你的缩写。`n需要的话，你也可以编辑替换文本。 , , , 150, , , , , :R:`::%Hotstring%
+	InputBox, Hotstring, MyHotstring, Type your abbreviation at the cursor`, `nYou can also modify and edit the replacement text.  , , , 150, , , , , :R:`::%Hotstring%
 	if ErrorLevel  ;用户选择了取消
 		return
 	IfInString, Hotstring, :R`:::
