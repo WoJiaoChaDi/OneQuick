@@ -764,9 +764,13 @@ class OneQuick
 		}
 		lang := OneQuick.GetConfig("lang")
 		Menu, Tray, Tip, % this.ProgramName
+
+		;语言
 		xMenu.New("TrayLanguage"
 			,[["English", "OneQuick.SetLang", {check: lang=="en"}]
 			, ["中文", "OneQuick.SetLang", {check: lang=="cn"}]])
+
+		;高级
 		xMenu.New("TrayAdvanced"
 			,[["Suspend Hotkey", "OneQuick.SetSuspend", {check: A_IsSuspended}]
 			,["Pause Thread", "OneQuick.SetPause", {check: A_IsPaused}]
@@ -793,27 +797,27 @@ class OneQuick
 		}
 		TrayMenuList := xArray.merge(TrayMenuList
 			; ,[version_str, "OneQuick.About"]	;关于
-			,[[lang("help_online"), OneQuick.remote_help]
+			,[[lang("help_online"), OneQuick.remote_help]	;在线帮助
 			; ,[check_update_name, "OneQuick.Check_update"] ;新版本
-			,[]
-			,[lang("Autorun"), "OneQuick.SetAutorun", {check: autorun}]
+			,[]	;分割线
+			,[lang("Autorun"), "OneQuick.SetAutorun", {check: autorun}]		;开机自启动
 			; ,[lang("AutoUpdate"), "OneQuick.SetAutoUpdate", {check: autoupdate}] ;自动更新到最新版本
-			,["Language",, {"sub": "TrayLanguage"}]
-			,[lang("Advanced"),, {"sub": "TrayAdvanced"}]
+			,["Language",, {"sub": "TrayLanguage"}]		;语言
+			,[lang("Advanced"),, {"sub": "TrayAdvanced"}]	;高级
 			,[]
-			,[lang("Disable"), "OneQuick.SetDisable", {check: A_IsPaused&&A_IsSuspended}]
-			,[lang("Reload"), "OneQuick.Reload"]
-			,[lang("Exit"), "OneQuick.Exit"]
+			,[lang("Disable"), "OneQuick.SetDisable", {check: A_IsPaused&&A_IsSuspended}]	;禁用
+			,[lang("Reload"), "OneQuick.Reload"]	;重新启动
+			,[lang("Exit"), "OneQuick.Exit"]		;退出
 			,[]
-			,[lang("Open AutoHotkey.exe Folder"), "Sub_OneQuick_EXE_Loc"]
-			,[lang("AutoHotKey Help"), "Sub_OneQuick_AHKHelp"]
-			,[lang("AutoHotKey HelpCn"), "Sub_OneQuick_AHKHelpCn"] ;XuDong添加Quick右键菜单  前面那个是语言参数，在lang文件夹下，如果找到就对应翻译，找不到就用本身
-			,[lang("AutoHotKey HelpTemp"), "Sub_OneQuick_AHKHelpTemp"] ;XuDong添加Quick右键菜单  前面那个是语言参数，在lang文件夹下，如果找到就对应翻译，找不到就用本身
+			,[lang("Open AutoHotkey.exe Folder"), "Sub_OneQuick_EXE_Loc"]	;打开AHK目录
+			,[lang("AutoHotKey Help"), "Sub_OneQuick_AHKHelp"]				;打开AHK帮助
+			,[lang("AutoHotKey HelpCn"), "Sub_OneQuick_AHKHelpCn"] 			;XuDong添加Quick右键菜单  前面那个是语言参数，在lang文件夹下，如果找到就对应翻译，找不到就用本身
+			,[lang("AutoHotKey HelpTemp"), "Sub_OneQuick_AHKHelpTemp"] 		;XuDong添加Quick右键菜单  前面那个是语言参数，在lang文件夹下，如果找到就对应翻译，找不到就用本身
 			,[]
-			,[lang("Open OneQuick Folder"), "Sub_OneQuick_dir"]
+			,[lang("Open OneQuick Folder"), "Sub_OneQuick_dir"]				;打开OneQuick目录
 			; ,[lang("Edit Ext.ahk"), "edit:" OneQuick.Ext_ahk_file]
 			; ,[lang("Edit ExtWork.ahk"), "edit:" OneQuick.ExtWork_ahk_file] ;XuDong添加Quick右键菜单
-			,[lang("Edit feature.yaml"), "OneQuick.Edit_feature_yaml"] ])
+			,[lang("Edit feature.yaml"), "OneQuick.Edit_feature_yaml"] ])	;feature配置功能
 		Tray.SetMenu(TrayMenuList, OneQuick._switch_tray_standard_menu)
 		Menu, Tray, Default, % lang("Disable")
 		Menu, Tray, Click, 1
