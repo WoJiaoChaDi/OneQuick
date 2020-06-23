@@ -15,6 +15,7 @@ hotkey:
     win_n: notepad
     win_shift_l: Sys.Power.LockAndMonitoroff
     ctrl_shift_alt_r: OneQuick.Reload
+    ctrl_shift_alt_p: OneQuick.SetDisable
 screen-border: 
   switch: 1
   action: 
