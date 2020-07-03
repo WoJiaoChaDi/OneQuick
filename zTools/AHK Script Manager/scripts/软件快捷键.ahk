@@ -59,7 +59,7 @@ return
 /*
 新建文件夹，并以当前日期自动命名
 
-#!t::
+#t::
 	now_dir:= A_Desktop
 	;~ WinGetClass class, ahk_id WinExist("A")
 	WinGet, active_id, ID, A    ;获取当前激活页面的id并赋值给active_id变量

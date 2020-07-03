@@ -108,6 +108,27 @@ return
 
 
 /*
+Ctrl+Delete 等于剪切
+*/
+^Del::
+	Send ^x
+return
+
+/*
+Ctrl+PrintScreen 等于复制
+*/
+^PrintScreen::
+	Send ^c
+return
+
+/*
+Ctrl+Insert 等于粘贴
+*/
+^Ins::
+	Send ^v
+return
+
+/*
 ====================================快捷键输入========
 */
 /*
@@ -148,7 +169,7 @@ return
  * @author XuDong
  */
 #b::	
-	Run D:\Work\Tools\Sublime Text 3\sublime_text.exe 
+	Run E:\SoftWare\Sublime Text 3\sublime_text.exe
  return  
 
 /*
@@ -156,7 +177,7 @@ return
  * @author XuDong
  */
 #f::	
-	Run E:\Software\Everything-1.4.0.713b.x86\Everything.exe
+	Run F:\SoftWare\Everything\Everything.exe
  return  
 
  /*
@@ -164,7 +185,7 @@ return
  * @author XuDong
  */
 #y::	
-	Run F:\software\Total Commander v9.51.62_64bit\TotalCMD\TotalCMD64.exe
+	Run E:\Total Commander v9.51.62_64bit\TotalCMD\TotalCMD64.exe
  return  
 
 
