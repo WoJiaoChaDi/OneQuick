@@ -108,23 +108,23 @@ return
 
 
 /*
-Ctrl+Delete 等于剪切
+Ctrl+Delete 等于剪切（右Ctrl）
 */
-^Del::
+RControl & Del::
 	Send ^x
 return
 
 /*
-Ctrl+PrintScreen 等于复制
+Ctrl+PrintScreen 等于复制（右Ctrl）
 */
-^PrintScreen::
+RControl & PrintScreen::
 	Send ^c
 return
 
 /*
-Ctrl+Insert 等于粘贴
+Ctrl & Insert 等于粘贴（右Ctrl）
 */
-^Ins::
+RControl & Ins::
 	Send ^v
 return
 
