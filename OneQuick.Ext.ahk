@@ -128,6 +128,94 @@ RControl & Ins::
 	Send ^v
 return
 
+/* CapsLock+ 功能 */
+/*
+按住CapsLock + ESDF，映射上下左右
+*/
+CapsLock & E::
+	Send {Up}
+return
+CapsLock & S::
+	Send {Left}
+return
+CapsLock & D::
+	Send {Down}
+return
+CapsLock & F::
+	Send {Right}
+return
+
+/*
+按住CapsLock + IJKL，映射Shift+上下左右
+*/
+CapsLock & I::
+	Send +{Up}
+return
+CapsLock & J::
+	Send +{Left}
+return
+CapsLock & K::
+	Send +{Down}
+return
+CapsLock & L::
+	Send +{Right}
+return
+
+/*
+按住CapsLock + XC，映射Shift+Home、Shift+End  
+*/
+CapsLock & X::
+	Send +{Home}
+return
+CapsLock & C::
+	Send +{End}
+return
+
+/*
+按住CapsLock + AG，映射Ctrl+左右  
+*/
+CapsLock & A::
+	Send ^{Left}
+return
+CapsLock & G::
+	Send ^{Right}
+return
+
+/*
+按住CapsLock + WR，删除光标前后的字母
+*/
+CapsLock & W::
+	Send {Backspace}
+return
+CapsLock & R::
+	Send {Del}
+return
+
+/*
+按住CapsLock + QT，删除光标前后的所有内容
+*/
+CapsLock & Q::
+	Send ^{Backspace}
+return
+CapsLock & T::
+	Send ^{Del}
+return
+
+/*
+按住CapsLock + Enter，另起一行
+*/
+CapsLock & Enter::
+	Send {End}{Enter}
+return
+
+/*
+按住CapsLock + BackSpace，删除本行所有内容
+*/
+CapsLock & BackSpace::
+	Send {End}^{BackSpace}
+return
+
+
 /*
 ====================================快捷键输入========
 */
