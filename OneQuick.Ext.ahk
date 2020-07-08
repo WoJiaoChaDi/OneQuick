@@ -244,7 +244,14 @@ return
 按住CapsLock + BackSpace，删除本行所有内容
 */
 CapsLock & BackSpace::
-	Send {End}^{BackSpace}
+	Send {End}+{Home}{BackSpace}
+return
+
+/*
+按住CapsLock + Y，删除本行所有内容
+*/
+CapsLock & Y::
+	Send {End}+{Home}{BackSpace}
 return
 
 
