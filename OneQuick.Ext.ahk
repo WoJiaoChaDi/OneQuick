@@ -202,6 +202,13 @@ CapsLock & T::
 return
 
 /*
+按住CapsLock + Space，另起一行
+*/
+CapsLock & Space::
+	Send {Enter}
+return
+
+/*
 按住CapsLock + Enter，另起一行
 */
 CapsLock & Enter::
