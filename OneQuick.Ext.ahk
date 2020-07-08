@@ -37,22 +37,6 @@ class User_WoJiaoChaDiPC
 #Esc::!F4
 
 /*
- * @Description: CapsLock+1 --> ctrl+home
- * @author XuDong
- */
-CapsLock & 1::
-	Send ^{Home}
-return
-
-/*
- * @Description: CapsLock+1 --> ctrl+end
- * @author XuDong
- */
-CapsLock & 2::
-	Send ^{End}
-return
-
-/*
  * @Description: ctrl+win+c 复制文件路径
  * @author XuDong
  */
@@ -175,7 +159,7 @@ CapsLock & ,::
 return
 
 /*
-按住CapsLock + XC，映射Shift+Home、Shift+End  
+按住CapsLock + XC，映射Home、End  
 */
 CapsLock & X::
 	Send {Home}
@@ -183,6 +167,24 @@ return
 CapsLock & C::
 	Send {End}
 return
+
+
+/*
+ * @Description: CapsLock+1 --> ctrl+home
+ * @author XuDong
+ */
+CapsLock & 1::
+	Send ^{Home}
+return
+
+/*
+ * @Description: CapsLock+1 --> ctrl+end
+ * @author XuDong
+ */
+CapsLock & 2::
+	Send ^{End}
+return
+
 
 /*
 按住CapsLock + ZV，映射Shift+Home、Shift+End  
