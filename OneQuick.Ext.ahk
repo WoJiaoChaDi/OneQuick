@@ -161,6 +161,19 @@ CapsLock & L::
 	Send +{Right}
 return
 
+CapsLock & N::
+	Send +{Left 5}
+return
+CapsLock & M::
+	Send +{Right 5}
+return
+CapsLock & B::
+	Send +^{Left}
+return
+CapsLock & ,::
+	Send +^{Right}
+return
+
 /*
 按住CapsLock + XC，映射Shift+Home、Shift+End  
 */
