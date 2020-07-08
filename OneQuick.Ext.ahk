@@ -37,18 +37,18 @@ class User_WoJiaoChaDiPC
 #Esc::!F4
 
 /*
- * @Description: shift+alt+1 --> ctrl+home
+ * @Description: CapsLock+1 --> ctrl+home
  * @author XuDong
  */
-+!1::
+CapsLock & 1::
 	Send ^{Home}
 return
 
 /*
- * @Description: shift+alt+1 --> ctrl+end
+ * @Description: CapsLock+1 --> ctrl+end
  * @author XuDong
  */
-+!2::
+CapsLock & 2::
 	Send ^{End}
 return
 
@@ -178,9 +178,19 @@ return
 按住CapsLock + XC，映射Shift+Home、Shift+End  
 */
 CapsLock & X::
-	Send +{Home}
+	Send {Home}
 return
 CapsLock & C::
+	Send {End}
+return
+
+/*
+按住CapsLock + ZV，映射Shift+Home、Shift+End  
+*/
+CapsLock & Z::
+	Send +{Home}
+return
+CapsLock & V::
 	Send +{End}
 return
 
