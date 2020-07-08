@@ -202,7 +202,7 @@ CapsLock & T::
 return
 
 /*
-按住CapsLock + Space，另起一行
+按住CapsLock + Space，等同于Enter
 */
 CapsLock & Space::
 	Send {Enter}
