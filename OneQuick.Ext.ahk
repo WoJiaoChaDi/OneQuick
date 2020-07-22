@@ -266,6 +266,13 @@ CapsLock & Y::
 return
 
 
+/*
+按住CapsLock + H，发送Enter
+*/
+CapsLock & H::
+	Send {Enter}
+return
+
 
 /*
 ====================================快捷键输入========
