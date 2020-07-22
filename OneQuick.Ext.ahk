@@ -254,6 +254,19 @@ CapsLock & Y::
 	Send {End}+{Home}{BackSpace}
 return
 
+/*
+按住CapsLock + ↑ ↓，发送滚轮功能
+*/
+CapsLock & 3::
+	Loop 5
+    Click WheelUp
+return
+CapsLock & 4::
+	Loop 5
+    Click WheelDown
+return
+
+
 
 /*
 ====================================快捷键输入========
