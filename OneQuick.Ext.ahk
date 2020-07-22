@@ -252,6 +252,13 @@ CapsLock & Enter::
 return
 
 /*
+按住CapsLock + ;，另起一行
+*/
+CapsLock & `;::
+	Send {End}{Enter}
+return
+
+/*
 按住CapsLock + BackSpace，删除本行所有内容
 */
 CapsLock & BackSpace::
