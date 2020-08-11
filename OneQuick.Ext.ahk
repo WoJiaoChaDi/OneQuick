@@ -13,7 +13,6 @@ class User_DESKTOP_G195C4P
 	Ini()
 	{
 		this.Run := 1
-
     }
 }
 
@@ -412,11 +411,11 @@ return
 	;这将把输入对话框中的光标移动到更人性化的位置：
 	SetTimer, MoveCaret, 10
 	;显示提供了缺省热字符串的输入对话框：
-	;InputBox, Hotstring, MyHotstring, 在光标处输入你的缩写。`n需要的话，你也可以编辑替换文本。 , , , 150, , , , , :R:`::%Hotstring%
-	InputBox, Hotstring, MyHotstring, Type your abbreviation at the cursor`, `nYou can also modify and edit the replacement text.  , , , 150, , , , , :R:`::%Hotstring%
+	;InputBox, Hotstring, MyHotstring, 在光标处输入你的缩写。`n需要的话，你也可以编辑替换文本。 , , , 150, , , , , :RO:`::%Hotstring%
+	InputBox, Hotstring, MyHotstring, Type your abbreviation at the cursor`, `nYou can also modify and edit the replacement text.  , , , 150, , , , , :RO:`::%Hotstring%
 	if ErrorLevel  ;用户选择了取消
 		return
-	IfInString, Hotstring, :R`:::
+	IfInString, Hotstring, :RO`:::
 	{
 		MsgBox 你没有输入缩写。热字符串不会被添加。
 		return
@@ -435,7 +434,7 @@ return
 		ahk_search_str = %Hotstring%
 		
 		ahk_index := InStr(ahk_search_str,"::") ;查找::字符在titile这个变量中的位置，并赋值给indexJava  (位置是从1开始
-		ahk_search_str := SubStr(ahk_search_str, 1 , ahk_index+1)  ;字符串截取   即热键字符串  :R:***::  这部分
+		ahk_search_str := SubStr(ahk_search_str, 1 , ahk_index+1)  ;字符串截取   即热键字符串  :RO:***::  这部分(R代表不转义，O代表删除结束字符)
         IfInString, A_LoopReadLine, %ahk_search_str%		;判断新增的热键是否已经存在，如果已经存在，则是新增一个备份文件，等待写完备份文件后，删除主文件，更改备份文件名称为主文件名称
 		{
 			;如果新增的热键已经存在，则把新的字符串往备份文件里面写
@@ -468,6 +467,6 @@ MoveCaret:
 	IfWinNotActive, MyHotstring
 		return
 	;否则，将输入对话框中的光标移动到用户输入缩写的位置。
-	Send {Home}{Right 3}
+	Send {Home}{Right 4}
 	SetTimer, MoveCaret, Off
 return
