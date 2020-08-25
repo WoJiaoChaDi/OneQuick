@@ -177,11 +177,27 @@ CapsLock & 1::
 return
 
 /*
+ * @Description: CapsLock+1 --> ctrl+shift+home
+ * @author XuDong
+ */
+CapsLock & F1::
+	Send ^+{Home}
+return
+
+/*
  * @Description: CapsLock+1 --> ctrl+end
  * @author XuDong
  */
 CapsLock & 2::
 	Send ^{End}
+return
+
+/*
+ * @Description: CapsLock+1 --> ctrl+shift+end
+ * @author XuDong
+ */
+CapsLock & F2::
+	Send ^+{End}
 return
 
 /*
