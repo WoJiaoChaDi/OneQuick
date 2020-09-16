@@ -295,6 +295,24 @@ CapsLock & H::
 	Send {Enter}
 return
 
+/*
+按住CapsLock + 滚轮↑，向左滚动
+*/
+CapsLock & WheelUp:: ;向左滚动。
+ControlGetFocus, fcontrol, A
+	Loop 15 ;<-- 调大这个数值来快速滚动。   
+		SendMessage, 0x114, 0, 0, %fcontrol%, A ; 0x114 是 WM_HSCROLL，它之后的 0 是 SB_LINELEFT。
+return
+
+/*
+按住CapsLock + 滚轮下，向右滚动
+*/
+CapsLock & WheelDown:: ;向右滚动。
+ControlGetFocus, fcontrol, A
+	Loop 15 ;<-- 调大这个数值来快速滚动。   
+		SendMessage, 0x114, 1, 0, %fcontrol%, A ; 0x114 是 WM_HSCROLL，它之后的 1 是 SB_LINERIGHT。
+return
+
 
 /*
 ====================================快捷键输入========
