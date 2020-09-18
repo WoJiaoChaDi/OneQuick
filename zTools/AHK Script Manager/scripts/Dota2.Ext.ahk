@@ -83,8 +83,8 @@ return
     
     while (banane=1)
     {
-        MouseMove, 1290, 700
-        MouseMove, 1290, 800
+        MouseMove, 50, 50, ,R
+        MouseMove, -50, -50, ,R
         sleep, 5000
     }
 return
