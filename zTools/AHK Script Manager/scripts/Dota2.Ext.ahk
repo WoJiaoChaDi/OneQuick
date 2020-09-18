@@ -3,6 +3,7 @@ banana:=0    ;
 bananb:=0    ;
 bananc:=0    ;
 banand:=0    ;
+banane:=0    ;
 
 ;自动接受
 ^Numpad7::
@@ -67,5 +68,24 @@ return
         sleep, 2000
     }
 
+return
+
+;鼠标晃动防止关闭
+^Numpad6::
+
+    banane:=!banane
+
+    if(banane=1){
+       MsgBox 开启
+    }else{
+       MsgBox 关闭
+    }
+    
+    while (banane=1)
+    {
+        MouseMove, 1290, 700
+        MouseMove, 1290, 800
+        sleep, 5000
+    }
 return
 
