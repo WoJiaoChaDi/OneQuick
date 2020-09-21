@@ -83,8 +83,11 @@ return
     
     while (banane=1)
     {
-        MouseMove, 50, 50, ,R
-        MouseMove, -50, -50, ,R
+
+       loop, 6 {
+	MouseMove, 0, -50, ,R
+	MouseMove, 0, 50, ,R
+        }
         sleep, 5000
     }
 return
