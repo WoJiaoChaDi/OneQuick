@@ -334,6 +334,26 @@ return
 return	
 
 /*
+* @Description: //enter 多个空格格式化
+* @author XuDong
+*/
+:://s::
+    InputBox, loopTime, FormatEnter, Plz input number for Format
+    InputBox, spaceTime, FormatEnter, Plz input number for Space per %loopTime% row
+    
+	if (loopTime > 0) {
+	    Loop, %loopTime%
+	    {
+	    	if (spaceTime > 0) {
+		        	Send {Home}{Space %spaceTime%}{Down}
+		        	Sleep 50
+		        	Send {End}
+		    }
+    	}
+    }
+return	
+
+/*
  * @Description: //t 计时器
  * @author XuDong
  */
@@ -355,7 +375,7 @@ return
  * @author XuDong
  */
 #b::	
-	Run E:\SoftWare\Sublime Text 3\sublime_text.exe
+	Run D:\Work\Tools\Sublime Text 3\sublime_text.exe
  return  
 
 /*
@@ -363,7 +383,7 @@ return
  * @author XuDong
  */
 #f::	
-	Run F:\SoftWare\Everything\Everything.exe
+	Run D:\SoftWare\Everything-1.4.0.713b.x86-Setup\Everything.exe
  return  
 
  /*
@@ -371,7 +391,7 @@ return
  * @author XuDong
  */
 #y::	
-	Run E:\Total Commander v9.51.62_64bit\TotalCMD\TotalCMD64.exe
+	Run D:\SoftWare\Total Commander v9.51.62_64bit\TotalCMD\TotalCMD64.exe
  return  
 
 
