@@ -692,6 +692,7 @@ return
 return
 
 
+<<<<<<< Updated upstream
 ;========================================================================================o|
 ;                              //mspaint | 画图                                          ;|
 ;----------------------------------------------------------------------------------------o|
@@ -723,7 +724,7 @@ return
 ;----------------------------------------------------------------------------------------o|
 #b::    
     Run C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Sublime Text 3.lnk
- return  
+return
 
 
 ;========================================================================================o|
@@ -731,7 +732,7 @@ return
 ;----------------------------------------------------------------------------------------o|
 #f::    
     Run C:\Users\wumiao\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Everything\Search Everything.lnk
- return  
+return
 
 
 ;========================================================================================o|
@@ -739,7 +740,7 @@ return
 ;----------------------------------------------------------------------------------------o|
 #y::    
     Run C:\Users\wumiao\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\TotalCommand\TotalCMD64.lnk
- return  
+return
 
 
 
