@@ -71,7 +71,7 @@ return
 return
 
 ; Û±ÍªŒ∂Ø∑¿÷ππÿ±’
-^Numpad6::
+^NumpadDiv::
 
     banane:=!banane
 
@@ -84,9 +84,9 @@ return
     while (banane=1)
     {
 
-       loop, 6 {
-	MouseMove, 0, -50, ,R
-	MouseMove, 0, 50, ,R
+       loop, 1 {
+	MouseMove, 0, -10, ,R
+	MouseMove, 0, 10, ,R
         }
         sleep, 5000
     }
