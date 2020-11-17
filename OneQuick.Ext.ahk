@@ -714,31 +714,34 @@ return
 
 
 ;========================================================================================o|
-;                        打开应用(用lnk定位到Start Menu\Programs 中)                     ;|
+;                             打开应用(用lnk定位到C:\Shortcut\中)                        ;|
+;                                Win + B | 打开sublime_text                              ;|
+;                                Win + F | 打开everything                                ;|
+;                                Win + Y | 打开total commander                           ;|
 ;----------------------------------------------------------------------------------------o|
 
 
 ;========================================================================================o|
-;                                  Win+b | 打开sublime_text                              ;|
+;                                Win + B | 打开sublime_text                              ;|
 ;----------------------------------------------------------------------------------------o|
 #b::    
-    Run C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Sublime Text 3.lnk
+    Run C:\Shortcut\Sublime Text 3.lnk
 return
 
 
 ;========================================================================================o|
-;                                  Win+f | 打开everything                                ;|
+;                                Win + F | 打开everything                                ;|
 ;----------------------------------------------------------------------------------------o|
 #f::    
-    Run C:\Users\wumiao\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Everything\Search Everything.lnk
+    Run C:\Shortcut\Everything.lnk
 return
 
 
 ;========================================================================================o|
-;                                  Win+t | 打开total commander                           ;|
+;                                Win + Y | 打开total commander                           ;|
 ;----------------------------------------------------------------------------------------o|
 #y::    
-    Run C:\Users\wumiao\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\TotalCommand\TotalCMD64.lnk
+    Run C:\Shortcut\Total Commander.lnk
 return
 
 
