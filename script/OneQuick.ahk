@@ -6,6 +6,8 @@
 	OneQuick 配置、运行文件
 */
 
+SetCapsLockState, AlwaysOff
+
 ; the following lines is necessary to initialize OneQuick class
 #SingleInstance force
 ; set workdir always be ../
