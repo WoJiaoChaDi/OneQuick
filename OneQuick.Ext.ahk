@@ -58,13 +58,12 @@ class User_WoJiaoChaDiPC
 ;            CapsLock + Y                | 删除本行所有内容                              ;|
 ;            CapsLock + BackSpace        | 删除本行所有内容                              ;|
 ;            CapsLock + 滚轮↑/↓          | 向左右滚动                                    ;|
-;            CapsLock + ↑/↓/←/→          | 模拟鼠标移动                                  ;|
+;            CapsLock + ↑/↓/←/→          | 模拟鼠标移动(Alt加速)                         ;|
 ;            CapsLock + RCtrl            | 模拟鼠标左键                                  ;|
 ;            CapsLock + RShift           | 模拟鼠标右键                                  ;|
-;            CapsLock + F1/F2/F3/F4/F5/F6| 媒体控制                                      ;|
+;            CapsLock + F1/F2/F3/F4/F5/F6| 媒体控制(静音/音量+/音量-/暂停/下一首/停止)   ;|
 ;            CapsLock + Q                | 窗口控制(Alt Compatible)                      ;|
-;            CapsLock + Tab              | 映射为 Alt+Tab                                ;|
-;            CapsLock + Tab              | 映射为 Alt+Tab                                ;|
+;            CapsLock + Tab              | 映射为 Win+Tab                                ;|
 ;            CapsLock + G                | 键盘上的鼠标右键                              ;|
 ;----------------------------------------------------------------------------------------o|
 
@@ -513,14 +512,45 @@ return
 
 
 ;========================================================================================o|
-;                     CapsLock + ↑/↓/←/→ | 模拟鼠标移动                                  ;|
+;                     CapsLock + ↑/↓/←/→ | 模拟鼠标移动(Alt加速)                         ;|
 ;                     CapsLock + RCtrl   | 模拟鼠标左键                                  ;|
 ;                     CapsLock + RShift  | 模拟鼠标右键                                  ;|
 ;----------------------------------------------------------------------------------------o|
-CapsLock & Up::     MouseMove,   0, -10, 0, R
-CapsLock & Down::   MouseMove,   0,  10, 0, R
-CapsLock & Left::   MouseMove, -10,   0, 0, R
-CapsLock & Right::  MouseMove,  10,   0, 0, R
+CapsLock & Up::     
+    if GetKeyState("alt") = 0
+    {
+        MouseMove,   0, -10, 0, R
+    } else {
+        MouseMove,   0, -40, 0, R
+    }
+return
+
+CapsLock & Down::
+    if GetKeyState("alt") = 0
+    {
+        MouseMove,   0,  10, 0, R
+    } else {
+        MouseMove,   0,  40, 0, R
+    }
+return
+
+CapsLock & Left::
+    if GetKeyState("alt") = 0
+    {
+        MouseMove, -10,   0, 0, R
+    } else {
+        MouseMove, -40,   0, 0, R
+    }
+return
+
+CapsLock & Right::
+    if GetKeyState("alt") = 0
+    {
+        MouseMove,  10,   0, 0, R
+    } else {
+        MouseMove,  40,   0, 0, R
+    }
+return
 ;----------------------------------------------------------------------------------------o|
 CapsLock & RCtrl::
     SendEvent {Blind}{LButton down}
@@ -548,7 +578,7 @@ CapsLock & F6:: Send, {Media_Stop}
 
 ;========================================================================================o|
 ;                         CapsLock + Q   | 窗口控制(Alt Compatible)                      ;|
-;                         CapsLock + Tab | 映射为 Alt+Tab                                ;|
+;                         CapsLock + Tab | 映射为 Win+Tab                                ;|
 ;                         CapsLock + G   | 键盘上的鼠标右键                              ;|
 ;----------------------------------------------------------------------------------------o|
 CapsLock & Q:: 
@@ -587,11 +617,15 @@ CapsLock & g:: Send, {AppsKey}
 
 
 ;========================================================================================o|
-;                                     快捷键输入                                         ;|
+;                                       //热键                                           ;|
 ;----------------------------------------------------------------------------------------o|
 ;                                    //e | Home+Tab 循环格式化                           ;|
 ;                                    //s | Home+多个空格  循环格式化                     ;|
 ;                                    //t | 计时器                                        ;|
+;                                   //ca | 计算器                                        ;|
+;                              //notepad | 记事本                                        ;|
+;                              //mspaint | 画图                                          ;|
+;                              //startup | 默认启动                                      ;|
 ;----------------------------------------------------------------------------------------o|
 
 
@@ -642,6 +676,37 @@ return
 return
 
 
+;========================================================================================o|
+;                                   //ca | 计算器                                        ;|
+;----------------------------------------------------------------------------------------o|
+:://ca::
+    Run calc
+return
+
+
+;========================================================================================o|
+;                              //notepad | 记事本                                        ;|
+;----------------------------------------------------------------------------------------o|
+:://notepad::
+    Run notepad
+return
+
+
+;========================================================================================o|
+;                              //mspaint | 画图                                          ;|
+;----------------------------------------------------------------------------------------o|
+:://mspaint::
+    Run mspaint
+return
+
+
+;========================================================================================o|
+;                              //startup | 默认启动                                      ;|
+;----------------------------------------------------------------------------------------o|
+:://startup::
+    Run shell:startup
+return
+
 
 
 
@@ -649,7 +714,7 @@ return
 
 
 ;========================================================================================o|
-;                                    打开应用                                            ;|
+;                        打开应用(用lnk定位到Start Menu\Programs 中)                     ;|
 ;----------------------------------------------------------------------------------------o|
 
 
@@ -657,7 +722,7 @@ return
 ;                                  Win+b | 打开sublime_text                              ;|
 ;----------------------------------------------------------------------------------------o|
 #b::    
-    Run D:\Work\Tools\Sublime Text 3\sublime_text.exe
+    Run C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Sublime Text 3.lnk
  return  
 
 
@@ -665,7 +730,7 @@ return
 ;                                  Win+f | 打开everything                                ;|
 ;----------------------------------------------------------------------------------------o|
 #f::    
-    Run D:\SoftWare\Everything-1.4.0.713b.x86-Setup\Everything.exe
+    Run C:\Users\wumiao\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Everything\Search Everything.lnk
  return  
 
 
@@ -673,7 +738,7 @@ return
 ;                                  Win+t | 打开total commander                           ;|
 ;----------------------------------------------------------------------------------------o|
 #y::    
-    Run D:\SoftWare\Total Commander v9.51.62_64bit\TotalCMD\TotalCMD64.exe
+    Run C:\Users\wumiao\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\TotalCommand\TotalCMD64.lnk
  return  
 
 
