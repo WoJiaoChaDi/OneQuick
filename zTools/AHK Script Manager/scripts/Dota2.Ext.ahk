@@ -90,5 +90,28 @@ return
         }
         sleep, 5000
     }
+
+
+; 点击鼠标左键d
+^Numpad1::
+        MouseClick, left, , , , , D
+return
+
+; 点击鼠标左键W
+^Numpad2::
+        MouseClick, left, , , , , U
+return
+
+;google 新闻
+;^Numpad6::
+^Numpad3::
+    Send ^c
+    Run https://www.google.com.hk/search?newwindow=1&safe=strict&tbm=nws&q=%clipboard%&oq=%clipboard%
+    Sleep 800
+    Send ^f
+    Sleep 500
+    Send ^v
+    MouseClick, left, 130, 400
+    MouseMove, 770, 588
 return
 
