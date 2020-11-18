@@ -37,7 +37,7 @@ class User_WoJiaoChaDiPC
 ;========================================================================================o|
 ;                                    Windows增强                                         ;|
 ;----------------------------------------------------------------------------------------o|
-;            Win + Esc                   | 为 alt+F4                                     ;|
+;            Win + Esc                   | 为 Alt+F4                                     ;|
 ;            Win + 滚轮                  | 调整窗口的透明度                              ;|
 ;            ESC                         | 按Esc切换输入法                               ;|
 ;            Ctrl + Win + C              | 复制文件路径                                  ;|
@@ -45,13 +45,13 @@ class User_WoJiaoChaDiPC
 ;            Ctrl + PrintScreen          | 复制（右Ctrl）                                ;|
 ;            Ctrl & Insert               | 粘贴（右Ctrl）                                ;|
 ;            CapsLock + `                | 大小写切换                                    ;|
-;            CapsLock + E/S/D/F          | 映射↑←↓→(Ctrl, Alt Compatible)                ;|
-;            CapsLock + I/J/K/L          | 映射↑←↓→(Ctrl, Alt Compatible)                ;|
+;            CapsLock + E/S/D/F          | 映射↑←↓→(Ctrl单词, Alt选择)                   ;|
+;            CapsLock + I/J/K/L          | 映射↑←↓→(Ctrl单词, Alt选择)                   ;|
 ;            CapsLock + XC               | 映射Home、End(Alt Compatible)                 ;|
 ;            CapsLock + 1/2              | Ctrl+Home(Alt Compatible)                     ;|
-;            CapsLock + 3/4              | 发送滚轮↑ ↓                                   ;|
-;            CapsLock + A/Z              | 发送PageUp/PageDown(Ctrl, Alt Compatible)     ;|
-;            CapsLock + W/R              | 删除光标前后字符(Ctrl, Alt Compatible)        ;|
+;            CapsLock + 3/4              | 发送滚轮↑ ↓  (Alt ←/→)                        ;|
+;            CapsLock + A/Z              | 发送PgUp/PgDn(Ctrl+PgUp/PgDn, Alt选择)        ;|
+;            CapsLock + W/R              | 删除光标前后字符(Ctrl单词, Shift全部)         ;|
 ;            CapsLock + Space            | 等同于Enter                                   ;|
 ;            CapsLock + H                | 另起一行                                      ;|
 ;            CapsLock + ;                | 另起一行                                      ;|
@@ -61,15 +61,15 @@ class User_WoJiaoChaDiPC
 ;            CapsLock + ↑/↓/←/→          | 模拟鼠标移动(Alt加速)                         ;|
 ;            CapsLock + RCtrl            | 模拟鼠标左键                                  ;|
 ;            CapsLock + RShift           | 模拟鼠标右键                                  ;|
-;            CapsLock + F1/F2/F3/F4/F5/F6| 媒体控制(静音/音量+/音量-/暂停/下一首/停止)   ;|
-;            CapsLock + Q                | 窗口控制(Alt Compatible)                      ;|
+;            CapsLock + F1/F2/F3/F4/F5/F6| 媒体控制(静音/音量-/音量+/暂停/上一首/下一首) ;|
+;            CapsLock + Q                | 窗口控制Ctrl+W(Alt Alt+F4)                    ;|
 ;            CapsLock + Tab              | 映射为 Win+Tab                                ;|
 ;            CapsLock + G                | 键盘上的鼠标右键                              ;|
 ;----------------------------------------------------------------------------------------o|
 
 
 ;========================================================================================o|
-;                              Win + Esc | 为 alt+F4                                     ;|
+;                              Win + Esc | 为 Alt+F4                                     ;|
 ;----------------------------------------------------------------------------------------o|
 #Esc::!F4
 
@@ -383,15 +383,27 @@ return
 
 
 ;========================================================================================o|
-;                         CapsLock + 3/4 | 发送滚轮↑ ↓                                   ;|
+;                         CapsLock + 3/4 | 发送滚轮↑ ↓  (Alt ←/→)                        ;|
 ;----------------------------------------------------------------------------------------o|
 CapsLock & 3::
-    Loop 5
-    Click WheelUp
+	if GetKeyState("alt") = 0
+	{
+		Loop 5
+    	Click WheelUp
+	} else {
+		Loop 5
+    	Click WheelLeft
+	}
 return
 CapsLock & 4::
-    Loop 5
-    Click WheelDown
+	if GetKeyState("alt") = 0
+	{
+		Loop 5
+    	Click WheelDown
+	} else {
+		Loop 5
+    	Click WheelRight
+	}
 return
 
 
@@ -428,33 +440,33 @@ return
 
 
 ;========================================================================================o|
-;                         CapsLock + W/R | 删除光标前后字符(Ctrl, Alt Compatible)        ;|
+;                         CapsLock + W/R | 删除光标前后字符(Ctrl单词, Shift全部)         ;|
 ;----------------------------------------------------------------------------------------o|
 CapsLock & W::
     if GetKeyState("control") = 0
     {
-        if GetKeyState("alt") = 0
+        if GetKeyState("shift") = 0
         {
             Send {Backspace}
         } else {
-            Send ^{Backspace}
+            Send ^+{Backspace}
         }
     } else {
-        Send ^+{Backspace}
+        Send ^{Backspace}
     }
 return
 
 CapsLock & R::
     if GetKeyState("control") = 0
     {
-        if GetKeyState("alt") = 0
+        if GetKeyState("shift") = 0
         {
             Send {Del}
         } else {
-            Send ^{Del}
+            Send ^+{Del}
         }
     } else {
-        Send ^+{Del}
+        Send ^{Del}
     }
 return
 
@@ -566,14 +578,14 @@ return
 
 
 ;========================================================================================o|
-;           CapsLock + F1/F2/F3/F4/F5/F6 | 媒体控制                                      ;|
+;      CapsLock + F1/F2/F3/F4/F5/F6| 媒体控制(静音/音量-/音量+/暂停/上一首/下一首)       ;|
 ;----------------------------------------------------------------------------------------o|
 CapsLock & F1:: Send, {Volume_Mute}
 CapsLock & F2:: Send, {Volume_Down}
 CapsLock & F3:: Send, {Volume_Up}
 CapsLock & F4:: Send, {Media_Play_Pause}
-CapsLock & F5:: Send, {Media_Next}
-CapsLock & F6:: Send, {Media_Stop}
+CapsLock & F5:: Send, {Media_Prev}
+CapsLock & F6:: Send, {Media_Next}
 
 
 ;========================================================================================o|
