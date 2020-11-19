@@ -53,9 +53,9 @@ class User_WoJiaoChaDiPC
 ;   | * |    CapsLock + A/Z              | 发送PgUp/PgDn(Ctrl+PgUp/PgDn, Alt选择)        ;|
 ;   | * |    CapsLock + W/R              | 删除光标前后字符(Ctrl单词, Shift全部)         ;|
 ;   | * |    CapsLock + Space            | 等同于Enter                                   ;|
-;   | * |    CapsLock + H                | 另起一行                                      ;|
+;   | + |    CapsLock + H                | 另起一行                                      ;|
 ;   |   |    CapsLock + ;                | 另起一行                                      ;|
-;   |   |    CapsLock + Y                | 删除本行所有内容                              ;|
+;   | + |    CapsLock + Y                | 删除本行所有内容                              ;|
 ;   |   |    CapsLock + BackSpace        | 删除本行所有内容                              ;|
 ;   |   |    CapsLock + 滚轮↑/↓          | 向左右滚动                                    ;|
 ;   | * |    CapsLock + ↑/↓/←/→          | 模拟鼠标移动(Alt加速)                         ;|
@@ -65,6 +65,9 @@ class User_WoJiaoChaDiPC
 ;   |   |    CapsLock + Q                | 窗口控制Ctrl+W(Alt Alt+F4)                    ;|
 ;   |   |    CapsLock + Tab              | 映射为 Win+Tab                                ;|
 ;   |   |    CapsLock + G                | 键盘上的鼠标右键                              ;|
+;----------------------------------------------------------------------------------------o|
+;   | * |    在MacOS中用Karabiner-Elements 实现                                          ;|
+;   | + |    在MacOS中用Keyboard Maestro   实现                                          ;|
 ;----------------------------------------------------------------------------------------o|
 
 
