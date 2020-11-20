@@ -1,11 +1,31 @@
 File-Description: 可参考\script\OneQuick.feature.default.yaml文件修改
-app_enhance: 
+
+#|==============================================================o|#
+#|                            App增强                            |#
+#|---------------------------------------------------------------|#
+#|                      Chrome滚轮切换Tab                        |#
+#|                     Notepad Ctrl+W 关闭                       |#
+#|               Sublime Win+E 打开当前文件所在的目录            |#
+#|---------------------------------------------------------------|#
+app_enhance:
   chrome_scroll_tab: 0
   notepad_ctrl_w_close: 1
   sublime_file_folder: 1
-hotkey: 
+
+#|==============================================================o|#
+#|                           热键                                |#
+#|---------------------------------------------------------------|#
+#|                      Win+Z || 打开Win菜单                     |#
+#|                 Ctrl+Win+R || 打开Run命令行                   |#
+#|                      Win+T || 当前窗口置顶                    |#
+#|                      Win+N || 打开记事本                      |#
+#|                Win+Shift+L || 锁屏并息屏显示器                |#
+#|           Ctrl+Shift+Win+R || 重启OneQuick                    |#
+#|           Ctrl+Shift+Win+P || 暂停OneQuick                    |#
+#|---------------------------------------------------------------|#
+hotkey:
   switch: 1
-  buildin: 
+  buildin:
     win_z: xmenu_show_great_menu
     ctrl_win_r: OneQuick.Command_run
     win_rclick: WinMenu.Show
@@ -16,51 +36,79 @@ hotkey:
     win_shift_l: Sys.Power.LockAndMonitoroff
     ctrl_shift_alt_r: OneQuick.Reload
     ctrl_shift_alt_p: OneQuick.SetDisable
-screen-border: 
+
+#|==============================================================o|#
+#|                       屏幕边缘操作                            |#
+#|---------------------------------------------------------------|#
+#|          Ctrl+Shift+滚轮上 || Home                            |#
+#|          Ctrl+Shift+滚轮下 || End                             |#
+#|               Shift+滚轮上 || PgUp x 5                        |#
+#|               Shift+滚轮下 || PgDn x 5                        |#
+#|                     滚轮上 || PgUp                            |#
+#|                     滚轮下 || PgDn                            |#
+#|---------------------------------------------------------------|#
+screen-border:
   switch: 1
-  action: 
-    L-R: 
-      ctrl_shift_wheeldown: "send {end}" ;
+  action:
+    L-R:
       ctrl_shift_wheelup: "send {home}"
-      shift_wheeldown: "send {pgdn}{pgdn}{pgdn}{pgdn}{pgdn}"
+      ctrl_shift_wheeldown: "send {end}"
       shift_wheelup: "send {pgup}{pgup}{pgup}{pgup}{pgup}"
-      wheeldown: "send {pgdn}"
+      shift_wheeldown: "send {pgdn}{pgdn}{pgdn}{pgdn}{pgdn}"
       wheelup: "send {pgup}"
-    LT: 
+      wheeldown: "send {pgdn}"
+    LT:
       rclick: winmenu.show
-      shift_wheeldown: Sys.Screen.BrightnessDown
       shift_wheelup: Sys.Screen.BrightnessUp
+      shift_wheeldown: Sys.Screen.BrightnessDown
       wheelclick: "send {volume_mute}"
-      wheeldown: "Send {volume_down}"
       wheelup: "Send {volume_up}"
-    RT: 
+      wheeldown: "Send {volume_down}"
+    RT:
       rclick: xmenu_show_screen_rt_menu
       wheelclick: "send {media_play_pause}"
-      wheeldown: "send {media_next}"
       wheelup: "send {media_prev}"
-    T: 
-      wheeldown: Sys.Win.GotoNextTab
+      wheeldown: "send {media_next}"
+    T:
       wheelup: Sys.Win.GotoPreTab
-    B: 
+      wheeldown: Sys.Win.GotoNextTab
+    B:
       wheelclick: "send #{tab}"
-      wheeldown: "send ^#{right}"
       wheelup: "send ^#{left}"
-clipboard: 
+      wheeldown: "send ^#{right}"
+
+
+#|==============================================================o|#
+#|                        剪切板操作                             |#
+#|---------------------------------------------------------------|#
+#|                 Ctrl+Alt+B || 打开粘贴板            |#
+#|                 Ctrl+Alt+C || 复制并打开操作板操作            |#
+#|                 Ctrl+Alt+V || 打开操作板操作                  |#
+#|---------------------------------------------------------------|#
+clipboard:
   switch: 1
-  hotkey: 
-    ctrl_alt_v: xClipboard.ShowAllClips
+  hotkey:
+    ctrl_alt_b: xClipboard.ShowAllClips
     ctrl_alt_c: xClipboard.CopyAndShowMenu
-    ctrl_alt_]: xClipboard.ShowClipMenu
-  browser: "Default, Edge, Chrome, IE"
-  search: "google/g, baidu/b/百度, baidu_local//百度Local,baidu_trans/s/百度翻译, bing, weibo/w/微博, zhihu/z/知乎, bilibili/l/哔哩哔哩, acfun/a, youtube/y, netease_music//网易云音乐, douban/d/豆瓣, douban_movie/m/豆瓣电影, qr_code/q/二维码"
+    ctrl_alt_v: xClipboard.ShowClipMenu
+
+#|---------------------------------------------------------------|#
+#|        修改打开的浏览器浏览器 || 默认/Chrome/Edge/IE          |#
+#|---------------------------------------------------------------|#
+  browser: "Default, Chrome, Edge, IE"
+
+#|---------------------------------------------------------------|#
+#|                        常用搜索引擎                           |#
+#|---------------------------------------------------------------|#
+  search: "google/g, baidu/b/百度, baidu_local//百度Local,baidu_trans/s/百度翻译, bing, weibo/w/微博, zhihu/z/知乎, bilibili/a/哔哩哔哩/a, acfun, youtube/y, netease_music//网易云音乐, douban/d/豆瓣/d, douban_movie/m/豆瓣电影/m, qr_code/q/二维码/q"
   ClipsFirstShowNum: 10
   ClipsTotalNum: 50
-  browser_list: 
+  browser_list:
     Default: default
     Edge: "microsoft-edge:"
     Chrome: "chrome.exe"
     IE: "iexplore.exe"
-  search_list: 
+  search_list:
     google: https://www.google.com/search?q=%s
     baidu: http://www.baidu.com/s?wd=%s
     baidu_local: http://www.baidu.com/s?wd=%s&tn=baidulocal

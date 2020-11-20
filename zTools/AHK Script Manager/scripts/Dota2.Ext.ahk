@@ -5,7 +5,13 @@ bananc:=0    ;
 banand:=0    ;
 banane:=0    ;
 
-;自动接受
+;=================================+++++++++++++++++++++==================================o|
+;========================================================================================o|
+;                                       Dota2小工具                                      ;|
+;                                                                                        ;|
+;========================================================================================o|
+;                                        自动接受                                        ;|
+;========================================================================================o|
 ^Numpad7::
     ; banana:=!banana .... This assigns banana to the value of NOT (!) banana. so lets
     ; say banana starts out FALSE (0). you then turn banana to NOT FALSE. which is
@@ -13,7 +19,7 @@ banane:=0    ;
     ; you set banana to NOT TRUE, which is FALSE. banana is now set to FALSE.
     ; .... 1 is true, 0 is false. ! is NOT.
     banana:=!banana
-    
+
     while (banana=1)
     {
         MouseClick, left, 1290, 700
@@ -21,7 +27,10 @@ banane:=0    ;
     }
 return
 
-;发送房间邀请
+
+;========================================================================================o|
+;                                      发送房间邀请                                      ;|
+;========================================================================================o|
 ^Numpad8::
     ; banana:=!banana .... This assigns banana to the value of NOT (!) banana. so lets
     ; say banana starts out FALSE (0). you then turn banana to NOT FALSE. which is
@@ -29,7 +38,7 @@ return
     ; you set banana to NOT TRUE, which is FALSE. banana is now set to FALSE.
     ; .... 1 is true, 0 is false. ! is NOT.
     bananc:=!bananc
-    
+
     while (bananc=1)
     {
         MouseClick, left, 1516, 1251
@@ -39,7 +48,10 @@ return
     }
 return
 
-;发送房间邀请（在房间列表中）
+
+;========================================================================================o|
+;                                 发送房间邀请（在房间列表中）                           ;|
+;========================================================================================o|
 ^Numpad9::
     ; banana:=!banana .... This assigns banana to the value of NOT (!) banana. so lets
     ; say banana starts out FALSE (0). you then turn banana to NOT FALSE. which is
@@ -47,7 +59,7 @@ return
     ; you set banana to NOT TRUE, which is FALSE. banana is now set to FALSE.
     ; .... 1 is true, 0 is false. ! is NOT.
     banand:=!banand
-    
+
     while (banand=1)
     {
         MouseClick, left, 1677, 1376
@@ -57,11 +69,12 @@ return
     }
 return
 
-
-; 点击鼠标左键
+;========================================================================================o|
+;                                      点击鼠标左键                                      ;|
+;========================================================================================o|
 ^Numpad0::
     bananb:=!bananb
-    
+
     while (bananb=1)
     {
         MouseClick, left
@@ -70,7 +83,9 @@ return
 
 return
 
-;鼠标晃动防止关闭
+;========================================================================================o|
+;                                      鼠标晃动防止息屏                                  ;|
+;========================================================================================o|
 ^NumpadDiv::
 
     banane:=!banane
@@ -80,7 +95,7 @@ return
     }else{
        MsgBox 关闭
     }
-    
+
     while (banane=1)
     {
 
@@ -92,18 +107,25 @@ return
     }
 
 
-; 点击鼠标左键d
+;========================================================================================o|
+;                                      鼠标左键按下                                      ;|
+;========================================================================================o|
 ^Numpad1::
         MouseClick, left, , , , , D
 return
 
-; 点击鼠标左键W
+;========================================================================================o|
+;                                      鼠标左键松开                                      ;|
+;========================================================================================o|
 ^Numpad2::
         MouseClick, left, , , , , U
 return
 
-;google 新闻
-;^Numpad6::
+
+;========================================================================================o|
+;                                      临时用快捷键                                      ;|
+;                                       google新闻                                       ;|
+;========================================================================================o|
 ^Numpad3::
     Send ^c
     Run https://www.google.com.hk/search?newwindow=1&safe=strict&tbm=nws&q=%clipboard%&oq=%clipboard%
