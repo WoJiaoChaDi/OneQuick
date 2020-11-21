@@ -1,4 +1,4 @@
-/*
+﻿/*
     SystemTime - Wrapper for Win32 SYSTEMTIME Structure
         http://msdn.microsoft.com/en-us/library/ms724950
 
