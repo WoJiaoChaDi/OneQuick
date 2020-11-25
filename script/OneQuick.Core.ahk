@@ -2514,38 +2514,96 @@ if (!Sys.Cursor.info_switch)
     Return
 }
 MouseGetPos, X, Y
+CoordMode, Mouse, Relative
+MouseGetPos, RX, RY
+CoordMode, Mouse, Screen
 PixelGetColor, color, %X%, %Y%, RGB
 VarSetCapacity(Point, 8, 0)
 DllCall("GetCursorPos", ptr, &Point)
 hwnd := DllCall("WindowFromPoint", "int64", NumGet(Point, 0, "int64"))
 WinGetClass, mcls, ahk_id %hwnd%
 Sys_Cursor_Info_Text := ""
-. "Pos:       " . "X " . X . " , Y " . Y . "`r`n"
-. "Color:    " . color . "`r`n"
-. "hwnd:    " . hwnd . "`r`n"
+. "AbsoPos:   " . "" . X . ", " . Y . "`r`n"
+. "RelaPos:   " . "" . RX . ", " . RY . "`r`n"
+. "Color:     " . color . "`r`n"
+. "hwnd:      " . hwnd . "`r`n"
 . "Class:     " . mcls . "`r`n"
 . "--------------------`r`n"
-. "F1,F2  Calculate position`r`n"
-. "F4       Copy to clipboard`r`n"
-. "ESC     Close Info`r`n"
+. "F1,F2    Cal position`r`n"
+. "F3        Get Absolute position`r`n"
+. "F4        Get Relative position`r`n"
+. "F5        Copy to clipboard`r`n"
+. "ESC      Close Info`r`n"
 ToolTip, % Sys_Cursor_Info_Text,,, 9
 Return
 
 #if Sys.Cursor.info_switch
 f1::
 MouseGetPos, Sys_Cursor_Info_rem_x, Sys_Cursor_Info_rem_y
-m("move mouse and press F2")
+;~ m("move mouse and press F2")
+;浮窗位置偏移量
+cal_Sys_Cursor_Info_rem_x := Sys_Cursor_Info_rem_x+15
+cal_Sys_Cursor_Info_rem_y := Sys_Cursor_Info_rem_y-25
+tooltip, move mouse and press F2, %cal_Sys_Cursor_Info_rem_x%, %cal_Sys_Cursor_Info_rem_y%
+sleep,3000
+tooltip,
 return
 
 f2::
 CoordMode, Mouse, Screen ;设置绝对坐标
 MouseGetPos, x, y
-m("X" abs(Sys_Cursor_Info_rem_x-x) " Y" abs(Sys_Cursor_Info_rem_y-y))
+;~ m("X" x-Sys_Cursor_Info_rem_x " Y" y-Sys_Cursor_Info_rem_y)
+;两个坐标的差
+caled_value_x := x-Sys_Cursor_Info_rem_x
+caled_value_y := y-Sys_Cursor_Info_rem_y
+clipboard := caled_value_x ", " caled_value_y
+;浮窗位置偏移量
+caled_Sys_Cursor_Info_rem_x := x+15
+caled_Sys_Cursor_Info_rem_y := y-60
+;提示消息
+msg := "X_Mov " x-Sys_Cursor_Info_rem_x "`nY_Mov " y-Sys_Cursor_Info_rem_y "`ncopyed to clipboard"
+tooltip, %msg%, %caled_Sys_Cursor_Info_rem_x%, %caled_Sys_Cursor_Info_rem_y%
+sleep,3000
+tooltip,
+return
+
+f3::
+CoordMode, Mouse, Screen ;设置绝对位置
+MouseGetPos, Sx, Sy
+clipboard := Sx ", " Sy
+;~ m("X" Sx " Y" Sy)
+;浮窗位置偏移量
+cal_Sx := Sx+15
+cal_Sy := Sy-60
+tooltip, Absolute_X %Sx% `nAbsolute_Y %Sy% `ncopyed to clipboard, %cal_Sx%, %cal_Sy% 
+sleep,3000
+tooltip,
 return
 
 f4::
+CoordMode, Mouse, Relative ;设置相对坐标
+MouseGetPos, rx, ry
+clipboard := rx ", " ry
+;~ m("X" rx " Y" ry)
+;浮窗位置偏移量
+cal_rx := rx+15
+cal_ry := ry-60
+CoordMode, ToolTip, Relative ;设置相对坐标
+tooltip, Relative_X %rx% `nRelative_Y %ry% `ncopyed to clipboard, %cal_rx%, %cal_ry% 
+CoordMode, ToolTip, Screen ;设置绝对坐标
+sleep,3000
+tooltip,
+return
+
+f5::
 clipboard := Sys_Cursor_Info_Text
-m("Copy to Clipboard")
+;~ m("Copy to Clipboard")
+MouseGetPos, clipX, clipY
+cal_clipX := clipX+15
+cal_clipY := clipY-30
+tooltip, All Info Copy to Clipboard, %cal_clipX%, %cal_clipY% 
+sleep,3000
+tooltip,
 return
 
 esc::
