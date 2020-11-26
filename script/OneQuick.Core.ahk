@@ -2804,6 +2804,141 @@ RunArr(arr)
 }
 
 
+;~;[获取选中]
+Get_Zz(){
+	global Candy_isFile
+	global Candy_Select
+	Candy_isFile:=0
+	Candy_Saved:=ClipboardAll
+	Clipboard=
+	SendInput,^c
+	if (ClipWaitTime != 0.1) && WinActive("ahk_group ClipWaitGUI"){
+		ClipWait,%ClipWaitTime%
+	}else{
+		ClipWait,0.1
+	}
+	If(ErrorLevel){
+		Clipboard:=Candy_Saved
+		return ""
+	}
+	Candy_isFile:=DllCall("IsClipboardFormatAvailable","UInt",15)
+	CandySel=%Clipboard%
+	Candy_Select=%ClipboardAll%
+	Clipboard:=Candy_Saved
+	return CandySel
+}
+
+;~;[粘贴输出短语]
+Send_Str_Zz(strZz,tf=false){
+	Candy_Saved:=ClipboardAll
+	;切换Win10输入法为英文
+	try DllCall("SendMessage",UInt,DllCall("imm32\ImmGetDefaultIMEWnd",Uint,WinExist("A")),UInt,0x0283,Int,0x002,Int,0x00)
+	if(tf){
+		strZz:=Get_Transform_Val(strZz)
+	}
+	Clipboard:=strZz
+	SendInput,^v
+	Sleep,80
+	Clipboard:=Candy_Saved
+}
+;~;[键盘输出短语]
+Send_Str_Input_Zz(strZz,tf=false){
+	if(tf){
+		strZz:=Get_Transform_Val(strZz)
+	}
+	SendInput,{Text}%strZz%
+}
+
+;~;获取变量展开转换后的值
+Get_Transform_Val(var){
+	try{
+		Transform,varTemp,Deref,%var%
+		return varTemp
+	}catch{
+		return var
+	}
+}
+
+;浏览器打开
+Run_Search(any,getZz="",browser=""){
+	if(browser){
+		browserRun:=browser A_Space
+	}else if(RegExMatch(any,"iS)(www[.]).*") && openExtRunList["www"]){
+		browserRun:=openExtRunList["www"] A_Space
+	}else{
+		HyperList:=["http","https","ftp"]
+		For i, v in HyperList
+		{
+			if(RegExMatch(any,"iS)(" v "://?).*") && openExtRunList[v]){
+				browserRun:=openExtRunList[v] A_Space
+				break
+			}
+		}
+	}
+	if(InStr(any,"%getZz%")){
+		Run,% browserRun """" StrReplace(any,"%getZz%",getZz) """"
+	}else if(InStr(any,"%Clipboard%")){
+		Run,% browserRun """" StrReplace(any,"%Clipboard%",Clipboard) """"
+	}else if(InStr(any,"%s",true)){
+		Run,% browserRun """" StrReplace(any,"%s",getZz) """"
+	}else if(InStr(any,"%S",true)){
+		Run,% browserRun """" StrReplace(any,"%S",SkSub_UrlEncode(getZz)) """"
+	}else{
+		Run,%browserRun%"%any%%getZz%"
+	}
+}
+
+RemoveToolTip:
+	SetTimer,RemoveToolTip,Off
+	ToolTip
+return
+
+;~;[文本转换为URL编码]
+SkSub_UrlEncode(str, enc="UTF-8")
+{
+    enc:=trim(enc)
+    If enc=
+        Return str
+   hex := "00", func := "msvcrt\" . (A_IsUnicode ? "swprintf" : "sprintf")
+   VarSetCapacity(buff, size:=StrPut(str, enc)), StrPut(str, &buff, enc)
+   While (code := NumGet(buff, A_Index - 1, "UChar")) && DllCall(func, "Str", hex, "Str", "%%%02X", "UChar", code, "Cdecl")
+   encoded .= hex
+   Return encoded
+}
+
+;~;[利用HTML中JS的eval函数来计算]
+js_eval(exp)
+{
+	HtmlObj:=ComObjCreate("HTMLfile")
+	exp:=escapeString(exp)
+	if(InStr(exp,"-") && InStr(exp,".")){
+		;解决eval减法精度失真问题，根据最长的小数位数四舍五入
+		subMaxNum:=0
+		expResult:=exp
+		while RegExMatch(expResult,"S)(\.\d+)")
+		{
+			sub:=RegExReplace(expResult,".*(\.\d+).*","$1")
+			if(StrLen(sub)>subMaxNum)
+				subMaxNum:=StrLen(sub)
+			expResult:=RegExReplace(expResult,sub)
+		}
+		expNum:="1"
+		Loop,%subMaxNum%
+		{
+			expNum.="0"
+		}
+	}else{
+		expNum:="100000000000000"
+	}
+	HtmlObj.write("<body><script>var t=document.body;t.innerText='';t.innerText=Math.round(eval('" . exp . "')*" expNum ")/" expNum ";</script></body>")
+	return InStr(cabbage:=HtmlObj.body.innerText, "body") ? "?" : cabbage
+}
+escapeString(string){
+	string:=RegExReplace(string, "('|""|&|\\|\\n|\\r|\\t|\\b|\\f)", "\$1")
+	string:=RegExReplace(string, "\R", "\n")
+	return string
+}
+
 ;----------------------------------------------------------------------------------------o|
 ;                                       万能的run 函数                                   ;|
 ;       参数可以是cmd命令，代码中的sub，function，网址，b站av号，还可以扩展 run()        ;|

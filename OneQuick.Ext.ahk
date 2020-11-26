@@ -960,6 +960,118 @@ return
 
 
 
+;========================================================================================o|
+;                                  Win+C | 超级执行（可多行）                                  ;|
+;         1.算数计算                                                                               ;|
+;               如果是=结尾的表达式，将计算值放在表达式后面                    ;|
+;               如果不是以=结尾的表达式，则将值放入剪切板                  ;|
+;         2.打开网址                                                                       ;|
+;         3.打开目录                                                                               ;|
+;         4.magnet磁力链接执行                                                                            ;|
+;----------------------------------------------------------------------------------------o|
+#c::
+    openFlag:=false
+    calcFlag:=false
+    notCalcFlag:=false
+    calcResult:=""
+    selectResult:=""
+    
+    getZz:=Get_Zz()
+
+    ;一行一行的读取
+    Loop, parse, getZz, `n, `r
+    {
+        ;循环内获取一次内容
+        S_LoopField=%A_LoopField%
+        if(S_LoopField=""){
+            ;拼接计算结果，按行分
+            if(calcResult)
+                calcResult.=A_LoopField "`n"
+            ;拼接选择内容，按行分
+            if(selectResult)
+                selectResult.=A_LoopField "`n"
+            continue
+        }
+        ;一键计算公式数字加减乘除 （匹配结尾数字或是=的字符串）
+        if(RegExMatch(S_LoopField,"S)^[\(\)\.\d]+[+*/-]+[\(\)\.+*/-\d]+($|=$)")){
+            formula:=S_LoopField
+            ;（匹配结尾是=的字符串）
+            if(RegExMatch(S_LoopField,"S)^[\(\)\.\d]+[+*/-]+[\(\)\.+*/-\d]+=$")){
+                ;移除右边的一个字符（=）
+                StringTrimRight, formula, formula, 1
+            }
+            ;调用js进行计算
+            calc:=js_eval(formula)
+            selectResult.=A_LoopField
+            ;如果是=结尾，则计算
+            if(RegExMatch(S_LoopField,"S)^[\(\)\.\d]+[+*/-]+[\(\)\.+*/-\d]+=$")){
+                calcFlag:=true
+                selectResult.=calc
+            }else{
+                ;否则拼接计算结果
+                calcResult.=calc "`n"
+            }
+            selectResult.="`n"
+            if(!notCalcFlag)
+                openFlag:=true
+            continue
+        }else{
+            notCalcFlag:=true
+        }
+        
+        ;~ ;一键打开网址
+        if(RegExMatch(S_LoopField,"iS)^([\w-]+://?|www[.]).*")){
+            Run_Search(S_LoopField,"",BrowserPathRun)
+            openFlag:=true
+            continue
+        }
+        
+        ;一键磁力下载
+        if(InStr(S_LoopField,"magnet:?xt=urn:btih:")=1){
+            Run,%S_LoopField%
+            continue
+        }
+        
+        ;打开目录
+        if(RegExMatch(S_LoopField,"S)^(\\\\|.:\\)")){
+            ;一键打开目录
+            if(InStr(FileExist(S_LoopField), "D")){
+                If(OpenFolderPathRun){
+                    Run,%OpenFolderPathRun%%A_Space%"%S_LoopField%"
+                }else{
+                    Run,%S_LoopField%
+                }
+                continue
+            }
+            ;一键打开文件
+            if(FileExist(S_LoopField)){
+                Run,%S_LoopField%
+                continue
+            }
+        }
+    }
+    
+    ;粘贴计算（不是以=结尾）
+    if(calcResult){
+        StringTrimRight, calcResult, calcResult, 1
+        MouseGetPos, MouseX, MouseY
+        ToolTip,%calcResult%,% MouseX-50,% MouseY-25
+        Clipboard:=calcResult
+        SetTimer,RemoveToolTip,% (calcResult="?") ? 1000 : 3000
+    }
+    ;输出计算（以=结尾）
+    if(calcFlag && !notCalcFlag && selectResult){  ;选中内容多种类型时不输出公式结果
+        StringTrimRight, selectResult, selectResult, 1
+        Send_Str_Zz(selectResult)
+    }
+
+return
+
+
+
+
+
+
 
 
 
