@@ -786,6 +786,7 @@ return
 ;----------------------------------------------------------------------------------------o|
 ;                按住CapsLock和左键，可以在窗口的任意位置拖动当前窗口                    ;|
 ;                                  Win+V | 新增热字符串                                  ;|
+;                                  Win+C | 超级执行（可多行）                                  ;|
 ;----------------------------------------------------------------------------------------o|
 
 
@@ -970,9 +971,9 @@ return
 ;         4.magnet磁力链接执行                                                                            ;|
 ;----------------------------------------------------------------------------------------o|
 #c::
-    openFlag:=false
     calcFlag:=false
     notCalcFlag:=false
+    runFlag:=false
     calcResult:=""
     selectResult:=""
     
@@ -1012,8 +1013,6 @@ return
                 calcResult.=calc "`n"
             }
             selectResult.="`n"
-            if(!notCalcFlag)
-                openFlag:=true
             continue
         }else{
             notCalcFlag:=true
@@ -1022,13 +1021,14 @@ return
         ;~ ;一键打开网址
         if(RegExMatch(S_LoopField,"iS)^([\w-]+://?|www[.]).*")){
             Run_Search(S_LoopField,"",BrowserPathRun)
-            openFlag:=true
+            runFlag:=true
             continue
         }
         
         ;一键磁力下载
         if(InStr(S_LoopField,"magnet:?xt=urn:btih:")=1){
             Run,%S_LoopField%
+            runFlag:=true
             continue
         }
         
@@ -1041,11 +1041,13 @@ return
                 }else{
                     Run,%S_LoopField%
                 }
+                runFlag:=true
                 continue
             }
             ;一键打开文件
             if(FileExist(S_LoopField)){
                 Run,%S_LoopField%
+                runFlag:=true
                 continue
             }
         }
@@ -1058,11 +1060,21 @@ return
         ToolTip,%calcResult%,% MouseX-50,% MouseY-25
         Clipboard:=calcResult
         SetTimer,RemoveToolTip,% (calcResult="?") ? 1000 : 3000
+        runFlag:=true
     }
     ;输出计算（以=结尾）
     if(calcFlag && !notCalcFlag && selectResult){  ;选中内容多种类型时不输出公式结果
         StringTrimRight, selectResult, selectResult, 1
         Send_Str_Zz(selectResult)
+        runFlag:=true
+    }
+    
+    ;如果都没执行，提示
+    if(!runFlag){
+        MouseGetPos, MouseX, MouseY
+        ToolTip, 执行未成功, % MouseX-50, % MouseY-25
+        SetTimer,RemoveToolTip, 3000
+
     }
 
 return
