@@ -61,7 +61,7 @@ class OneQuick
     static Launcher_Name := A_WorkingDir "\OneQuick Launcher.exe"
     static OneQuickAhk := A_WorkingDir "\OneQuick.ahk"
     static OneQuickCoreAhk := A_WorkingDir "\OneQuick.Core.ahk"
-    static Ext_ahk_file := A_WorkingDir "\OneQuick.Ext.ahk"
+    static Ext_ahk_file := A_WorkingDir "\..\OneQuick.Ext.ahk"
     static ExtWork_ahk_file := A_WorkingDir "\OneQuick.ExtWork.ahk"
     static version_yaml_file := OneQuick._SCRIPT_DIR "version.yaml"
     static feature_yaml_file := A_WorkingDir "\..\OneQuick.feature.yaml"
