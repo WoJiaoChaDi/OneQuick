@@ -59,12 +59,12 @@ class OneQuick
 
     ; file
     static Launcher_Name := A_WorkingDir "\OneQuick Launcher.exe"
-    static OneQuickAhk := A_WorkingDir "\script\OneQuick.ahk"
-    static OneQuickCoreAhk := A_WorkingDir "\script\OneQuick.Core.ahk"
+    static OneQuickAhk := A_WorkingDir "\OneQuick.ahk"
+    static OneQuickCoreAhk := A_WorkingDir "\OneQuick.Core.ahk"
     static Ext_ahk_file := A_WorkingDir "\OneQuick.Ext.ahk"
     static ExtWork_ahk_file := A_WorkingDir "\OneQuick.ExtWork.ahk"
     static version_yaml_file := OneQuick._SCRIPT_DIR "version.yaml"
-    static feature_yaml_file := A_WorkingDir "\OneQuick.feature.yaml"
+    static feature_yaml_file := A_WorkingDir "\..\OneQuick.feature.yaml"
     static feature_yaml_default_file := OneQuick._SCRIPT_DIR "OneQuick.feature.default.yaml"
     static config_file := "config.ini"
     static user_data_file := OneQuick._JSON_DIR "OneQuick.Data." A_ComputerName ".json"
