@@ -137,3 +137,54 @@ return
     MouseMove, 770, 588
 return
 
+;~ ~F2::
+    ;~ Sleep 100
+    ;~ Send {Right}_
+;~ Return
+
+;~ ~Enter::
+    ;~ Sleep 200
+    ;~ Send {Down}{F2}
+    ;~ Sleep 200
+    ;~ Send {Right}_
+;~ Return
+
+
+
+;~ 1:: 
+    ;~ Send {Ctrl Down}{Shift Down}{Right}{Ctrl Up}{Shift Up}
+    ;~ Send {Ctrl Down}c{Ctrl Up}
+    ;~ Send {Tab}{Ctrl Down}v{Ctrl Up}
+    ;~ Sleep 50
+    ;~ Send {Alt Down}{tab}{Alt Up}
+    ;~ Sleep 90
+    ;~ Send {Ctrl Down}v{Ctrl Up}
+;~ return
+
+
+;~ 2:: 
+    ;~ Send {Ctrl Down}{Shift Down}{Right}{Ctrl Up}{Shift Up}
+    ;~ Send {Ctrl Down}c{Ctrl Up}
+    ;~ Send {Tab 3}{Ctrl Down}v{Ctrl Up}
+    ;~ Sleep 50
+    ;~ Send {Alt Down}{tab}{Alt Up}
+    ;~ Sleep 90
+    ;~ Send {Ctrl Down}v{Ctrl Up}
+;~ return
+
+;~ 3::
+    ;~ Send {Ctrl Down}c{Ctrl Up}
+    ;~ Send {Alt Down}{tab}{Alt Up}
+    ;~ Sleep 100
+    ;~ Send {Tab}{Ctrl Down}v{Ctrl Up}
+;~ return
+
+;~ 4::
+    ;~ MouseClick, left, 579, 880
+    ;~ Send {Down}
+;~ return
+
+4::
+    run, C:\Shortcut\Sublime Text 3.lnk "E:\SoftWare\OneQuick\README.md"
+return
+

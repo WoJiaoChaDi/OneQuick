@@ -56,12 +56,15 @@ class OneQuick
     static _Update_bkp_DIR := "_bkp/"
     static _Update_dl_DIR := "_bkp/dl/"
     static _Update_bkp_folder_prefix := "_auto_"
+
     ; file
     static Launcher_Name := A_WorkingDir "\OneQuick Launcher.exe"
-    ; static Ext_ahk_file := "OneQuick.Ext.ahk"
-    ; static ExtWork_ahk_file := "OneQuick.ExtWork.ahk"
+    static OneQuickAhk := A_WorkingDir "\script\OneQuick.ahk"
+    static OneQuickCoreAhk := A_WorkingDir "\script\OneQuick.Core.ahk"
+    static Ext_ahk_file := A_WorkingDir "\OneQuick.Ext.ahk"
+    static ExtWork_ahk_file := A_WorkingDir "\OneQuick.ExtWork.ahk"
     static version_yaml_file := OneQuick._SCRIPT_DIR "version.yaml"
-    static feature_yaml_file := "OneQuick.feature.yaml"
+    static feature_yaml_file := A_WorkingDir "\OneQuick.feature.yaml"
     static feature_yaml_default_file := OneQuick._SCRIPT_DIR "OneQuick.feature.default.yaml"
     static config_file := "config.ini"
     static user_data_file := OneQuick._JSON_DIR "OneQuick.Data." A_ComputerName ".json"
@@ -69,11 +72,13 @@ class OneQuick
     static icon_suspend := OneQuick._ICON_DIR "2.ico"
     static icon_pause := OneQuick._ICON_DIR "4.ico"
     static icon_suspend_pause := OneQuick._ICON_DIR "3.ico"
+
     ; remote file path
     static remote_branch := "master"
     static remote_raw := "http://raw.githubusercontent.com/XUJINKAI/OneQuick/" OneQuick.remote_branch "/"
     static remote_releases_dir := "https://github.com/XUJINKAI/OneQuick/releases/download/"
     static remote_update_dl_dir := OneQuick.remote_releases_dir "beta0/"
+
     ; github api has limit
     ; static remote_contents := "https://api.github.com/repos/XUJINKAI/OneQuick/contents/"
     ; update
@@ -81,27 +86,34 @@ class OneQuick
     static check_update_period := 1000*3600*24
     static Bkp_limit := 5
     static update_list_path := OneQuick._SCRIPT_DIR "update_list.json"
+
     ; online
     static Project_Home_Page := "https://github.com/XUJINKAI/OneQuick"
     static Project_Issue_page := "https://github.com/XUJINKAI/OneQuick/issues"
     static remote_download_html := "https://github.com/XUJINKAI/OneQuick/releases"
     static remote_help := "https://github.com/XUJINKAI/OneQuick/wiki"
-    ;
+    
     ; setting object (read only, for feature configuration)
     static FeatureObj =
+
     ; version object (read only, for check update)
     static versionObj =
+
     ; running user data (e.g. clipboard history), read after run & write before exit
     static UserData := {}
+
     ; callback
     static OnExitCmd := []
     static OnClipboardChangeCmd := []
     static OnPauseCmd := []
     static OnSuspendCmd := []
+
     ; static var
     static ProgramName := "OneQuick"
     static Default_lang := "cn"
     static Editor = notepad
+    static EditorSublime := "C:\Shortcut\Sublime Text 3.lnk"
+    static EditorSciTE := "C:\Shortcut\SciTE4AutoHotkey.lnk"
     static Browser := "default"
 
     Ini(asLib=false)
@@ -111,12 +123,14 @@ class OneQuick
         CoordMode, Mouse, Screen
         CoordMode, ToolTip, Screen
         CoordMode, Menu, Screen
+
         ; %systmeroot% can't give to this.Editor directly
         if(this.Editor = "" or this.Editor = "notepad")
         {
             defNotepad = %SystemRoot%\notepad.exe
             this.Editor := defNotepad
         }
+
         if(asLib) {
             Return
         }
@@ -749,6 +763,44 @@ class OneQuick
         }
     }
 
+    EditSublime(filename, admin := 0)
+    {
+        if not FileExist(filename)
+        {
+            m("Can't find " filename "")
+            Return
+        }
+        if ((not A_IsAdmin) && admin)
+        {
+            cmd := this.EditorSublime " """ filename """"
+            Run *RunAs %cmd%
+        }
+        Else
+        {
+            cmd := this.EditorSublime " """ filename """"
+            Run % cmd
+        }
+    }
+
+    EditSciTE(filename, admin := 0)
+    {
+        if not FileExist(filename)
+        {
+            m("Can't find " filename "")
+            Return
+        }
+        if ((not A_IsAdmin) && admin)
+        {
+            cmd := this.EditorSciTE " """ filename """"
+            Run *RunAs %cmd%
+        }
+        Else
+        {
+            cmd := this.EditorSciTE " """ filename """"
+            Run % cmd
+        }
+    }
+
     ; Tray Menu
     Update_Tray_Menu()
     {
@@ -814,10 +866,12 @@ class OneQuick
             ,[lang("AutoHotKey HelpCn"), "Sub_OneQuick_AHKHelpCn"]          ;XuDong添加Quick右键菜单  前面那个是语言参数，在lang文件夹下，如果找到就对应翻译，找不到就用本身
             ,[lang("AutoHotKey HelpTemp"), "Sub_OneQuick_AHKHelpTemp"]      ;XuDong添加Quick右键菜单  前面那个是语言参数，在lang文件夹下，如果找到就对应翻译，找不到就用本身
             ,[]
-            ,[lang("Open OneQuick Folder"), "Sub_OneQuick_dir"]             ;打开OneQuick目录
-            ; ,[lang("Edit Ext.ahk"), "edit:" OneQuick.Ext_ahk_file]
-            ; ,[lang("Edit ExtWork.ahk"), "edit:" OneQuick.ExtWork_ahk_file] ;XuDong添加Quick右键菜单
-            ,[lang("Edit feature.yaml"), "OneQuick.Edit_feature_yaml"] ])   ;feature配置功能
+            ,[lang("Open OneQuick Folder"), "Sub_OneQuick_dir"]                             ;打开OneQuick目录
+            ,[lang("Edit OneQuickAhk"), "editSciTE:" OneQuick.OneQuickAhk]                  ;打开OneQuickAhk
+            ,[lang("Edit OneQuickCoreAhk"), "editSciTE:" OneQuick.OneQuickCoreAhk]          ;打开OneQuickCoreAhk
+            ,[lang("Edit Ext.ahk"), "editSciTE:" OneQuick.Ext_ahk_file]                     ;打开OneQuick.Ext
+            ; ,[lang("Edit ExtWork.ahk"), "editSciTE:" OneQuick.ExtWork_ahk_file]           ;打开OneQuick.ExtWork
+            ,[lang("Edit feature.yaml"), "editSublime:" OneQuick.feature_yaml_file] ])      ;feature配置功能
         Tray.SetMenu(TrayMenuList, OneQuick._switch_tray_standard_menu)
         Menu, Tray, Default, % lang("Disable")
         Menu, Tray, Click, 1
@@ -2798,6 +2852,16 @@ run(command, throwErr := 1)
         else if(RegExMatch(command, "i)edit:\s*(.*)", f))
         {
             OneQuick.Edit(f1)
+            return
+        }
+        else if(RegExMatch(command, "i)editSciTE:\s*(.*)", f))
+        {
+            OneQuick.EditSciTE(f1)
+            return
+        }
+        else if(RegExMatch(command, "i)editSublime:\s*(.*)", f))
+        {
+            OneQuick.EditSublime(f1)
             return
         }
         Try
