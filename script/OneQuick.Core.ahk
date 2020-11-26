@@ -864,6 +864,7 @@ class OneQuick
             ,[lang("Open AutoHotkey.exe Folder"), "Sub_OneQuick_EXE_Loc"]   ;打开AHK目录
             ,[lang("AutoHotKey Help"), "Sub_OneQuick_AHKHelp"]              ;打开AHK帮助
             ,[lang("AutoHotKey HelpCn"), "Sub_OneQuick_AHKHelpCn"]          ;XuDong添加Quick右键菜单  前面那个是语言参数，在lang文件夹下，如果找到就对应翻译，找不到就用本身
+            ,[lang("AutoAHK HelpCn"), "Sub_OneQuick_AutoAHKHelpCn"]          ;XuDong添加Quick右键菜单  前面那个是语言参数，在lang文件夹下，如果找到就对应翻译，找不到就用本身
             ,[lang("AutoHotKey HelpTemp"), "Sub_OneQuick_AHKHelpTemp"]      ;XuDong添加Quick右键菜单  前面那个是语言参数，在lang文件夹下，如果找到就对应翻译，找不到就用本身
             ,[]
             ,[lang("Open OneQuick Folder"), "Sub_OneQuick_dir"]                             ;打开OneQuick目录
@@ -1108,6 +1109,16 @@ Return
 Sub_OneQuick_AHKHelpCn:
 helpfileold = %A_ScriptDir%
 helpfile := SubStr(helpfileold, 1 , StrLen(helpfileold)-6) "tool\AutoHotkeyHelpCn.chm"
+run %helpfile%
+Return
+
+/*
+* 使用相对路径打开中文帮助手册
+*XuDong
+*/
+Sub_OneQuick_AutoAHKHelpCn:
+helpfileold = %A_ScriptDir%
+helpfile := SubStr(helpfileold, 1 , StrLen(helpfileold)-6) "tool\AutoAhkHelpCn.chm"
 run %helpfile%
 Return
 
