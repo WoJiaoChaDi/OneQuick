@@ -138,8 +138,7 @@ return
 return
 
 ;~ ~F2::
-    ;~ Sleep 100
-    ;~ Send {Right}_
+    ;~ Run, C:\Shortcut\git-bash.exe.lnk
 ;~ Return
 
 ;~ ~Enter::

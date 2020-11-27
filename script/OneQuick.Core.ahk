@@ -64,7 +64,7 @@ class OneQuick
     static Ext_ahk_file := A_WorkingDir "\OneQuick.Ext.ahk"
     static ExtWork_ahk_file := A_WorkingDir "\OneQuick.ExtWork.ahk"
     static version_yaml_file := OneQuick._SCRIPT_DIR "version.yaml"
-    static feature_yaml_file := A_WorkingDir "\..\OneQuick.feature.yaml"
+    static feature_yaml_file := A_WorkingDir "\OneQuick.feature.yaml"
     static feature_yaml_default_file := OneQuick._SCRIPT_DIR "OneQuick.feature.default.yaml"
     static config_file := "config.ini"
     static user_data_file := OneQuick._JSON_DIR "OneQuick.Data." A_ComputerName ".json"
@@ -867,7 +867,8 @@ class OneQuick
             ,[lang("AutoAHK HelpCn"), "Sub_OneQuick_AutoAHKHelpCn"]          ;XuDong添加Quick右键菜单  前面那个是语言参数，在lang文件夹下，如果找到就对应翻译，找不到就用本身
             ,[lang("AutoHotKey HelpTemp"), "Sub_OneQuick_AHKHelpTemp"]      ;XuDong添加Quick右键菜单  前面那个是语言参数，在lang文件夹下，如果找到就对应翻译，找不到就用本身
             ,[]
-            ,[lang("Open GitBash"), "Sub_Open_GitBash"]      ;XuDong添加Quick右键菜单  前面那个是语言参数，在lang文件夹下，如果找到就对应翻译，找不到就用本身
+            ,[lang("Open GitBash"), "Sub_Open_GitBash"]      ;GitBash
+            ,[lang("Open Decomplie"), "Sub_Open_Decomplie"]      ;反编译
             ,[]
             ,[lang("Open OneQuick Folder"), "Sub_OneQuick_dir"]                             ;打开OneQuick目录
             ,[lang("Edit OneQuickAhk"), "editSciTE:" OneQuick.OneQuickAhk]                  ;打开OneQuickAhk
@@ -1141,6 +1142,17 @@ Return
 Sub_Open_GitBash:
     Run, C:\Shortcut\git-bash.exe.lnk
 return
+
+/*
+* 打开GitBash(需要自己修改git-bash.lnk的起始位置)
+*XuDong
+*/
+Sub_Open_Decomplie:
+    helpfileold = %A_ScriptDir%
+    helpfile := SubStr(helpfileold, 1 , StrLen(helpfileold)-6) "tool\ahk_decomplie.ahk"
+    run %helpfile%
+return
+
 /*
 * 使用相对路径打开OneQuick目录
 *XuDong

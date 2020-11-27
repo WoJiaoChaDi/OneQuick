@@ -92,6 +92,14 @@ GoSub tsk_openAll
 
 Return
 
+
+;重新加载脚本
+^+!e::
+    reload
+return
+
+
+
 tsk_openAll:
 Loop, %scriptCount%
 {
