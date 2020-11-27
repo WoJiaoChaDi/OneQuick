@@ -3435,8 +3435,8 @@ CaptureCursor(hDC, nL, nT){
 TRAYMENU:
 Menu,TRAY,NoStandard
 Menu,TRAY,DeleteAll
-Menu,Tray,Tip, 这是一个定时截屏保存软件		;鼠标弹窗
-Menu,TRAY,Icon, %A_ScriptDir%\resources\yz.ico, 1, 0  ;图标
+Menu,Tray,Tip, 定时截屏		;鼠标弹窗
+Menu,TRAY,Icon, %A_ScriptDir%\resources\camera.ico, 1, 0  ;图标
 Menu,TRAY,Add, 暂停脚本（&P）,PAUSESCRIPT      ;添加菜单
 Menu,TRAY,Add
 Menu,TRAY,Add, 打开目录（&O）,OPEN
@@ -3453,7 +3453,7 @@ ExitApp
 ABOUT:
 Gui,99:Destroy
 Gui,99:Margin,20,20
-Gui,99:Add,Picture,xm w13 h-1 ,%A_ScriptDir%\resources\yz.ico
+Gui,99:Add,Picture,xm w13 h-1 ,%A_ScriptDir%\resources\camera.ico
 Gui,99:Font,Bold,KaiTi
 Gui,99:Add,Text,x+10 yp+10,%application_name% %Version%
 Gui,99:Font

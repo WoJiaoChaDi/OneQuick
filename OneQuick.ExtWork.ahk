@@ -16,3 +16,12 @@ class User_DESKTOP_G195C4P
 	}
 }
 
+
+class User_WOJIAOCHADI_PC
+{
+	Ini()
+	{
+
+	}
+}
+

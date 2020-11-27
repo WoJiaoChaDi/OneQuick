@@ -786,13 +786,16 @@ return
 ;----------------------------------------------------------------------------------------o|
 ;                按住CapsLock和左键，可以在窗口的任意位置拖动当前窗口                    ;|
 ;                                  Win+V | 新增热字符串                                  ;|
-;                                  Win+C | 超级执行（可多行）                                  ;|
+;                                  Win+C | 超级执行（可多行）                            ;|
 ;----------------------------------------------------------------------------------------o|
 
 
 ;========================================================================================o|
-;                     按住CapsLock和左键 | 可以在窗口的任意位置拖动当前窗口              ;|
-;                     按住CapsLock和右键 | 可以在窗口的任意位置调整当前窗口              ;|
+;                     按住CapsLock+左键 | 可以在窗口的任意位置拖动当前窗口               ;|
+;                     按住CapsLock+右键 | 可以在窗口的任意位置调整当前窗口               ;|
+;                 按住CapsLock+Alt+左键 | 可以在窗口的任意位置最小化窗口              	 ;|
+;                 按住CapsLock+Alt+右键 | 可以在窗口的任意位置最大化窗口              	 ;|
+;                 按住CapsLock+Alt+中间 | 可以在窗口的任意位置关闭窗口              	 ;|
 ;----------------------------------------------------------------------------------------o|
 
 ; 这是在我的系统上运行的最顺畅的设置
@@ -803,90 +806,96 @@ SetWinDelay,2
 CoordMode,Mouse
 return
 
-
 CapsLock & LButton::
-CoordMode, Mouse ; Switch to screen/absolute coordinates.
-MouseGetPos, EWD_MouseStartX, EWD_MouseStartY, EWD_MouseWin
-WinGetPos, EWD_OriginalPosX, EWD_OriginalPosY,,, ahk_id %EWD_MouseWin%
-WinGet, EWD_WinState, MinMax, ahk_id %EWD_MouseWin%
-if EWD_WinState = 0 ; Only if the window isn't maximized
-SetTimer, EWD_WatchMouse, 10 ; Track the mouse as the user drags it.
-return
-
-EWD_WatchMouse:
-GetKeyState, EWD_LButtonState, LButton, P
-    if EWD_LButtonState = U ; Button has been released, so drag is complete.
+    if GetKeyState("alt") = 1 
     {
-    SetTimer, EWD_WatchMouse, off
-    return
+        MouseGetPos,,,KDE_id
+        ; 此消息大部分时候相当于 WinMinimize,
+        ; 但是它避免了作用于 PSPad 时的问题.
+        PostMessage,0x112,0xf020,,,ahk_id %KDE_id%
+        DoubleAlt := false
+        return
     }
-GetKeyState, EWD_EscapeState, Escape, P
-    if EWD_EscapeState = D ; Escape has been pressed, so drag is cancelled.
+    ; 获取初始的鼠标位置和窗口 id,
+    ; 并在窗口处于最大化状态时返回.
+    MouseGetPos,KDE_X1,KDE_Y1,KDE_id
+    WinGet,KDE_Win,MinMax,ahk_id %KDE_id%
+    If KDE_Win
+        return
+    ; 获取初始的窗口位置.
+    WinGetPos,KDE_WinX1,KDE_WinY1,,,ahk_id %KDE_id%
+    Loop
     {
-    SetTimer, EWD_WatchMouse, off
-    WinMove, ahk_id %EWD_MouseWin%,, %EWD_OriginalPosX%, %EWD_OriginalPosY%
-    return
+        GetKeyState,KDE_Button,LButton,P ; 如果按钮已经被松开了则退出.
+        If KDE_Button = U
+            break
+        MouseGetPos,KDE_X2,KDE_Y2 ; 获取当前的鼠标位置.
+        KDE_X2 -= KDE_X1 ; 得到距离原来鼠标位置的偏移.
+        KDE_Y2 -= KDE_Y1
+        KDE_WinX2 := (KDE_WinX1 + KDE_X2) ; 把这个偏移应用到窗口位置.
+        KDE_WinY2 := (KDE_WinY1 + KDE_Y2)
+        WinMove,ahk_id %KDE_id%,,%KDE_WinX2%,%KDE_WinY2% ; 移动窗口到新的位置.
     }
-    ; Otherwise, reposition the window to match the change in mouse coordinates
-    ; caused by the user having dragged the mouse:
-    CoordMode, Mouse
-    MouseGetPos, EWD_MouseX, EWD_MouseY
-    WinGetPos, EWD_WinX, EWD_WinY,,, ahk_id %EWD_MouseWin%
-    SetWinDelay, -1 ; Makes the below move faster/smoother.
-    WinMove, ahk_id %EWD_MouseWin%,, EWD_WinX + EWD_MouseX - EWD_MouseStartX, EWD_WinY + EWD_MouseY - EWD_MouseStartY
-    EWD_MouseStartX := EWD_MouseX ; Update for the next timer-call to this subroutine.
-    EWD_MouseStartY := EWD_MouseY
 return
 
 CapsLock & RButton::
-;~ If DoubleAlt
-;~ {
-    ;~ MouseGetPos,,,KDE_id
-    ;~ ; 在最大化和还原状态中切换.
-    ;~ WinGet,KDE_Win,MinMax,ahk_id %KDE_id%
-    ;~ If KDE_Win
-        ;~ WinRestore,ahk_id %KDE_id%
-    ;~ Else
-        ;~ WinMaximize,ahk_id %KDE_id%
-    ;~ DoubleAlt := false
-    ;~ return
-;~ }
-; 获取初始的鼠标位置和窗口 id,
-; 并在窗口处于最大化状态时返回.
-MouseGetPos,KDE_X1,KDE_Y1,KDE_id
-WinGet,KDE_Win,MinMax,ahk_id %KDE_id%
-If KDE_Win
-    return
-; 获取初始的窗口位置和大小.
-WinGetPos,KDE_WinX1,KDE_WinY1,KDE_WinW,KDE_WinH,ahk_id %KDE_id%
-; 定义鼠标当前所处的窗口区域.
-; 四个区为左上, 右上, 左下和右下.
-If (KDE_X1 < KDE_WinX1 + KDE_WinW / 2)
-   KDE_WinLeft := 1
-Else
-   KDE_WinLeft := -1
-If (KDE_Y1 < KDE_WinY1 + KDE_WinH / 2)
-   KDE_WinUp := 1
-Else
-   KDE_WinUp := -1
-Loop
-{
-    GetKeyState,KDE_Button,RButton,P ; 如果按钮已经松开了则退出.
-    If KDE_Button = U
-        break
-    MouseGetPos,KDE_X2,KDE_Y2 ; 获取当前鼠标位置.
-    ; 获取当前的窗口位置和大小.
+    if GetKeyState("alt") = 1 
+    {
+        MouseGetPos,,,KDE_id
+        ; 在最大化和还原状态中切换.
+        WinGet,KDE_Win,MinMax,ahk_id %KDE_id%
+        If KDE_Win
+            WinRestore,ahk_id %KDE_id%
+        Else
+            WinMaximize,ahk_id %KDE_id%
+        DoubleAlt := false
+        return
+    }
+    
+    ; 获取初始的鼠标位置和窗口 id,
+    ; 并在窗口处于最大化状态时返回.
+    MouseGetPos,KDE_X1,KDE_Y1,KDE_id
+    WinGet,KDE_Win,MinMax,ahk_id %KDE_id%
+    If KDE_Win
+        return
+    ; 获取初始的窗口位置和大小.
     WinGetPos,KDE_WinX1,KDE_WinY1,KDE_WinW,KDE_WinH,ahk_id %KDE_id%
-    KDE_X2 -= KDE_X1 ; 得到距离原来鼠标位置的偏移.
-    KDE_Y2 -= KDE_Y1
-    ; 然后根据已定义区域进行动作.
-    WinMove,ahk_id %KDE_id%,, KDE_WinX1 + (KDE_WinLeft+1)/2*KDE_X2  ; 大小调整后窗口的 X 坐标
-                            , KDE_WinY1 +   (KDE_WinUp+1)/2*KDE_Y2  ; 大小调整后窗口的 Y 坐标
-                            , KDE_WinW  -     KDE_WinLeft  *KDE_X2  ; 大小调整后窗口的 W (宽度)
-                            , KDE_WinH  -       KDE_WinUp  *KDE_Y2  ; 大小调整后窗口的 H (高度)
-    KDE_X1 := (KDE_X2 + KDE_X1) ; 为下一次的重复重新设置初始位置.
-    KDE_Y1 := (KDE_Y2 + KDE_Y1)
-}
+    ; 定义鼠标当前所处的窗口区域.
+    ; 四个区为左上, 右上, 左下和右下.
+    If (KDE_X1 < KDE_WinX1 + KDE_WinW / 2)
+       KDE_WinLeft := 1
+    Else
+       KDE_WinLeft := -1
+    If (KDE_Y1 < KDE_WinY1 + KDE_WinH / 2)
+       KDE_WinUp := 1
+    Else
+       KDE_WinUp := -1
+    Loop
+    {
+        GetKeyState,KDE_Button,RButton,P ; 如果按钮已经松开了则退出.
+        If KDE_Button = U
+            break
+        MouseGetPos,KDE_X2,KDE_Y2 ; 获取当前鼠标位置.
+        ; 获取当前的窗口位置和大小.
+        WinGetPos,KDE_WinX1,KDE_WinY1,KDE_WinW,KDE_WinH,ahk_id %KDE_id%
+        KDE_X2 -= KDE_X1 ; 得到距离原来鼠标位置的偏移.
+        KDE_Y2 -= KDE_Y1
+        ; 然后根据已定义区域进行动作.
+        WinMove,ahk_id %KDE_id%,, KDE_WinX1 + (KDE_WinLeft+1)/2*KDE_X2  ; 大小调整后窗口的 X 坐标
+                                , KDE_WinY1 +   (KDE_WinUp+1)/2*KDE_Y2  ; 大小调整后窗口的 Y 坐标
+                                , KDE_WinW  -     KDE_WinLeft  *KDE_X2  ; 大小调整后窗口的 W (宽度)
+                                , KDE_WinH  -       KDE_WinUp  *KDE_Y2  ; 大小调整后窗口的 H (高度)
+        KDE_X1 := (KDE_X2 + KDE_X1) ; 为下一次的重复重新设置初始位置.
+        KDE_Y1 := (KDE_Y2 + KDE_Y1)
+    }
+return
+
+CapsLock & MButton::
+    if GetKeyState("alt") = 1 
+    {} else {
+        MouseGetPos,,,KDE_id
+        WinClose,ahk_id %KDE_id%
+    }
 return
 
 
@@ -1024,13 +1033,13 @@ return
 
 
 ;========================================================================================o|
-;                                  Win+C | 超级执行（可多行）                                  ;|
-;         1.算数计算                                                                               ;|
-;               如果是=结尾的表达式，将计算值放在表达式后面                    ;|
-;               如果不是以=结尾的表达式，则将值放入剪切板                  ;|
-;         2.打开网址                                                                       ;|
-;         3.打开目录                                                                               ;|
-;         4.magnet磁力链接执行                                                                            ;|
+;                                  Win+C | 超级执行（可多行）                            ;|
+;         1.算数计算                                                                     ;|
+;               如果是=结尾的表达式，将计算值放在表达式后面                              ;|
+;               如果不是以=结尾的表达式，则将值放入剪切板                  				 ;|
+;         2.打开网址                                                                     ;|
+;         3.打开目录                                                                     ;|
+;         4.magnet磁力链接执行                                                           ;|
 ;----------------------------------------------------------------------------------------o|
 #c::
     calcFlag:=false
@@ -1292,3 +1301,12 @@ return
 return
 
 #IfWinActive
+
+class User_WOJIAOCHADI_PC
+{
+	Ini()
+	{
+
+	}
+}
+

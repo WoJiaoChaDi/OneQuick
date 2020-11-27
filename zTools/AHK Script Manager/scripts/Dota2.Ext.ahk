@@ -1,4 +1,8 @@
 ﻿#maxThreadsPerHotkey, 2    ;
+
+;渲染菜单完成后，执行下一行代码
+gosub,TRAYMENU
+
 banana:=0    ;
 bananb:=0    ;
 bananc:=0    ;
@@ -198,3 +202,12 @@ return
     ;~ Send {Shift Up}
 ;~ return
 
+
+;渲染菜单
+TRAYMENU:
+    Menu,Tray,Tip, 小脚本		;鼠标弹窗
+    Menu,TRAY,Icon, %A_ScriptDir%\..\resources\script.ico, 1, 0  ;图标
+return
+
+TRAY_01:
+return

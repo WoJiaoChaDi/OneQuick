@@ -75,6 +75,11 @@ o------------------------------------------------------------o
 ; Hook hotkeys are smart enough to ignore such keystrokes.
 #UseHook
 
+
+;渲染菜单完成后，执行下一行代码
+gosub,TRAYMENU
+
+
 MouseSpeed = 2
 MouseAccelerationSpeed = 3
 MouseMaxSpeed = 7
@@ -747,4 +752,17 @@ return
 RemoveToolTip:
 SetTimer, RemoveToolTip, Off
 ToolTip
+return
+
+
+;渲染菜单
+TRAYMENU:
+Menu,TRAY,NoStandard
+Menu,TRAY,DeleteAll
+Menu,Tray,Tip, 小键盘鼠标		;鼠标弹窗
+Menu,TRAY,Icon, %A_ScriptDir%\..\resources\mouse.ico, 1, 0  ;图标
+Menu,TRAY,Add, 打开SL后启用小键盘鼠标, TRAY_01
+return
+
+TRAY_01:
 return
