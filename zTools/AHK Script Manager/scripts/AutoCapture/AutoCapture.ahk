@@ -3455,28 +3455,10 @@ Gui,99:Destroy
 Gui,99:Margin,20,20
 Gui,99:Add,Picture,xm w13 h-1 ,%A_ScriptDir%\resources\yz.ico
 Gui,99:Font,Bold,KaiTi
-Gui,99:Add,Text,x+10 yp+10,%application_name% v %Version%
+Gui,99:Add,Text,x+10 yp+10,%application_name% %Version%
 Gui,99:Font
 Gui,99:Font,,KaiTi
 Gui,99:Add,Text,y+10 w300, %A_Space%%A_Space%%A_Space%%A_Space%%About%
-Gui,99:Font
-Gui,99:Add,Picture,xm y+20 w13 h-1 ,%A_ScriptDir%\resources\Love.ico
-Gui,99:Font,Bold,KaiTi
-Gui,99:Add,Text,x+10 yp+10,大本营
-Gui,99:Font
-Gui,99:Font,,KaiTi
-Gui,99:Add,Text,y+10,这里有更多精美的工具和脚本.
-Gui,99:Font,,KaiTi
-Gui,99:Font,CBlue Underline
-Gui,99:Add,Text,y+5 gAutoAHK,www.autoahk.com
-Gui,99:Font
-Gui,99:Add,Picture,xm y+20  w13 h-1,%A_ScriptDir%\resources\House.ico
-Gui,99:Font,Bold,KaiTi
-Gui,99:Add,Text,x+10 yp+10,张亮军博客
-Gui,99:Font
-Gui,99:Font,,KaiTi
-Gui,99:Font,CBlue Underline
-Gui,99:Add,Text,y+10 gBLOG,www.zhangliangjun.cn
 Gui,99:Font
 Gui,99:Add,Picture,xm y+20 w13 h-1,%A_ScriptDir%\resources\Internet.ico
 Gui,99:Font,Bold,KaiTi
@@ -3485,7 +3467,7 @@ Gui,99:Font
 Gui,99:Font,,KaiTi
 Gui,99:Add,Text,y+10 w300, 王大可
 Gui,99:Font
-Gui,99:Show,,%application_name% v %Version% 关于
+Gui,99:Show,,%application_name% - %Version%
 hCurs:=DllCall("LoadCursor","UInt",NULL,"Int",32649,"UInt")
 OnMessage(0x200,"WM_MouseMove")
 return
@@ -3503,11 +3485,4 @@ OPENTODAY:
 Run,%screenFolder%
 return
 
-AutoAHK:
-Run,www.autoahk.com
-return
-
-BLOG:
-Run,www.zhangliangjun.cn
-return
 ;================= END SCRIPT ===================
