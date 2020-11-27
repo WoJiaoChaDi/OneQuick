@@ -159,6 +159,7 @@ return
     ;~ Send {Alt Down}{tab}{Alt Up}
     ;~ Sleep 90
     ;~ Send {Ctrl Down}v{Ctrl Up}
+    ;~ MouseMove, 593, 344
 ;~ return
 
 
@@ -170,6 +171,7 @@ return
     ;~ Send {Alt Down}{tab}{Alt Up}
     ;~ Sleep 90
     ;~ Send {Ctrl Down}v{Ctrl Up}
+    ;~ MouseMove, 593, 344
 ;~ return
 
 ;~ 3::
@@ -180,11 +182,20 @@ return
 ;~ return
 
 ;~ 4::
-    ;~ MouseClick, left, 579, 880
+    ;~ MouseClick, left, 531, 279
     ;~ Send {Down}
+    ;~ MouseClick, left, 356, 395
 ;~ return
 
-4::
-    run, C:\Shortcut\Sublime Text 3.lnk "E:\SoftWare\OneQuick\README.md"
-return
+;~ 4::
+    ;~ run, C:\Shortcut\Sublime Text 3.lnk "E:\SoftWare\OneQuick\README.md"
+;~ return
+
+;~ $RButton::
+    ;~ Send {Shift Down}
+    ;~ Send {RButton}
+    ;~ Sleep 1000
+    ;~ Send {LButton}
+    ;~ Send {Shift Up}
+;~ return
 
