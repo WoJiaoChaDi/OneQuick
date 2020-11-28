@@ -3062,9 +3062,8 @@ IfNotExist, %screenFolder%					;创建文件夹
 SaveScreens(){
 	if (!DllCall("User32\OpenInputDesktop","int",0*0,"int",0*0,"int",0x0001L*1)){
 		
-	}else{		
-		FormatTime, TimeString,, yyyy-MM-dd\%A_ComputerName% yyyy-MM-dd_HHmmss
-		ScreenCapture(0, 1, , A_ScriptDir "\ScreenShots\" TimeString ".png")
+	}else{
+		captureFun()
 	}
 }
 
@@ -3078,8 +3077,7 @@ clearMemory(){
 ;Ctrl+F9 立刻截屏
 ^F9::
 	{
-		FormatTime, TimeString,, yyyy-MM-dd\%A_ComputerName% yyyy-MM-dd_HHmmss
-		ScreenCapture(0, 1, , A_ScriptDir "\ScreenShots\" TimeString ".png")
+		captureFun()
 		ToolTip, 截图保存成功
 		sleep 2000
 		ToolTip
@@ -3091,6 +3089,26 @@ return
 	Gdip_Shutdown(pToken)
 Reload
 
+;截图方法
+captureFun()
+{
+	createDir()
+	FormatTime, Time_yyyyMMdd, , yyyy-MM-dd
+	FormatTime, Time_HHmmss, , HHmmss
+	path = %A_ScriptDir%\ScreenShots\%Time_yyyyMMdd%\%A_ComputerName%_%Time_yyyyMMdd%_%Time_HHmmss%.png
+	ScreenCapture(0, 1, , path)
+}
+
+;文件夹创建方法
+createDir()
+{
+	FormatTime, TimeStringTODAY,, yyyy-MM-dd	;获取年月日
+	screenFolder :=A_ScriptDir "\ScreenShots\" TimeStringTODAY		;生成年月日文件夹
+	IfNotExist, %screenFolder%					;创建文件夹
+	{
+		FileCreateDir, %screenFolder%
+	}
+}
 
 ;退出截图脚本方法
 scExitApp:
