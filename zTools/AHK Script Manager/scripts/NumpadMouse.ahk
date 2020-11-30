@@ -6,61 +6,61 @@
 ; 它还具有能自定义移动速度, 加速和 "轴反转" 的特点.
 
 /*
-o------------------------------------------------------------o
-|Using Keyboard Numpad as a Mouse                            |
-(------------------------------------------------------------)
-| By deguix           / A Script file for AutoHotkey 1.0.22+ |
-|                    ----------------------------------------|
-|                                                            |
-|    This script is an example of use of AutoHotkey. It uses |
-| the remapping of numpad keys of a keyboard to transform it |
-| into a mouse. Some features are the acceleration which     |
-| enables you to increase the mouse movement when holding    |
-| a key for a long time, and the rotation which makes the    |
-| numpad mouse to "turn". I.e. NumpadDown as NumpadUp        |
-| and vice-versa. See the list of keys used below:           |
-|                                                            |
-|------------------------------------------------------------|
-| Keys                  | Description                        |
-|------------------------------------------------------------|
-| ScrollLock (toggle on)| Activates numpad mouse mode.       |
-|-----------------------|------------------------------------|
-| Numpad0               | Left mouse button click.           |
-| Numpad5               | Middle mouse button click.         |
-| NumpadDot             | Right mouse button click.          |
-| NumpadDiv/NumpadMult  | X1/X2 mouse button click. (Win 2k+)|
-| NumpadSub/NumpadAdd   | Moves up/down the mouse wheel.     |
-|                       |                                    |
-|-----------------------|------------------------------------|
-| NumLock (toggled off) | Activates mouse movement mode.     |
-|-----------------------|------------------------------------|
-| NumpadEnd/Down/PgDn/  | Mouse movement.                    |
-| /Left/Right/Home/Up/  |                                    |
-| /PgUp                 |                                    |
-|                       |                                    |
-|-----------------------|------------------------------------|
-| NumLock (toggled on)  | Activates mouse speed adj. mode.   |
-|-----------------------|------------------------------------|
-| Numpad7/Numpad1       | Inc./dec. acceleration per         |
-|                       | button press.                      |
-| Numpad8/Numpad2       | Inc./dec. initial speed per        |
-|                       | button press.                      |
-| Numpad9/Numpad3       | Inc./dec. maximum speed per        |
-|                       | button press.                      |
-| ^Numpad7/^Numpad1     | Inc./dec. wheel acceleration per   |
-|                       | button press*.                     |
-| ^Numpad8/^Numpad2     | Inc./dec. wheel initial speed per  |
-|                       | button press*.                     |
-| ^Numpad9/^Numpad3     | Inc./dec. wheel maximum speed per  |
-|                       | button press*.                     |
-| Numpad4/Numpad6       | Inc./dec. rotation angle to        |
-|                       | right in degrees. (i.e. 180?=     |
-|                       | = inversed controls).              |
-|------------------------------------------------------------|
-| * = These options are affected by the mouse wheel speed    |
-| adjusted on Control Panel. If you don't have a mouse with  |
-| wheel, the default is 3 +/- lines per option button press. |
-o------------------------------------------------------------o
+o-----------------------------------------------------------------------------------------------o
+|Using Keyboard Numpad as a Mouse                                                               |
+(-----------------------------------------------------------------------------------------------)
+| By deguix           / A Script file for AutoHotkey 1.0.22+                                    |
+|                    ---------------------------------------------------------------------------|
+|                                                                                               |
+|    This script is an example of use of AutoHotkey. It uses                                    |
+| the remapping of numpad keys of a keyboard to transform it                                    |
+| into a mouse. Some features are the acceleration which                                        |
+| enables you to increase the mouse movement when holding                                       |
+| a key for a long time, and the rotation which makes the                                       |
+| numpad mouse to "turn". I.e. NumpadDown as NumpadUp                                           |
+| and vice-versa. See the list of keys used below:                                              |
+|                                                                                               |
+|-----------------------------------------------------------------------------------------------|
+| Keys                  | Description                                                           |
+|-----------------------------------------------------------------------------------------------|
+| ScrollLock (toggle on)| Activates numpad mouse mode.                激活鼠标按键              |
+|-----------------------|-----------------------------------------------------------------------|
+| Numpad0               | Left mouse button click.                    鼠标左键                  |
+| Numpad5               | Middle mouse button click.                  鼠标中键                  |
+| NumpadDot             | Right mouse button click.                   鼠标右键                  |
+| NumpadDiv/NumpadMult  | X1/X2 mouse button click. (Win 2k+)         鼠标侧键1/2               |
+| NumpadSub/NumpadAdd   | Moves up/down the mouse wheel.              鼠标滚轮↑/↓               |
+|                       |                                                                       |
+|-----------------------|-----------------------------------------------------------------------|
+| NumLock (toggled off) | Activates mouse movement mode.              激活鼠标移动              |
+|-----------------------|-----------------------------------------------------------------------|
+| NumpadEnd/Down/PgDn/  | Mouse movement.                              4/6/8/2 ←/→/↑/↓          |
+| /Left/Right/Home/Up/  |                                              1/7/3/9 ↙/↖/↘/↗          |
+| /PgUp                 |                                                                       |
+|                       |                                                                       |
+|-----------------------|-----------------------------------------------------------------------|
+| NumLock (toggled on)  | Activates mouse speed adj. mode.            鼠标调整模式              |
+|-----------------------|-----------------------------------------------------------------------|
+| Numpad7/Numpad1       | Inc./dec. acceleration per                  Num1/7 移动加速度         |
+|                       | button press.                                                         |
+| Numpad8/Numpad2       | Inc./dec. initial speed per                 Num2/8 调整初始速度       |
+|                       | button press.                                                         |
+| Numpad9/Numpad3       | Inc./dec. maximum speed per                 Num3/9 调整移动最大速度   |
+|                       | button press.                                                         |
+| ^Numpad7/^Numpad1     | Inc./dec. wheel acceleration per            Alt + Num1/7 滚轮加速度   |
+|                       | button press*.                                                        |
+| ^Numpad8/^Numpad2     | Inc./dec. wheel initial speed per           Alt + Num1/7 滚轮初始速度 |
+|                       | button press*.                                                        |
+| ^Numpad9/^Numpad3     | Inc./dec. wheel maximum speed per           Alt + Num1/7 滚轮最大速度 |
+|                       | button press*.                                                        |
+| Numpad4/Numpad6       | Inc./dec. rotation angle to                 Num4/6 旋转鼠标角度       |
+|                       | right in degrees. (i.e. 180?=                                         |
+|                       | = inversed controls).                                                 |
+|-----------------------------------------------------------------------------------------------|
+| * = These options are affected by the mouse wheel speed                                       |
+| adjusted on Control Panel. If you don't have a mouse with                                     |
+| wheel, the default is 3 +/- lines per option button press.                                    |
+o-----------------------------------------------------------------------------------------------o
 */
 
 ;START OF CONFIG SECTION
