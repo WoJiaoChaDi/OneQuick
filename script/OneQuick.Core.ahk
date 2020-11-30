@@ -37,8 +37,8 @@ Goto, SUB_ONEQUICK_FILE_END_LABEL
 #Include, Yaml.ahk
 ;
 #Include, ../
-#Include, *i OneQuick.Ext.ahk
- ;#Include, *i OneQuick.ExtWork.ahk  ;包含拓展文件
+#Include, *i OneQuick.Ext.ahk      ;包含拓展文件
+#Include, *i OneQuick.ExtWork.ahk  ;包含拓展文件
 #Include, %A_ScriptDir%
 ; /////////////////////////////////////
 /*
@@ -874,7 +874,7 @@ class OneQuick
             ,[lang("Edit OneQuickAhk"), "editSciTE:" OneQuick.OneQuickAhk]                  ;打开OneQuickAhk
             ,[lang("Edit OneQuickCoreAhk"), "editSciTE:" OneQuick.OneQuickCoreAhk]          ;打开OneQuickCoreAhk
             ,[lang("Edit Ext.ahk"), "editSciTE:" OneQuick.Ext_ahk_file]                     ;打开OneQuick.Ext
-            ; ,[lang("Edit ExtWork.ahk"), "editSciTE:" OneQuick.ExtWork_ahk_file]           ;打开OneQuick.ExtWork
+            ,[lang("Edit ExtWork.ahk"), "editSciTE:" OneQuick.ExtWork_ahk_file]             ;打开OneQuick.ExtWork
             ,[lang("Edit feature.yaml"), "editSublime:" OneQuick.feature_yaml_file] ])      ;feature配置功能
         Tray.SetMenu(TrayMenuList, OneQuick._switch_tray_standard_menu)
         Menu, Tray, Default, % lang("Disable")
@@ -916,15 +916,19 @@ class OneQuick
         }
         if(setsuspend) {
             Suspend, On
+            SetCapsLockState, Off
         }
         else {
             Suspend, Off
+            SetCapsLockState, AlwaysOff
         }
         if(setpause) {
             Pause, On, 1
+            SetCapsLockState, Off
         }
         else {
             Pause, Off
+            SetCapsLockState, AlwaysOff
         }
         OneQuick.Update_Tray_Menu()
     }
