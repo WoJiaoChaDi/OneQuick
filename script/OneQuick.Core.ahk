@@ -3057,5 +3057,13 @@ SwitchIME(dwLayout){
     ControlGetFocus,ctl,A
     SendMessage,0x50,0,HKL,%ctl%,A
 }
+
+;加密解密软件
+encrypt:
+    ;~ MsgBox, %A_ScriptDir%\..\tool\EncryptWindow.jar
+    run, java -jar %A_WorkingDir%\tool\EncryptWindow.jar
+return
+
+
 ; //////////////////////////////////////////////////////////////////////////
 SUB_ONEQUICK_FILE_END_LABEL:
