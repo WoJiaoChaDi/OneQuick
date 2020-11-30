@@ -19,6 +19,7 @@ if not A_IsCompiled
 	ExitApp
 }
 
+;带参数运行 AutoHotKey.exe
 Run, AutoHotkey.exe %OneQuickAHKPath%, , UseErrorLevel
 if ErrorLevel = Error
 {
