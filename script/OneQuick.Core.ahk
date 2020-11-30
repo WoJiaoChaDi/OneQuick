@@ -1,17 +1,18 @@
-﻿/*
-    @author: XJK
-    @github: https://github.com/XUJINKAI/OneQuick
-    请保留作者信息。please retain author information.
+﻿;----------------------------------------------------------------------------------------o|
+;              @author: XJK                                                              ;|
+;              @github: https://github.com/XUJINKAI/OneQuick                             ;|
+;                                                                                        ;|
+;              此文件是OneQuick的核心，定义了几个主要功能的class，                       ;|
+;              此文件的内容不会直接执行，需要OneQuick.ahk引用并依需要的功能启动，        ;|
+;              所以一般无需修改此文件，也欢迎上github提交完善此项目。                    ;|
+;                                                                                        ;|
+;              This is main class file of OneQuick, you need NOT modify it generally.    ;|
+;              you can pull requests in github for this project.                         ;|
+;----------------------------------------------------------------------------------------o|
 
-    此文件是OneQuick的核心，定义了几个主要功能的class，
-    此文件的内容不会直接执行，需要OneQuick.ahk引用并依需要的功能启动，
-    所以一般无需修改此文件，也欢迎上github提交完善此项目。
-
-    This is main class file of OneQuick, you need NOT modify it generally.
-    you can pull requests in github for this project.
-*/
 ; parameters passed in
 argv1 = %1%
+
 ; Tray.Tip
 if(argv1="-traytip") {
     argv2 = %2%
@@ -22,6 +23,7 @@ if(argv1="-traytip") {
 if(A_ScriptName=="OneQuick.Core.ahk") {
     ExitApp
 }
+
 ; with this label, you can include this file on top of the file
 Goto, SUB_ONEQUICK_FILE_END_LABEL
 #Persistent
@@ -29,21 +31,25 @@ Goto, SUB_ONEQUICK_FILE_END_LABEL
 #MaxThreads, 255
 #MaxThreadsPerHotkey, 20
 #Include %A_ScriptDir%
+
 ; JSON.ahk From
 ; https://github.com/cocobelgica/AutoHotkey-JSON
 #Include, JSON.ahk
+
 ; https://github.com/HotKeyIt/Yaml
 ; https://autohotkey.com/board/topic/65582-ahk-lv2-yaml-yaml-parser-json/
 #Include, Yaml.ahk
-;
+
 #Include, ../
 #Include, *i OneQuick.Ext.ahk      ;包含拓展文件
 #Include, *i OneQuick.ExtWork.ahk  ;包含拓展文件
 #Include, %A_ScriptDir%
+
+
 ; /////////////////////////////////////
-/*
-OneQuick
-*/
+;----------------------------------------------------------------------------------------o|
+;                                     OneQuick                                           ;|
+;----------------------------------------------------------------------------------------o|
 class OneQuick
 {
     ; dir
@@ -164,6 +170,7 @@ class OneQuick
         this.Run_ext_user_ini()
         this.Run_extwork_user_ini()
     }
+
     ; when start
     Show_StartInfo()
     {
@@ -204,6 +211,7 @@ class OneQuick
             }
         }
     }
+
     ; user guide
     Check_First_Time_Run()
     {
@@ -251,7 +259,7 @@ class OneQuick
         }
     }
 
-    ; Get
+    ; Get_Remote_File
     Get_Remote_File(path)
     {
         StringReplace, path, % path, \, /, All
@@ -259,7 +267,8 @@ class OneQuick
         content := http.get(url)
         return % content
     }
-    ;
+
+    ; Get_Remote_versionObj
     Get_Remote_versionObj()
     {
         remoteVerTxt := OneQuick.Get_Remote_File(OneQuick.version_yaml_file)
@@ -320,11 +329,13 @@ class OneQuick
                 Return
             }
         }
+
         ; set var
         FormatTime, timestr,, yyyyMMddHHmmss
         backup_dir := OneQuick._Update_bkp_DIR OneQuick._Update_bkp_folder_prefix timestr "_v" this_version "/"
         dl_dir := OneQuick._Update_dl_DIR
         update_background_tip := lang("update_background_tip", "Update in background") "..."
+
         ; 两种升级策略
         ; 1. 获取升级列表，并按列表按需下载所需文件（raw repo contents）
         ; 2. 下载压缩包
@@ -355,22 +366,29 @@ class OneQuick
             Return
         }
         d("method 1")
+
         ; tray tip
         Tray.Tip(update_background_tip)
+
         ; start operate files
         ; future: compare file & 增量升级
         OneQuick.Generate_update_list()
+
         ; clear bkp
         OneQuick._clear_bkp_folders()
+
         ; delete dl folder
         FileRemoveDir, % dl_dir, 1
         d("del dl")
+
         ; get update list in repo
         remote_json_str := OneQuick.Get_Remote_File(OneQuick.update_list_path)
         obj := JSON.parse(remote_json_str)
+
         ; download
         OneQuick._update_copy_file(obj, OneQuick.remote_raw, dl_dir)
         d("dl raw files")
+
         ; update count
         count_file_name := "v" remote_version ".txt"
         remote_update_count_file := OneQuick.remote_update_dl_dir count_file_name
@@ -379,16 +397,21 @@ class OneQuick
         d("dl count, error: " ErrorLevel)
         FileDelete, % update_count_file
         d("del count")
+
         ; backup
         OneQuick._update_copy_file(obj, "", backup_dir)
+
         ; Copy back
         d("[CAUTION] DEBUG mode: source code will be changed.")
         OneQuick._update_copy_file(obj, dl_dir, "")
+
         ; delete dl
         FileRemoveDir, % dl_dir, 1
+
         ; reload
         OneQuick.SetConfig("update_from_version", this_version)
         RunWait autohotkey.exe %A_ScriptFullPath%
+
         ; only if restart fail
         ; if reload onequick fail, will rollback
         OneQuick.SetConfig("update_from_version", "")
@@ -445,6 +468,7 @@ class OneQuick
     {
         ; onequick._debug_version
         fake_type := 1
+
         ; fake remote
         if(fake_type==1) {
             fake_version := {"version": "0.9.3"
@@ -453,6 +477,7 @@ class OneQuick
                 ,"desc-revision": "超级无敌大更新3`n789" }
             m(this._new_version_info(this.versionObj, fake_version))
         }
+
         ; fake local
         else if (fake_type==2) {
             fake_version := {"version": "0.0.0"
@@ -533,11 +558,13 @@ class OneQuick
             nlimit := OneQuick.Bkp_limit
         }
         bkp_folders := []
+
         ; count bkp
         Loop Files, % OneQuick._Update_bkp_DIR OneQuick._Update_bkp_folder_prefix "*", D
         {
             bkp_folders.Insert(A_LoopFileFullPath)
         }
+
         ; delete bkp
         Loop, % bkp_folders.MaxIndex() + 1 - nlimit
         {
@@ -577,6 +604,7 @@ class OneQuick
         {
             scan_array[A_Index] := StrReplace(scan_array[A_Index], "/", "\")
         }
+
         ; adding all
         Loop, % scan_array.MaxIndex()
         {
@@ -589,6 +617,7 @@ class OneQuick
                 }
             }
         }
+
         ; remove !
         Loop, % scan_array.MaxIndex()
         {
@@ -601,6 +630,7 @@ class OneQuick
                 }
             }
         }
+
         ; implement obj
         obj := []
         Loop, % file_list.MaxIndex()
@@ -610,6 +640,7 @@ class OneQuick
         }
         return obj
     }
+
     GetBiggerRemVersion()
     {
         this_version := this.versionObj["version"]
@@ -628,6 +659,7 @@ class OneQuick
     {
         Tray.SetIcon(ico)
     }
+
     ; callback register
     OnExit(func)
     {
@@ -689,6 +721,7 @@ class OneQuick
             OneQuick.FeatureObj := Yaml(OneQuick.feature_yaml_file)
         }
     }
+
     ; config.ini
     debugConfig(key, default)
     {
@@ -733,7 +766,6 @@ class OneQuick
             OneQuick.UserData := []
     }
 
-    ;
     ; run inputbox
     Command_run()
     {
@@ -881,12 +913,14 @@ class OneQuick
         Menu, Tray, Click, 1
         OneQuick.Update_Icon()
     }
+
     static _switch_tray_standard_menu := 0
     Standard_Tray_Menu(act="toggle")
     {
         OneQuick._switch_tray_standard_menu := (act="toggle")? !OneQuick._switch_tray_standard_menu :act
         OneQuick.Update_Tray_Menu()
     }
+
     Update_Icon()
     {
         setsuspend := A_IsSuspended
@@ -904,6 +938,7 @@ class OneQuick
             this.SetIcon(this.icon_suspend_pause)
         }
     }
+
     SetState(setsuspend="", setpause="")
     {
         setsuspend := (setsuspend="")? A_IsSuspended: setsuspend
@@ -932,7 +967,7 @@ class OneQuick
         }
         OneQuick.Update_Tray_Menu()
     }
-    ;
+
     About()
     {
         lang := OneQuick.GetConfig("lang", "cn")
@@ -956,6 +991,7 @@ class OneQuick
         GuiControl, Focus, Close
         Gui, Show,, About OneQuick
     }
+
     ; OneQuick._SumGithubDownloadCount
     _SumGithubDownloadCount()
     {
@@ -981,10 +1017,12 @@ class OneQuick
         msg := "github download sum: " sum msg
         m(msg)
     }
+
     Reload()
     {
         Reload
     }
+
     ResetProgram()
     {
         lang := OneQuick.GetConfig("lang")
@@ -995,23 +1033,27 @@ class OneQuick
             OneQuick.Reload()
         }
     }
+
     Exit(show_msg=true)
     {
         if(mq(lang("exit_msg"), 0x1134)) {
             ExitApp
         }
     }
+
     SetDisable(act="toggle")
     {
         setdisable := (act="toggle")? !(A_IsPaused&&A_IsSuspended): act
         OneQuick.SetState(setdisable, setdisable)
     }
+
     ; hotkey
     SetSuspend(act="toggle")
     {
         setsuspend := (act="toggle")? !A_IsSuspended: act
         OneQuick.SetState(setsuspend, A_IsPaused)
     }
+
     ; thread
     SetPause(act="toggle")
     {
@@ -1109,58 +1151,58 @@ Else{
 }
 Return
 
-/*
-* 使用相对路径打开中文帮助手册
-*XuDong
-*/
+
+;----------------------------------------------------------------------------------------o|
+;                               使用相对路径打开中文帮助手册                             ;|
+;----------------------------------------------------------------------------------------o|
 Sub_OneQuick_AHKHelpCn:
 helpfileold = %A_ScriptDir%
 helpfile := SubStr(helpfileold, 1 , StrLen(helpfileold)-6) "tool\AutoHotkeyHelpCn.chm"
 run %helpfile%
 Return
 
-/*
-* 使用相对路径打开中文帮助手册
-*XuDong
-*/
+
+;----------------------------------------------------------------------------------------o|
+;                               使用相对路径打开中文帮助手册                             ;|
+;----------------------------------------------------------------------------------------o|
 Sub_OneQuick_AutoAHKHelpCn:
 helpfileold = %A_ScriptDir%
 helpfile := SubStr(helpfileold, 1 , StrLen(helpfileold)-6) "tool\AutoAhkHelpCn.chm"
 run %helpfile%
 Return
 
-/*
-* 使用相对路径打开快餐店帮助手册
-*XuDong
-*/
+
+;----------------------------------------------------------------------------------------o|
+;                             使用相对路径打开快餐店帮助手册                             ;|
+;----------------------------------------------------------------------------------------o|
 Sub_OneQuick_AHKHelpTemp:
 helpfileold = %A_ScriptDir%
 helpfile := SubStr(helpfileold, 1 , StrLen(helpfileold)-6) "tool\AutoHotkeyTemp.chm"
 run %helpfile%
 Return
 
-/*
-* 打开GitBash(需要自己修改git-bash.lnk的起始位置)
-*XuDong
-*/
+
+;----------------------------------------------------------------------------------------o|
+;                    打开GitBash(需要自己修改git-bash.lnk的起始位置)                     ;|
+;----------------------------------------------------------------------------------------o|
 Sub_Open_GitBash:
     Run, C:\Shortcut\git-bash.exe.lnk
 return
 
-/*
-* 打开GitBash(需要自己修改git-bash.lnk的起始位置)
-*XuDong
-*/
+
+;----------------------------------------------------------------------------------------o|
+;                                   打开反编译工具Ahk_Decomplie                          ;|
+;----------------------------------------------------------------------------------------o|
 Sub_Open_Decomplie:
     helpfileold = %A_ScriptDir%
     helpfile := SubStr(helpfileold, 1 , StrLen(helpfileold)-6) "tool\ahk_decomplie.ahk"
     run %helpfile%
 return
 
-/*
-* 使用相对路径打开OneQuick目录
-*XuDong
-*/
+
+;----------------------------------------------------------------------------------------o|
+;                               使用相对路径打开OneQuick目录                             ;|
+;----------------------------------------------------------------------------------------o|
 Sub_OneQuick_dir:
 helpfileold = %A_ScriptDir%
 helpfile := SubStr(helpfileold, 1 , StrLen(helpfileold)-6) ""
@@ -1207,6 +1249,7 @@ class xArray
         }
         return % arr1
     }
+
     ; xArray.remove
     remove(arr, value)
     {
@@ -1323,6 +1366,7 @@ class Tray
 class Regedit
 {
     static Subkey_Autorun := "Software\Microsoft\Windows\CurrentVersion\Run"
+
     ; Regedit.Autorun
     Autorun(switch, name, path="")
     {
@@ -1335,6 +1379,7 @@ class Regedit
             RegDelete, HKCU, % Regedit.Subkey_Autorun, % name
         }
     }
+
     ; Regedit.IsAutorun
     IsAutorun(name, path)
     {
@@ -1346,21 +1391,26 @@ class Regedit
 ; //////////////////////////////////////////////////////////////////////////
 ; //////////////////////////////////////////////////////////////////////////
 ; //////////////////////////////////////////////////////////////////////////
-/*
-a clipboard enhance class, provide a clipboard history list & quick search menu
+;------------------------------------------------------------------------------------------------------o|
+;                                         剪切板增强类                                                 ;|
+;     a clipboard enhance class, provide a clipboard history list & quick search menu                  ;|
+;                                                                                                      ;|
+;     1. you can use "xClipboard.SetHotkey(allClips, copyAndShow, clipMenu)" function to set hotkeys,  ;|
+;         parameters are hotkey name,                                                                  ;|
+;             "allClips" means open clipboard history list,                                            ;|
+;             "clipMenu" means show current clipboard content and quick search menu,                   ;|
+;             "copyAndShow" will do a copy action (^c) and then show "clipMenu"                        ;|
+;         ps.it is strongly recommended to Sethotkey as ("^+x", "^+c", "^+v")                          ;|
+;                                                                                                      ;|
+;     2. use "xClipboard.SetSearchList" function to define quick search menu                           ;|
+;         e.g.xClipboard.SetSearchList([["g","Google","https://www.google.com/search?q=%s"],[...]])    ;|
+;             means use "Google" search current clipboard when Press "g"                               ;|
+;             "%s" in url will be instead of current clipboard text                                    ;|
+;                                                                                                      ;|
+;------------------------------------------------------------------------------------------------------o|
 
-1. you can use "xClipboard.SetHotkey(allClips, copyAndShow, clipMenu)" function to set hotkeys,
-    parameters are hotkey name,
-        "allClips" means open clipboard history list,
-        "clipMenu" means show current clipboard content and quick search menu,
-        "copyAndShow" will do a copy action (^c) and then show "clipMenu"
-    ps.it is strongly recommended to Sethotkey as ("^+x", "^+c", "^+v")
 
-2. use "xClipboard.SetSearchList" function to define quick search menu
-    e.g.xClipboard.SetSearchList([["g","Google","https://www.google.com/search?q=%s"],[...]])
-        means use "Google" search current clipboard when Press "g"
-        "%s" in url will be instead of current clipboard text
-*/
+
 class xClipboard
 {
     static ClsName := "clipboard"
@@ -1599,6 +1649,7 @@ class xClipboard
         }
     }
 }
+
 ; All Clips Menu
 Sub_xClipboard_AllClips_Click:
 idx := xClipboard.Clips.MaxIndex() - A_ThisMenuItemPos + 1
@@ -1692,6 +1743,7 @@ Return
 Sub_xClipboard_ClipMenu_RemoveFavour:
 xClipboard._RemoveArrClip(xClipboard.FavourClips, Clipboard)
 Return
+
 ; hotkey
 Sub_xClipboard_ShowAllClips:
 xClipboard.ShowAllClips()
@@ -1722,12 +1774,14 @@ Return
 ; //////////////////////////////////////////////////////////////////////////
 ; //////////////////////////////////////////////////////////////////////////
 ; //////////////////////////////////////////////////////////////////////////
-/*
-config struct: [start_hour, start_min, end_hour, end_min, function_or_label_name [,peroid(seconds) ,weekday(1-7)]]
-e.g.
-Schedule.Add([[0,0,0,0,"func1"], [8,0,20,0,"func2","3600","12345"]])
-Schedule.Start()
-*/
+;-----------------------------------------------------------------------------------------------------------------------------o|
+;    config struct: [start_hour, start_min, end_hour, end_min, function_or_label_name [,peroid(seconds) ,weekday(1-7)]]       ;|
+;    e.g.                                                                                                                     ;|
+;    Schedule.Add([[0,0,0,0,"func1"], [8,0,20,0,"func2","3600","12345"]])                                                     ;|
+;    Schedule.Start()                                                                                                         ;|
+;-----------------------------------------------------------------------------------------------------------------------------o|
+
+
 class Schedule
 {
     static SchdArr := []
@@ -1791,9 +1845,6 @@ Return
 ; //////////////////////////////////////////////////////////////////////////
 ; //////////////////////////////////////////////////////////////////////////
 ; //////////////////////////////////////////////////////////////////////////
-/*
-
-*/
 class WinMenu
 {
     static InfoObj := {}
@@ -1909,13 +1960,14 @@ Return
 ; //////////////////////////////////////////////////////////////////////////
 ; //////////////////////////////////////////////////////////////////////////
 ; //////////////////////////////////////////////////////////////////////////
-/*
-e.g.
-xMenu.Add("Menu1", [["item1","func1"],["item2","func2"],[]
-                ,["submenu",["subitem_1","func3"]
-                ,["subitem_2",, {sub: "SubMenu", "disable"}]]])
-xMenu.Show("Menu1")
-*/
+;----------------------------------------------------------------------------------------o|
+;               e.g.                                                                     ;|
+;               xMenu.Add("Menu1", [["item1","func1"],["item2","func2"],[]               ;|
+;                               ,["submenu",["subitem_1","func3"]                        ;|
+;                               ,["subitem_2",, {sub: "SubMenu", "disable"}]]])          ;|
+;               xMenu.Show("Menu1")                                                      ;|
+;----------------------------------------------------------------------------------------o|
+
 class xMenu
 {
     static MenuList := {}
@@ -2019,9 +2071,6 @@ Return
 ; //////////////////////////////////////////////////////////////////////////
 ; //////////////////////////////////////////////////////////////////////////
 ; //////////////////////////////////////////////////////////////////////////
-/*
-
-*/
 class Sys
 {
     class Power
@@ -2595,6 +2644,10 @@ class Sys
 
 }
 
+
+;----------------------------------------------------------------------------------------o|
+;                                      鼠标Spy信息窗口                                   ;|
+;----------------------------------------------------------------------------------------o|
 Sub_Sys_Cursor_Info:
 ; if write these close code to info() function and use a menu to close, tooltip will not destroyed
 if (!Sys.Cursor.info_switch)
@@ -2704,9 +2757,6 @@ return
 ; //////////////////////////////////////////////////////////////////////////
 ; //////////////////////////////////////////////////////////////////////////
 ; //////////////////////////////////////////////////////////////////////////
-/*
-
-*/
 class DateTime
 {
     SecondsToStr(NumberOfSeconds)
@@ -2738,9 +2788,9 @@ CountObj(obj)
     return % count
 }
 
-/*
-* http://www.autohotkey.com/forum/viewtopic.php?t=71619
-*/
+;----------------------------------------------------------------------------------------o|
+;           http://www.autohotkey.com/forum/viewtopic.php?t=71619                        ;|
+;----------------------------------------------------------------------------------------o|
 UriEncode(Uri, Enc = "UTF-8")
 {
     StrPutVar(Uri, Var, Enc)
@@ -2828,7 +2878,9 @@ RunArr(arr)
     }
 }
 
-
+;----------------------------------------------------------------------------------------o|
+;                                       Win+C 超级运行                                   ;|
+;----------------------------------------------------------------------------------------o|
 ;~;[获取选中]
 Get_Zz(){
 	global Candy_isFile
@@ -2963,6 +3015,10 @@ escapeString(string){
 	string:=RegExReplace(string, "\R", "\n")
 	return string
 }
+
+
+
+
 
 ;----------------------------------------------------------------------------------------o|
 ;                                       万能的run 函数                                   ;|
