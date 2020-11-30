@@ -2879,7 +2879,7 @@ RunArr(arr)
 }
 
 ;----------------------------------------------------------------------------------------o|
-;                                       Win+C 超级运行                                   ;|
+;                                       Win+C 超级运行/超级执行                                   ;|
 ;----------------------------------------------------------------------------------------o|
 ;~;[获取选中]
 Get_Zz(){
@@ -3026,10 +3026,12 @@ escapeString(string){
 ;----------------------------------------------------------------------------------------o|
 run(command, throwErr := 1)
 {
+    ;判断是否 标签、热键、热字符串
     if(IsLabel(command))
     {
         Gosub, %command%
     }
+    ;判断是否 函数
     else if (IsFunc(command))
     {
         Array := StrSplit(command, ".")
@@ -3050,6 +3052,7 @@ run(command, throwErr := 1)
     }
     Else
     {
+        ;匹配网址，自动打开
         if(RegExMatch(command, "^https?://"))
         {
             brw := OneQuick.Browser
@@ -3061,36 +3064,56 @@ run(command, throwErr := 1)
                 run, %brw% %command%
             Return
         }
+        ;匹配av号，自动打开bilibili
         else if(RegExMatch(command, "i)av(\d+)", avn))
         {
             run("http://www.bilibili.com/video/av" avn1)
             return
         }
+        ;匹配bv号，自动打开bilibili
+        else if(RegExMatch(command, "i)BV(.*)", avn))
+        {
+            run("http://www.bilibili.com/video/BV" avn1)
+            return
+        }
+        ;匹配Send
         else if(RegExMatch(command, "i)send (.*)", sd))
         {
             send, % sd1
             return
         }
+        ;匹配m: 弹出输出框
         else if(RegExMatch(command, "i)m:(.*)", msg))
         {
             m(msg1)
             return
         }
+        ;匹配edit: 用编辑其打开
         else if(RegExMatch(command, "i)edit:\s*(.*)", f))
         {
             OneQuick.Edit(f1)
             return
         }
+        ;匹配editSciTE: 用SciTE打开
         else if(RegExMatch(command, "i)editSciTE:\s*(.*)", f))
         {
             OneQuick.EditSciTE(f1)
             return
         }
+        ;匹配editSublime: 用Sublime打开
         else if(RegExMatch(command, "i)editSublime:\s*(.*)", f))
         {
             OneQuick.EditSublime(f1)
             return
         }
+        ;匹配edSub:  用Sublime打开
+        else if(RegExMatch(command, "i)edsub:\s*(.*)", f))
+        {
+            OneQuick.EditSublime(f1)
+            return
+        }
+        
+        ;如果都不能匹配，则用 cmd 运行
         Try
         {
             run, %command%
