@@ -224,5 +224,3 @@ Return
 Menu_Show:
     Menu, Tray, Show
 Return
-
-ScrollLock::Reload   ;重载脚本
