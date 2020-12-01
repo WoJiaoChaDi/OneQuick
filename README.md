@@ -139,3 +139,9 @@ Q&A
 JSON: https://github.com/cocobelgica/AutoHotkey-JSON  
 YAML：https://github.com/HotKeyIt/Yaml  
 ICON: http://www.iconarchive.com/show/flatastic-1-icons-by-custom-icon-design.html, http://www.iconarchive.com/show/flatastic-2-icons-by-custom-icon-design.html  
+
+
+
+End Version:
+https://github.com/OneQuick/OneQuick.AHK-legacy/commit/d3395be3a74ab4f3128541ff21099da8e0649db1
+1 parent a61626f commit d3395be3a74ab4f3128541ff21099da8e0649db1

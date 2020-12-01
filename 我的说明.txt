@@ -1,12 +1,27 @@
 一些默认快捷键，是在这个文件中指定的：
-..\AutoHotKey\OneQuick.feature.yaml
+.\OneQuick.feature.yaml
 
 这个是默认的备份文件：
-..\AutoHotKey\script\OneQuick.feature.default.yaml
-
+.\script\OneQuick.feature.default.yaml
 
 自定义加载快捷键总开关：
-..\AutoHotKey\tool\AHK Script Manager\AHK Script Manager.ahk
+.\tool\AHK Script Manager\AHK Script Manager.ahk
 自定义加载的快捷键：
-..\AutoHotKey\tool\AHK Script Manager\scripts\OneQuick.Ext.ahk
-..\AutoHotKey\tool\AHK Script Manager\scripts\OneQuick.ExtWork.ahk
+.\tool\AHK Script Manager\scripts\OneQuick.Ext.ahk
+.\tool\AHK Script Manager\scripts\OneQuick.ExtWork.ahk
+
+
+
+---默认配置---
+OneQuick.Ext.ahk
+Run C:\Shortcut\Sublime Text 3.lnk
+Run C:\Shortcut\Everything.lnk
+Run C:\Shortcut\Total Commander.lnk
+
+OneQuick.Core.ahk
+Run, C:\Shortcut\git-bash.exe.lnk
+
+
+---其他配置---
+C:\Shortcut\git-bash.exe.lnk  - 属性 - 起始位置 - OneQuick目录
+OneQuick Launcher.exe  - 兼容性 - 以管理员方式运行此程序(如果不是以管理员方式运行，部分功能会失效)

@@ -1103,6 +1103,20 @@ return
             continue
         }
         
+        ;匹配av号，自动打开bilibili
+        if(RegExMatch(S_LoopField, "i)\bav(\d+)", avn))
+        {
+            run("http://www.bilibili.com/video/av" avn1)
+            continue
+        }
+        
+        ;匹配bv号，自动打开bilibili
+        if(RegExMatch(S_LoopField, "i)\bBV(.*)", avn))
+        {
+            run("http://www.bilibili.com/video/BV" avn1)
+            continue
+        }
+        
         ;打开目录
         if(RegExMatch(S_LoopField,"S)^(\\\\|.:\\)")){
             ;一键打开目录
