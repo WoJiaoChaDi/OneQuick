@@ -272,11 +272,11 @@ class OneQuick
         {
             %user_str%.Ini()
         }
-        Else
-        {
-            str := "`nclass " user_str "`n{`n`tIni()`n`t{`n`n`t}`n}`n`n"
-            FileAppend, % str, % this.ExtWork_ahk_file
-        }
+        ;~ Else
+        ;~ {
+            ;~ str := "`nclass " user_str "`n{`n`tIni()`n`t{`n`n`t}`n}`n`n"
+            ;~ FileAppend, % str, % this.ExtWork_ahk_file
+        ;~ }
     }
 
     ; Get_Remote_File
