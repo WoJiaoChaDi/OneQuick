@@ -7,7 +7,6 @@ class User_PC201503250128
     }
 }
 
-
 class User_DESKTOP_G195C4P
 {
     Ini()
@@ -15,7 +14,6 @@ class User_DESKTOP_G195C4P
         this.Run := 1
     }
 }
-
 
 class User_WoJiaoChaDiPC
 {
@@ -25,7 +23,13 @@ class User_WoJiaoChaDiPC
     }
 }
 
+class User_WOJIAOCHADI_PC
+{
+	Ini()
+	{
 
+	}
+}
 
 
 
@@ -1316,11 +1320,5 @@ return
 
 #IfWinActive
 
-class User_WOJIAOCHADI_PC
-{
-	Ini()
-	{
 
-	}
-}
 

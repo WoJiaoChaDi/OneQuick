@@ -161,19 +161,37 @@ class OneQuick
         ; initialize
         this.Update_Tray_Menu()
         this.SetAutorun("config")
-        this.Show_StartInfo()
+        
+        ; when start
+        ;~ this.Show_StartInfo()
+        
         ; guide
         this.Check_First_Time_Run()
+        
         ; update
-        SetTimer, Sub_Auto_Check_update, % -OneQuick.check_update_first_after
+        ;~ SetTimer, Sub_Auto_Check_update, % -OneQuick.check_update_first_after
+        
         ; ext.ahk
         this.Run_ext_user_ini()
         this.Run_extwork_user_ini()
+        
+        ; 初始化完毕
+        this.Show_StartEndInfo()
     }
-
+    
+    ; when start end
+    Show_StartEndInfo()
+    {
+        TrayTip OneQuick, OneQuick is running
+        ;~ SetTimer, HideTrayTip, -1000
+        Sleep 4000   ; 让它显示 3 秒钟.
+        TrayTip  ; 尝试以正常的方式隐藏它.
+    }
+    
     ; when start
     Show_StartInfo()
     {
+        
         msg := lang("traytip_runing")
         auto_update := OneQuick.GetConfig("auto_update")
         from_ver := OneQuick.GetConfig("update_from_version", "")
@@ -189,10 +207,12 @@ class OneQuick
         if(bigver!="") {
             msg .= "`n" lang("new_version_traytip") " v" bigver
         }
-        ; 先弹tip再弹msgbox
+        
+        ;~ ; 先弹tip再弹msgbox  Win10右下角提示
         Tray.Tip(msg)
-        ; 从旧版本升级上来的提示
-        ; 仅在第一次重启后显示
+        
+        ;~ ; 从旧版本升级上来的提示
+        ;~ ; 仅在第一次重启后显示
         if(msgbox_from_version!=from_ver) {
             if(!auto_update) {
                 update_msg := OneQuick._new_version_info({"version": from_ver }, OneQuick.versionObj)
@@ -3140,6 +3160,16 @@ SwitchIME(dwLayout){
     ControlGetFocus,ctl,A
     SendMessage,0x50,0,HKL,%ctl%,A
 }
+
+; 隐藏Win10的提示
+HideTrayTip:
+    TrayTip  ; 尝试以正常的方式隐藏它.
+    if SubStr(A_OSVersion,1,3) = "10." {
+        Menu Tray, NoIcon
+        Sleep 200  ; 可能有必要调整 sleep 的时间.
+        Menu Tray, Icon
+    }
+return
 
 ;加密解密软件
 encrypt:
