@@ -78,7 +78,9 @@
 ; notes						If x or y omitted, then layered window will use its current coordinates
 ;							If w or h omitted then current width and height will be used
 
+;键盘钩子程序，A_TimeIdlePhysical可以区分物理键盘 和 Send语句
 #InstallKeybdHook
+;鼠标钩子程序，A_TimeIdlePhysical把可以区分物理鼠标 和 MouseClick MouseMove
 #InstallMouseHook
 
 UpdateLayeredWindow(hwnd, hdc, x:="", y:="", w:="", h:="", Alpha:=255)
