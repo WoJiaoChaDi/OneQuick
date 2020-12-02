@@ -8,7 +8,16 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 gosub,TRAYMENU
 
 ;每个热键字符串最多存在的实例数量
-#maxThreadsPerHotkey, 1    
+#maxThreadsPerHotkey, 2
+
+;~ Minutes:=0.1                    ;检测的分钟数
+;~ SetTimer, CheckTimeIdle, 1000   ;重新检测间隔
+
+;~ CheckTimeIdle:
+;~ If (A_TimeIdle>=Minutes*60*1000)
+      ;~ ;需要运行的脚本
+      ;~ MsgBox, NoOption
+;~ return
 
 
 ;========================================================================================o|
@@ -106,15 +115,6 @@ gosub,TRAYMENU
     ;~ }
 ;~ return
 
-
-;~ Minutes:=0.5                    ;检测的分钟数
-;~ SetTimer, CheckTimeIdle, 1000   ;重新检测间隔
-;~ return
-
-;~ CheckTimeIdle:
-;~ If (A_TimeIdle>=Minutes*60*1000)
-      ;~ ;需要运行的脚本
-;~ return
 
 ;~ $RButton::
     ;~ Send {Shift Down}
