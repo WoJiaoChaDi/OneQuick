@@ -15,6 +15,7 @@ class User_DESKTOP_G195C4P
     }
 }
 
+;笔记本
 class User_WoJiaoChaDiPC
 {
     Ini()
@@ -23,6 +24,7 @@ class User_WoJiaoChaDiPC
     }
 }
 
+;台式机
 class User_WOJIAOCHADI_PC
 {
 	Ini()
@@ -30,6 +32,16 @@ class User_WOJIAOCHADI_PC
 
 	}
 }
+
+;赢时胜
+class User_LAPTOP_CA75PL6O
+{
+    Ini()
+    {
+
+    }
+}
+
 
 
 
@@ -811,7 +823,7 @@ CoordMode,Mouse
 return
 
 CapsLock & LButton::
-    if GetKeyState("alt") = 1 
+    if GetKeyState("alt") = 1
     {
         MouseGetPos,,,KDE_id
         ; 此消息大部分时候相当于 WinMinimize,
@@ -843,7 +855,7 @@ CapsLock & LButton::
 return
 
 CapsLock & RButton::
-    if GetKeyState("alt") = 1 
+    if GetKeyState("alt") = 1
     {
         MouseGetPos,,,KDE_id
         ; 在最大化和还原状态中切换.
@@ -855,7 +867,7 @@ CapsLock & RButton::
         DoubleAlt := false
         return
     }
-    
+
     ; 获取初始的鼠标位置和窗口 id,
     ; 并在窗口处于最大化状态时返回.
     MouseGetPos,KDE_X1,KDE_Y1,KDE_id
@@ -895,7 +907,7 @@ CapsLock & RButton::
 return
 
 CapsLock & MButton::
-    if GetKeyState("alt") = 1 
+    if GetKeyState("alt") = 1
     {} else {
         MouseGetPos,,,KDE_id
         WinClose,ahk_id %KDE_id%
@@ -1051,7 +1063,7 @@ return
     runFlag:=false
     calcResult:=""
     selectResult:=""
-    
+
     getZz:=Get_Zz()
 
     ;一行一行的读取
@@ -1092,35 +1104,35 @@ return
         }else{
             notCalcFlag:=true
         }
-        
+
         ;~ ;一键打开网址
         if(RegExMatch(S_LoopField,"iS)^([\w-]+://?|www[.]).*")){
             Run_Search(S_LoopField,"",BrowserPathRun)
             runFlag:=true
             continue
         }
-        
+
         ;一键磁力下载
         if(InStr(S_LoopField,"magnet:?xt=urn:btih:")=1){
             Run,%S_LoopField%
             runFlag:=true
             continue
         }
-        
+
         ;匹配av号，自动打开bilibili
         if(RegExMatch(S_LoopField, "i)\bav(\d+)", avn))
         {
             run("http://www.bilibili.com/video/av" avn1)
             continue
         }
-        
+
         ;匹配bv号，自动打开bilibili
         if(RegExMatch(S_LoopField, "i)\bBV(.*)", avn))
         {
             run("http://www.bilibili.com/video/BV" avn1)
             continue
         }
-        
+
         ;打开目录
         if(RegExMatch(S_LoopField,"S)^(\\\\|.:\\)")){
             ;一键打开目录
@@ -1141,7 +1153,7 @@ return
             }
         }
     }
-    
+
     ;粘贴计算（不是以=结尾）
     if(calcResult){
         StringTrimRight, calcResult, calcResult, 1
@@ -1157,7 +1169,7 @@ return
         Send_Str_Zz(selectResult)
         runFlag:=true
     }
-    
+
     ;如果都没执行，提示
     if(!runFlag){
         MouseGetPos, MouseX, MouseY
@@ -1319,6 +1331,8 @@ return
 return
 
 #IfWinActive
+
+
 
 
 
