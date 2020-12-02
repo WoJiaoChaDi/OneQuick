@@ -2,3 +2,5 @@
 *.bak
 *.chw
 **/AutoCapture/ScreenShots*
+**!Dota2**
+
