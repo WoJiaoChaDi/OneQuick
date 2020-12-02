@@ -105,5 +105,5 @@ return
 ;渲染菜单
 TRAYMENU:
     Menu,Tray,Tip, Dota2小脚本		;鼠标弹窗
-    Menu,TRAY,Icon, %A_ScriptDir%\..\resources\rar.ico, 1, 0  ;图标
+    Menu,TRAY,Icon, %A_ScriptDir%\..\resources\Dota2.ico, 1, 0  ;图标
 return
