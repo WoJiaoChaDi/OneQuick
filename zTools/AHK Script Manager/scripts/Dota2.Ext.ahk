@@ -88,30 +88,6 @@ return
 return
 
 ;========================================================================================o|
-;                                      鼠标晃动防止息屏                                  ;|
-;========================================================================================o|
-^NumpadDiv::
-
-    banane:=!banane
-
-    if(banane=1){
-       MsgBox 开启
-    }else{
-       MsgBox 关闭
-    }
-
-    while (banane=1)
-    {
-
-       loop, 1 {
-	MouseMove, 0, -10, ,R
-	MouseMove, 0, 10, ,R
-        }
-        sleep, 5000
-    }
-
-
-;========================================================================================o|
 ;                                      鼠标左键按下                                      ;|
 ;========================================================================================o|
 ^Numpad1::
@@ -126,88 +102,8 @@ return
 return
 
 
-;========================================================================================o|
-;                                      临时用快捷键                                      ;|
-;                                       google新闻                                       ;|
-;========================================================================================o|
-^Numpad3::
-    Send ^c
-    Run https://www.google.com.hk/search?newwindow=1&safe=strict&tbm=nws&q=%clipboard%&oq=%clipboard%
-    Sleep 800
-    Send ^f
-    Sleep 500
-    Send ^v
-    MouseClick, left, 130, 400
-    MouseMove, 770, 588
-return
-
-;~ ~F2::
-    ;~ Run, C:\Shortcut\git-bash.exe.lnk
-;~ Return
-
-;~ ~Enter::
-    ;~ Sleep 200
-    ;~ Send {Down}{F2}
-    ;~ Sleep 200
-    ;~ Send {Right}_
-;~ Return
-
-
-
-;~ 1:: 
-    ;~ Send {Ctrl Down}{Shift Down}{Right}{Ctrl Up}{Shift Up}
-    ;~ Send {Ctrl Down}c{Ctrl Up}
-    ;~ Send {Tab}{Ctrl Down}v{Ctrl Up}
-    ;~ Sleep 50
-    ;~ Send {Alt Down}{tab}{Alt Up}
-    ;~ Sleep 90
-    ;~ Send {Ctrl Down}v{Ctrl Up}
-    ;~ MouseMove, 593, 344
-;~ return
-
-
-;~ 2:: 
-    ;~ Send {Ctrl Down}{Shift Down}{Right}{Ctrl Up}{Shift Up}
-    ;~ Send {Ctrl Down}c{Ctrl Up}
-    ;~ Send {Tab 3}{Ctrl Down}v{Ctrl Up}
-    ;~ Sleep 50
-    ;~ Send {Alt Down}{tab}{Alt Up}
-    ;~ Sleep 90
-    ;~ Send {Ctrl Down}v{Ctrl Up}
-    ;~ MouseMove, 593, 344
-;~ return
-
-;~ 3::
-    ;~ Send {Ctrl Down}c{Ctrl Up}
-    ;~ Send {Alt Down}{tab}{Alt Up}
-    ;~ Sleep 100
-    ;~ Send {Tab}{Ctrl Down}v{Ctrl Up}
-;~ return
-
-;~ 4::
-    ;~ MouseClick, left, 531, 279
-    ;~ Send {Down}
-    ;~ MouseClick, left, 356, 395
-;~ return
-
-;~ 4::
-    ;~ run, C:\Shortcut\Sublime Text 3.lnk "E:\SoftWare\OneQuick\README.md"
-;~ return
-
-;~ $RButton::
-    ;~ Send {Shift Down}
-    ;~ Send {RButton}
-    ;~ Sleep 1000
-    ;~ Send {LButton}
-    ;~ Send {Shift Up}
-;~ return
-
-
 ;渲染菜单
 TRAYMENU:
-    Menu,Tray,Tip, 小脚本		;鼠标弹窗
-    Menu,TRAY,Icon, %A_ScriptDir%\..\resources\script.ico, 1, 0  ;图标
-return
-
-TRAY_01:
+    Menu,Tray,Tip, Dota2小脚本		;鼠标弹窗
+    Menu,TRAY,Icon, %A_ScriptDir%\..\resources\rar.ico, 1, 0  ;图标
 return
