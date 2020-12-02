@@ -74,7 +74,7 @@ Menu, Tray, Add
 Menu, Tray, Add, 启动所有脚本, tsk_openAll
 Menu, Tray, Add, 关闭所有脚本, tsk_closeAll
 Menu, Tray, Add
-Menu, Tray, Add, 添加新脚本, Menu_Tray_OpenDir
+Menu, Tray, Add, 打开脚本目录, Menu_Tray_OpenDir
 Menu, Tray, Add, 我添加了新脚本, Menu_Tray_Reload
 Menu, Tray, Add
 Menu, Tray, Add, 退出, Menu_Tray_Exit
