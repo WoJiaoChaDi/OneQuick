@@ -78,6 +78,9 @@
 ; notes						If x or y omitted, then layered window will use its current coordinates
 ;							If w or h omitted then current width and height will be used
 
+#InstallKeybdHook
+#InstallMouseHook
+
 UpdateLayeredWindow(hwnd, hdc, x:="", y:="", w:="", h:="", Alpha:=255)
 {
 	Ptr := A_PtrSize ? "UPtr" : "UInt"
@@ -3035,6 +3038,7 @@ About:="这是一个具有定时截图保存功能的小程序。`n    绿色免
 
 
 
+
 ;程序退出时
 OnExit, scExitApp
 SetWorkingDir %A_ScriptDir%				;要让脚本无条件使用它所在的文件夹作为工作目录
@@ -3047,8 +3051,14 @@ SetWorkingDir %A_ScriptDir%				;要让脚本无条件使用它所在的文件夹
 ;渲染菜单完成后，执行下一行代码
 gosub,TRAYMENU
 
+
+;afk检测的分钟数
+IniRead, afkMinutePara, config.ini, afk, afkMinute
+global afkMinutes := afkMinutePara
+
 ;读取配置文件
 IniRead, OutputVar, config.ini, para, savetime
+;~ IniRead, afkMinutePara, config.ini, afk, afkMinute
 SetTimer, SaveScreens, %OutputVar%			;定时器定时执行截图方法  单位毫秒
 SetTimer, clearMemory, 60000				;定时器定时清理内存占用  单位毫秒
 FormatTime, TimeStringTODAY,, yyyy-MM-dd	;获取年月日
@@ -3060,10 +3070,16 @@ IfNotExist, %screenFolder%					;创建文件夹
 
 ;截图方法
 SaveScreens(){
-	if (!DllCall("User32\OpenInputDesktop","int",0*0,"int",0*0,"int",0x0001L*1)){
+	;判断是否afk
+	If (A_TimeIdlePhysical>=afkMinutes*60*1000)
+	{
+		;长时间未操作，不进行截图处理
+	} Else {
+		if (!DllCall("User32\OpenInputDesktop","int",0*0,"int",0*0,"int",0x0001L*1)){
 		
-	}else{
-		captureFun()
+		}else{
+			captureFun()
+		}
 	}
 }
 
