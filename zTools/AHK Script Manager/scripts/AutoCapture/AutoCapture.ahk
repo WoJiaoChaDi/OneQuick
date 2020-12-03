@@ -3032,6 +3032,113 @@ MDMF_GetInfo(HMON) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 application_name:="定时截图"
 Version:="WoJiaoChaDi"
 About:="这是一个具有定时截图保存功能的小程序。`n    绿色免安装，可以直接放在U盘运行。`n`n    通过修改配置文件config.ini里面的参数savetime，来调整截图的间隔。`n`n    默认截图的时间间隔为10秒钟保存一次（10000=10*1000）`n`n    文件保存在软件目录的ScreenShots文件夹下面`n`n    手动截图保存快捷键：Ctrl+F9"
@@ -3064,7 +3171,7 @@ IniRead, OutputVar, config.ini, para, savetime
 SetTimer, SaveScreens, %OutputVar%			;定时器定时执行截图方法  单位毫秒
 SetTimer, clearMemory, 60000				;定时器定时清理内存占用  单位毫秒
 FormatTime, TimeStringTODAY,, yyyy-MM-dd	;获取年月日
-screenFolder :=A_ScriptDir "\ScreenShots\" TimeStringTODAY		;生成年月日文件夹
+global screenFolder :=A_ScriptDir "\ScreenShots\" TimeStringTODAY		;生成年月日文件夹
 IfNotExist, %screenFolder%					;创建文件夹
 {
 	FileCreateDir, %screenFolder%
@@ -3110,6 +3217,7 @@ Reload
 ;截图方法
 captureFun()
 {
+	;判断文件夹是否已经创建（跨日的文件夹这里创建）
 	createDir()
 	FormatTime, Time_yyyyMMdd, , yyyy-MM-dd
 	FormatTime, Time_HHmmss, , HHmmss
