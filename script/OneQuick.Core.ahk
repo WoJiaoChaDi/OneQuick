@@ -2669,7 +2669,49 @@ class Sys
 
 }
 
+;=================公共方法区域==============
+;获取窗口ID
+TRA_CheckWinIDs:
+    ;查看隐形的窗口  on
+	DetectHiddenWindows, On
+	Loop, Parse, TRA_WinIDs, |
+		If ( A_LoopField )
+			IfWinNotExist, ahk_id %A_LoopField%
+			{
+				StringReplace, TRA_WinIDs, TRA_WinIDs, |%A_LoopField%, , All
+				TRA_WinAlpha%A_LoopField% =
+				TRA_PixelColor%A_LoopField% =
+			}
+Return
 
+;窗口恢复不透明
+TRA_TransparencyOff:
+	Gosub, TRA_CheckWinIDs
+	SetWinDelay, -1
+	If ( !TRA_WinID )
+		Return
+	IfNotInString, TRA_WinIDs, |%TRA_WinID%
+		Return
+	StringReplace, TRA_WinIDs, TRA_WinIDs, |%TRA_WinID%, , All
+	TRA_WinAlpha%TRA_WinID% =
+	TRA_PixelColor%TRA_WinID% =
+	; TODO : must be set to 255 first to avoid the black-colored-window problem
+	WinSet, Transparent, 255, ahk_id %TRA_WinID%
+	WinSet, TransColor, OFF, ahk_id %TRA_WinID%
+	WinSet, Transparent, OFF, ahk_id %TRA_WinID%
+	WinSet, Redraw, , ahk_id %TRA_WinID%
+Return
+
+;;所有窗口恢复不透明
+TRA_TransparencyAllOff:
+	Gosub, TRA_CheckWinIDs
+	Loop, Parse, TRA_WinIDs, |
+		If ( A_LoopField )
+		{
+			TRA_WinID = %A_LoopField%
+			Gosub, TRA_TransparencyOff
+		}
+Return
 
 ; [SYS] handles tooltips  系统提示 ToolTip提示
 ;   使用方式：

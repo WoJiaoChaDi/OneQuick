@@ -96,37 +96,106 @@ class User_LAPTOP_CA75PL6O
 ;========================================================================================o|
 ;                             Win + 滚轮 | 调整窗口的透明度                              ;|
 ;----------------------------------------------------------------------------------------o|
-#WheelUp::
-    ;获取当前激活页面的id
-    WinGet, active_id, ID, A
-    ;获取当前激活页面的id
-    WinGet, active_tran, Transparent, A
-    if(active_tran == ""){
-        active_tran = 255
-    }
-    active_tran := active_tran + 10
-    if(active_tran >= 255){
-        active_tran = 255
-    }
-    ;修改透明值
-    WinSet, Transparent, %active_tran%, ahk_id %active_id%
-return
+;~ #WheelUp::
+    ;~ ;获取当前激活页面的id
+    ;~ WinGet, active_id, ID, A
+    ;~ ;获取当前激活页面的id
+    ;~ WinGet, active_tran, Transparent, A
+    ;~ if(active_tran == ""){
+        ;~ active_tran = 255
+    ;~ }
+    ;~ active_tran := active_tran + 10
+    ;~ if(active_tran >= 255){
+        ;~ active_tran = 255
+    ;~ }
+    ;~ ;修改透明值
+    ;~ WinSet, Transparent, %active_tran%, ahk_id %active_id%
+    ;~ SYS_ToolTipText = Transparent %active_tran%
+    ;~ Gosub, SYS_ToolTipFeedbackShow
+;~ return
 
+;~ #WheelDown::
+    ;~ ;获取当前激活页面的id
+    ;~ WinGet, active_id, ID, A
+    ;~ ;获取当前激活页面的id
+    ;~ WinGet, active_tran, Transparent, A
+    ;~ if(active_tran == ""){
+        ;~ active_tran = 255
+    ;~ }
+    ;~ active_tran := active_tran - 10
+    ;~ if(active_tran <= 0){
+        ;~ active_tran = 0
+    ;~ }
+    ;~ ;修改透明值
+    ;~ WinSet, Transparent, %active_tran%, ahk_id %active_id%
+    ;~ SYS_ToolTipText = Transparent %active_tran%
+    ;~ Gosub, SYS_ToolTipFeedbackShow
+;~ return
+
+#WheelUp::
+#+WheelUp::
 #WheelDown::
-    ;获取当前激活页面的id
-    WinGet, active_id, ID, A
-    ;获取当前激活页面的id
-    WinGet, active_tran, Transparent, A
-    if(active_tran == ""){
-        active_tran = 255
-    }
-    active_tran := active_tran - 10
-    if(active_tran <= 0){
-        active_tran = 0
-    }
-    ;修改透明值
-    WinSet, Transparent, %active_tran%, ahk_id %active_id%
-return
+#+WheelDown::
+	Gosub, TRA_CheckWinIDs
+    ;设置在每次执行窗口命令(例如 WinActivate) 后自动的延时  -1 无延时
+	SetWinDelay, -1
+    ;获取当前激活的窗口
+	IfWinActive, A
+	{
+		WinGet, TRA_WinID, ID
+		If ( !TRA_WinID )
+			Return
+		WinGetClass, TRA_WinClass, ahk_id %TRA_WinID%
+		If ( TRA_WinClass = "Progman" )
+			Return
+		
+		IfNotInString, TRA_WinIDs, |%TRA_WinID%
+			TRA_WinIDs = %TRA_WinIDs%|%TRA_WinID%
+		TRA_WinAlpha := TRA_WinAlpha%TRA_WinID%
+		TRA_PixelColor := TRA_PixelColor%TRA_WinID%
+		
+        ;最近一次热键包含的字符串+
+		IfInString, A_ThisHotkey, +
+			TRA_WinAlphaStep := 255 * 0.01 ; 1 percent steps
+		Else
+			TRA_WinAlphaStep := 255 * 0.1 ; 10 percent steps
+
+		If ( TRA_WinAlpha = "" )
+			TRA_WinAlpha = 255
+
+        ;最近一次热键包含的字符串 WheelDown
+		IfInString, A_ThisHotkey, WheelDown
+			TRA_WinAlpha -= TRA_WinAlphaStep
+		Else
+			TRA_WinAlpha += TRA_WinAlphaStep
+
+		If ( TRA_WinAlpha > 255 )
+			TRA_WinAlpha = 255
+		Else
+			If ( TRA_WinAlpha < 0 )
+				TRA_WinAlpha = 0
+
+		If ( !TRA_PixelColor and (TRA_WinAlpha = 255) )
+		{
+			Gosub, TRA_TransparencyOff
+			SYS_ToolTipText = Transparency: OFF
+		}
+		Else
+		{
+			TRA_WinAlpha%TRA_WinID% = %TRA_WinAlpha%
+
+			If ( TRA_PixelColor )
+				WinSet, TransColor, %TRA_PixelColor% %TRA_WinAlpha%, ahk_id %TRA_WinID%
+			Else
+				WinSet, Transparent, %TRA_WinAlpha%, ahk_id %TRA_WinID%
+
+			TRA_ToolTipAlpha := TRA_WinAlpha * 100 / 255
+			Transform, TRA_ToolTipAlpha, Round, %TRA_ToolTipAlpha%
+			SYS_ToolTipText = Transparency: %TRA_ToolTipAlpha% `%
+		}
+		Gosub, SYS_ToolTipFeedbackShow
+	}
+Return
 
 
 ;========================================================================================o|
@@ -153,9 +222,8 @@ return
     ;只是路径不是字符串，只要转换成字符串就可以粘贴出来了。
     clipboard=%clipboard%
 
-    tooltip,%clipboard%
-    sleep,1000
-    tooltip,
+    SYS_ToolTipText = %clipboard%
+    Gosub, SYS_ToolTipFeedbackShow
 return
 
 
