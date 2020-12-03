@@ -197,6 +197,82 @@ class User_LAPTOP_CA75PL6O
 	}
 Return
 
+;========================================================================================o|
+;                 Ctrl + Win + 左键（透明化点击窗口的颜色，并且可以穿透操作）
+;                 Ctrl + Win + 中键（透明化点击窗口的颜色，并且可以穿透操作，并且添加60%透明效果）
+;                 Ctrl + Win + T 撤销上述的所有效果
+;----------------------------------------------------------------------------------------o|
+#^LButton::
+#^MButton::
+	Gosub, TRA_CheckWinIDs
+	SetWinDelay, -1
+	CoordMode, Mouse, Screen
+	CoordMode, Pixel, Screen
+	MouseGetPos, TRA_MouseX, TRA_MouseY, TRA_WinID
+	If ( !TRA_WinID )
+		Return
+	WinGetClass, TRA_WinClass, ahk_id %TRA_WinID%
+	If ( TRA_WinClass = "Progman" )
+		Return
+	
+    ;激活窗口
+	IfWinNotActive, ahk_id %TRA_WinID%
+		WinActivate, ahk_id %TRA_WinID%
+    
+    ;拼接TRA窗口ID
+	IfNotInString, TRA_WinIDs, |%TRA_WinID%
+		TRA_WinIDs = %TRA_WinIDs%|%TRA_WinID%
+	
+    ;如果触发包含鼠标中键，设置置顶并且修改透明度为40%
+	IfInString, A_ThisHotkey, MButton
+	{
+		AOT_WinID = %TRA_WinID%
+		Gosub, AOT_SetOn
+		TRA_WinAlpha%TRA_WinID% := 60 * 255 / 100
+	}else{
+        Gosub, AOT_SetOn
+    }
+	
+	TRA_WinAlpha := TRA_WinAlpha%TRA_WinID%
+	
+	; TODO : the transparency must be set off first, 
+	; this may be a bug of AutoHotkey
+	WinSet, TransColor, OFF, ahk_id %TRA_WinID%
+	PixelGetColor, TRA_PixelColor, %TRA_MouseX%, %TRA_MouseY%, RGB
+	WinSet, TransColor, %TRA_PixelColor% %TRA_WinAlpha%, ahk_id %TRA_WinID%
+	TRA_PixelColor%TRA_WinID% := TRA_PixelColor
+
+	IfInString, A_ThisHotkey, MButton
+		SYS_ToolTipText = Transparency: 60 `% + %TRA_PixelColor% color (RGB) + Always on Top
+	Else
+		SYS_ToolTipText = Transparency: %TRA_PixelColor% color (RGB)
+	Gosub, SYS_ToolTipFeedbackShow
+Return
+
+;鼠标中键，恢复透明效果
+#MButton::
+	Gosub, TRA_CheckWinIDs
+	SetWinDelay, -1
+	MouseGetPos, , , TRA_WinID
+	If ( !TRA_WinID )
+		Return
+	IfWinNotActive, ahk_id %TRA_WinID%
+		WinActivate, ahk_id %TRA_WinID%
+	IfNotInString, TRA_WinIDs, |%TRA_WinID%
+		Return
+	Gosub, TRA_TransparencyOff
+
+	SYS_ToolTipText = Transparency: OFF
+	Gosub, SYS_ToolTipFeedbackShow
+Return
+
+;取消所有透明效果
+#^t::
+	Gosub, TRA_TransparencyAllOff
+    Gosub, AOT_SetAllOff
+	SYS_ToolTipText = Transparency: ALL OFF
+	Gosub, SYS_ToolTipFeedbackShow
+return
 
 ;========================================================================================o|
 ;                                    ESC | 按Esc切换输入法                               ;|
@@ -1247,13 +1323,6 @@ return
     }
 
 return
-
-
-
-
-
-
-
 
 
 

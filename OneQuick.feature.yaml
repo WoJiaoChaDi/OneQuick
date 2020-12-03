@@ -32,6 +32,7 @@ hotkey:
     #shift_wheeldown: "send {PgDn}"
     #shift_wheelup: "send {PgUp}"
     win_t: sys.win.topmost
+    win_shift_t: sys.win.DisAllTopmost
     win_n: notepad
     win_shift_l: Sys.Power.LockAndMonitoroff
     ctrl_shift_alt_r: OneQuick.Reload

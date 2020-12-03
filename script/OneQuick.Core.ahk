@@ -2561,24 +2561,36 @@ class Sys
                 return false
         }
 
+        ;置顶方法
         Topmost(winID := "", top := "")
         {
-            if (winID == "")
-                winID := this.ID()
-            if (top = "")
-                top := not this.IsTopmost(winID)
-            if top
-            {
-                WinSet, AlwaysOnTop, on, ahk_id %winID%
-                SYS_ToolTipText = Always on Top: ON
-                Gosub, SYS_ToolTipFeedbackShow
-            }
-            else
-            {
-                Winset, AlwaysOnTop, off, ahk_id %winID%
-                SYS_ToolTipText = Always on Top: OFF
-                Gosub, SYS_ToolTipFeedbackShow
-            }
+            ;新的置顶方法，有统一的取消置顶按钮
+            Gosub AOT_SetToggle
+            
+            ;~ if (winID == "")
+                ;~ winID := this.ID()
+            
+            ;~ if (top = "")
+                ;~ top := not this.IsTopmost(winID)
+            ;~ if top
+            ;~ {
+                ;~ WinSet, AlwaysOnTop, on, ahk_id %winID%
+                ;~ SYS_ToolTipText = Always on Top: ON
+                ;~ Gosub, SYS_ToolTipFeedbackShow
+            ;~ }
+            ;~ else
+            ;~ {
+                ;~ Winset, AlwaysOnTop, off, ahk_id %winID%
+                ;~ SYS_ToolTipText = Always on Top: OFF
+                ;~ Gosub, SYS_ToolTipFeedbackShow
+            ;~ }
+        }
+        
+        ;所有取消置顶
+        DisAllTopmost(){
+            Gosub, AOT_SetAllOff
+            SYS_ToolTipText = Always on Top: ALL OFF
+            Gosub, SYS_ToolTipFeedbackShow
         }
 
         Transparent(moveto := "", winID := "")
@@ -2711,6 +2723,92 @@ TRA_TransparencyAllOff:
 			TRA_WinID = %A_LoopField%
 			Gosub, TRA_TransparencyOff
 		}
+Return
+
+
+AOT_SetToggle:
+	Gosub, AOT_CheckWinIDs
+	SetWinDelay, -1
+	
+	IfInString, A_ThisHotkey, LButton
+	{
+		MouseGetPos, , , AOT_WinID
+		If ( !AOT_WinID )
+			Return
+		IfWinNotActive, ahk_id %AOT_WinID%
+			WinActivate, ahk_id %AOT_WinID%
+	}
+	
+	IfWinActive, A
+	{
+		WinGet, AOT_WinID, ID
+		If ( !AOT_WinID )
+			Return
+		WinGetClass, AOT_WinClass, ahk_id %AOT_WinID%
+		If ( AOT_WinClass = "Progman" )
+			Return
+			
+		WinGet, AOT_ExStyle, ExStyle, ahk_id %AOT_WinID%
+		If ( AOT_ExStyle & 0x8 ) ; 0x8 is WS_EX_TOPMOST
+		{
+			SYS_ToolTipText = Always on Top: OFF
+			Gosub, AOT_SetOff
+		}
+		Else
+		{
+			SYS_ToolTipText = Always on Top: ON
+			Gosub, AOT_SetOn
+		}
+		Gosub, SYS_ToolTipFeedbackShow
+	}
+Return
+
+AOT_SetOn:
+	Gosub, AOT_CheckWinIDs
+	SetWinDelay, -1
+	IfWinNotExist, ahk_id %AOT_WinID%
+		Return
+	IfNotInString, AOT_WinIDs, |%AOT_WinID%
+		AOT_WinIDs = %AOT_WinIDs%|%AOT_WinID%
+	WinSet, AlwaysOnTop, On, ahk_id %AOT_WinID%
+Return
+
+AOT_SetOff:
+	Gosub, AOT_CheckWinIDs
+	SetWinDelay, -1
+	IfWinNotExist, ahk_id %AOT_WinID%
+		Return
+	StringReplace, AOT_WinIDs, AOT_WinIDs, |%A_LoopField%, , All
+	WinSet, AlwaysOnTop, Off, ahk_id %AOT_WinID%
+Return
+
+AOT_SetAllOff:
+	Gosub, AOT_CheckWinIDs
+	Loop, Parse, AOT_WinIDs, |
+		If ( A_LoopField )
+		{
+			AOT_WinID = %A_LoopField%
+			Gosub, AOT_SetOff
+		}
+Return
+
+; SC029 is the scancode of the key "`"
+#^SC029::
+	Gosub, AOT_SetAllOff
+	SYS_ToolTipText = Always on Top: ALL OFF
+	Gosub, SYS_ToolTipFeedbackShow
+Return
+
+AOT_CheckWinIDs:
+	DetectHiddenWindows, On
+	Loop, Parse, AOT_WinIDs, |
+		If ( A_LoopField )
+			IfWinNotExist, ahk_id %A_LoopField%
+				StringReplace, AOT_WinIDs, AOT_WinIDs, |%A_LoopField%, , All
+Return
+
+AOT_ExitHandler:
+	Gosub, AOT_SetAllOff
 Return
 
 ; [SYS] handles tooltips  系统提示 ToolTip提示
