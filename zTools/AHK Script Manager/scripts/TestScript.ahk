@@ -7,8 +7,11 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ;渲染菜单完成后，执行下一行代码
 gosub,TRAYMENU
 
-;每个热键字符串最多存在的实例数量
-#maxThreadsPerHotkey, 2
+
+
+global banane := 0
+
+
 
 ;~ Minutes:=0.1                    ;检测的分钟数
 ;~ SetTimer, CheckTimeIdle, 1000   ;重新检测间隔
@@ -38,29 +41,61 @@ gosub,TRAYMENU
 ;========================================================================================o|
 ;                                      鼠标晃动防止息屏                                  ;|
 ;========================================================================================o|
+;每个热键字符串最多存在的实例数量
+#maxThreadsPerHotkey, 2
 ^NumpadDiv::
-
     banane:=!banane
-
     if(banane=1){
-       MsgBox 开启
-    }else{
-       MsgBox 关闭
-    }
-
-    while (banane=1)
-    {
-
-       loop, 1 {
-	MouseMove, 0, -10, ,R
-	MouseMove, 0, 10, ,R
+        
+        ToolTip, 开启
+        SetTimer, RemoveToolTip, -2000
+       
+        while (banane=1)
+        {
+           loop, 1 {
+                MouseMove, 0, -10, ,R
+                MouseMove, 0, 10, ,R
+                
+                ;由于ahk新启动一个线程的时候，会暂停上一个线程。待新线程结束后，继续执行上一个线程。
+                ;所以第二个更改状态的线程改了flag后，需要上一个线程快速判断是否退出。
+                
+                ;1.如果改用Sleep 5000。 在第二个线程结束后，第一个线程还在sleep中，开启第三个线程。
+                ;2.三个线程无限循环，第一个线程等待第三个线程，导致两个线程占用了两个实力数量。
+                ;3.最终导致无法再开启新的更改状态的flag线程
+                loop, 100{
+                    sleep, 50      ; 50毫秒，手动按热键几乎无法插入在50毫秒内
+                    if(banane!=1){
+                        Break
+                    }
+                }                           
+            }
         }
-        sleep, 5000
+    }else{
+        ToolTip, 关闭
+        SetTimer, RemoveToolTip, -2000
     }
+return
 
+#maxThreadsPerHotkey, 1
+
+RemoveToolTip:
+    ToolTip
+return
 
 ;~ ~F2::
-    ;~ Run, C:\Shortcut\git-bash.exe.lnk
+    ;~ loop, 2 {
+                ;~ MouseMove, 0, -10, ,R
+                ;~ ToolTip, 11 . banane=%banane% . inFlag=%inFlag% . contiFlag=%contiFlag%
+                ;~ sleep, 1000
+                ;~ ToolTip, 22 . banane=%banane% . inFlag=%inFlag% . contiFlag=%contiFlag%
+                ;~ sleep, 1000
+                ;~ ToolTip, 33 . banane=%banane% . inFlag=%inFlag% . contiFlag=%contiFlag%
+                ;~ sleep, 1000
+                ;~ ToolTip, 44 . banane=%banane% . inFlag=%inFlag% . contiFlag=%contiFlag%
+                ;~ sleep, 1000
+                ;~ ToolTip
+                ;~ MouseMove, 0, 10, ,R
+            ;~ }
 ;~ Return
 
 ;~ ~Enter::
