@@ -45,6 +45,7 @@ Goto, SUB_ONEQUICK_FILE_END_LABEL
 #Include, *i OneQuick.ExtWork.ahk  ;包含拓展文件
 #Include, %A_ScriptDir%
 
+global SYS_ToolTipText
 
 ; /////////////////////////////////////
 ;----------------------------------------------------------------------------------------o|
@@ -2569,10 +2570,14 @@ class Sys
             if top
             {
                 WinSet, AlwaysOnTop, on, ahk_id %winID%
+                SYS_ToolTipText = Always on Top: ON
+                Gosub, SYS_ToolTipFeedbackShow
             }
             else
             {
                 Winset, AlwaysOnTop, off, ahk_id %winID%
+                SYS_ToolTipText = Always on Top: OFF
+                Gosub, SYS_ToolTipFeedbackShow
             }
         }
 
@@ -2663,6 +2668,49 @@ class Sys
     }
 
 }
+
+
+
+; [SYS] handles tooltips  系统提示 ToolTip提示
+;   使用方式：
+;   SYS_ToolTipText = 提示内容
+;   Gosub, SYS_ToolTipFeedbackShow
+;
+SYS_ToolTipShow:
+	If ( SYS_ToolTipText )
+	{
+		If ( !SYS_ToolTipSeconds )
+			SYS_ToolTipSeconds = 2
+		SYS_ToolTipMillis := SYS_ToolTipSeconds * 1000
+		CoordMode, Mouse, Screen
+		CoordMode, ToolTip, Screen
+		If ( !SYS_ToolTipX or !SYS_ToolTipY )
+		{
+			MouseGetPos, SYS_ToolTipX, SYS_ToolTipY
+			SYS_ToolTipX += 16
+			SYS_ToolTipY += 24
+		}
+		ToolTip, %SYS_ToolTipText%, %SYS_ToolTipX%, %SYS_ToolTipY%
+		SetTimer, SYS_ToolTipHandler, %SYS_ToolTipMillis%
+	}
+	SYS_ToolTipText =
+	SYS_ToolTipSeconds =
+	SYS_ToolTipX =
+	SYS_ToolTipY =
+Return
+
+SYS_ToolTipFeedbackShow:
+    Gosub, SYS_ToolTipShow
+	SYS_ToolTipText =
+	SYS_ToolTipSeconds =
+	SYS_ToolTipX =
+	SYS_ToolTipY =
+Return
+
+SYS_ToolTipHandler:
+	SetTimer, SYS_ToolTipHandler, Off
+	ToolTip
+Return
 
 
 ;----------------------------------------------------------------------------------------o|
