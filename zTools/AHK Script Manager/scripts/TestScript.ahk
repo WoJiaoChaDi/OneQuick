@@ -184,3 +184,9 @@ TRAYMENU:
     Menu,Tray,Tip, 测试小脚本		;鼠标弹窗
     Menu,TRAY,Icon, %A_ScriptDir%\..\resources\script.ico, 1, 0  ;图标
 return
+
+;~ $R::
+    ;~ send 3
+    ;~ sleep 50
+    ;~ send r
+;~ return
