@@ -3361,8 +3361,6 @@ return
 
 ;加密解密软件
 encrypt:
-    ;~ MsgBox, %A_WorkingDir%\tool\EncryptWindow.jar
-    ;~ RunWait, java -jar %A_WorkingDir%\tool\EncryptWindow.jar
     RunWait % A_ComSpec " /c " . "java -jar " . A_WorkingDir . "\tool\EncryptWindow.jar"
 return
 
