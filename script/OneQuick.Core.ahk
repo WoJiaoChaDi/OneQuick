@@ -184,8 +184,8 @@ class OneQuick
     Show_StartEndInfo()
     {
         TrayTip OneQuick, OneQuick is running
-        ;~ SetTimer, HideTrayTip, -1000
-        Sleep 4000   ; 让它显示 3 秒钟.
+        SetTimer, HideTrayTip, -3000
+        ;~ Sleep 4000   ; 让它显示 3 秒钟.
         TrayTip  ; 尝试以正常的方式隐藏它.
     }
     
@@ -3361,10 +3361,10 @@ return
 
 ;加密解密软件
 encrypt:
-    ;~ MsgBox, %A_ScriptDir%\..\tool\EncryptWindow.jar
-    run, java -jar %A_WorkingDir%\tool\EncryptWindow.jar
+    ;~ MsgBox, %A_WorkingDir%\tool\EncryptWindow.jar
+    ;~ RunWait, java -jar %A_WorkingDir%\tool\EncryptWindow.jar
+    RunWait % A_ComSpec " /c " . "java -jar " . A_WorkingDir . "\tool\EncryptWindow.jar"
 return
-
 
 ; //////////////////////////////////////////////////////////////////////////
 SUB_ONEQUICK_FILE_END_LABEL:
