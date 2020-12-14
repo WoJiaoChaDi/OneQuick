@@ -48,13 +48,14 @@ global banane := 0
     if(banane=1){
         
         ToolTip, 开启
-        SetTimer, RemoveToolTip, -2000
        
         while (banane=1)
         {
            loop, 1 {
                 MouseMove, 0, -10, ,R
                 MouseMove, 0, 10, ,R
+                MouseMove, 5, 0, ,R
+                MouseMove, -5, 0, ,R
                 
                 ;由于ahk新启动一个线程的时候，会暂停上一个线程。待新线程结束后，继续执行上一个线程。
                 ;所以第二个更改状态的线程改了flag后，需要上一个线程快速判断是否退出。
@@ -62,8 +63,8 @@ global banane := 0
                 ;1.如果改用Sleep 5000。 在第二个线程结束后，第一个线程还在sleep中，开启第三个线程。
                 ;2.三个线程无限循环，第一个线程等待第三个线程，导致两个线程占用了两个实力数量。
                 ;3.最终导致无法再开启新的更改状态的flag线程
-                loop, 100{
-                    sleep, 50      ; 50毫秒，手动按热键几乎无法插入在50毫秒内
+                loop, 10{
+                    sleep, 10      ; 50毫秒，手动按热键几乎无法插入在50毫秒内
                     if(banane!=1){
                         Break
                     }
