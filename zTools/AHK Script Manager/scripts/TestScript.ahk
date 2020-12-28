@@ -107,6 +107,12 @@ return
 ;~ Return
 
 
+F1::
+    
+        Send ^+c    
+        Sleep 500
+        Send {down}
+return
 
 ;~ 1:: 
     ;~ Send {Ctrl Down}{Shift Down}{Right}{Ctrl Up}{Shift Up}
@@ -152,31 +158,11 @@ return
 ;~ return
 
 
-;~ $RButton::
-    ;~ Send {Shift Down}
-    ;~ Send {RButton}
-    ;~ Sleep 1000
-    ;~ Send {LButton}
-    ;~ Send {Shift Up}
-;~ return
 
-;~ global clickNum := 1
+;& 连接快捷键，会让& 之前的按键原本的功能失效
+;~ Numpad0 & MButton::Send a
+;~ Numpad0::Send {Numpad0}
 
-;~ RButton::
-    ;~ if(clickNum == 1)
-    ;~ {
-        ;~ Send a
-        ;~ clickNum += 1
-    ;~ } else if (clickNum=2)
-    ;~ {
-        ;~ Send b
-        ;~ clickNum +=1
-    ;~ } else if (clickNum=3)
-    ;~ {
-        ;~ Send c
-        ;~ clickNum = 1
-    ;~ }
-;~ return
 
 
 ;渲染菜单
