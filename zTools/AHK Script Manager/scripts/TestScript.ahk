@@ -43,7 +43,8 @@ global banane := 0
 ;========================================================================================o|
 ;每个热键字符串最多存在的实例数量
 #maxThreadsPerHotkey, 2
-^NumpadDiv::
+;^NumpadDiv::
+^RButton::
     banane:=!banane
     if(banane=1){
         
