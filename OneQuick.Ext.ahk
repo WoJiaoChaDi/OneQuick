@@ -71,6 +71,7 @@ class User_LAPTOP_CA75PL6O
 ;   | * |    CapsLock + Space            | 等同于Enter                                   ;|
 ;   | + |    CapsLock + H                | 另起一行                                      ;|
 ;   | + |    CapsLock + ;                | 另起一行                                      ;|
+;   | + |    CapsLock + Enter            | 另起一行                                      ;|
 ;   | + |    CapsLock + Y                | 删除本行所有内容                              ;|
 ;   | + |    CapsLock + BackSpace        | 删除本行所有内容                              ;|
 ;   | * |    CapsLock + 滚轮↑/↓          | 向左右滚动                                    ;|
@@ -646,11 +647,15 @@ return
 ;========================================================================================o|
 ;                           CapsLock + H | 另起一行                                      ;|
 ;                           CapsLock + ; | 另起一行                                      ;|
+;                       CapsLock + Enter | 另起一行                                      ;|
 ;----------------------------------------------------------------------------------------o|
 CapsLock & H::
     Send {End}{Enter}
 return
 CapsLock & `;::
+    Send {End}{Enter}
+return
+CapsLock & Enter::
     Send {End}{Enter}
 return
 
