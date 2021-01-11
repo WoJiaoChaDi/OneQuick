@@ -165,6 +165,22 @@ return
 ;~ Numpad0::Send {Numpad0}
 
 
+;家里台式机，JJDown 唧唧全屏，自动化 脚本
+;~ 1::
+    ;~ MouseClick, left, 50, 182
+    ;~ Sleep, 200
+    ;~ MouseClick, left, 336, 79
+    ;~ Sleep, 200
+    ;~ MouseClick, left, 329, 149
+    ;~ Sleep, 200
+    ;~ MouseClick, left, 204, 473
+    ;~ Sleep, 200
+    ;~ MouseClick, left, 369, 29
+    ;~ Sleep, 200
+    ;~ Send, !{tab}
+;~ return
+
+Esc::ExitApp
 
 ;渲染菜单
 TRAYMENU:
