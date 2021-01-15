@@ -180,7 +180,7 @@ return
     ;~ Send, !{tab}
 ;~ return
 
-Esc::ExitApp
+
 
 ;渲染菜单
 TRAYMENU:
