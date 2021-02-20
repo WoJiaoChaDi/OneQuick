@@ -84,6 +84,53 @@ RemoveToolTip:
     ToolTip
 return
 
+
+
+;~ Anki制卡翻译
+;~ 1::     ;~ 在Anki中向左划取一个单词，复制，向下切换粘贴，切换到欧陆词典，移动鼠标Manager
+    ;~ Send {Ctrl Down}{Shift Down}{Left}{Ctrl Up}{Shift Up}   
+    ;~ Send {Ctrl Down}c{Ctrl Up}
+    ;~ Send {Tab}{Ctrl Down}v{Ctrl Up}
+    ;~ Sleep 50
+    ;~ Send {Alt Down}{tab}{Alt Up}
+    ;~ Sleep 90
+    ;~ Send {Ctrl Down}v{Ctrl Up}
+    ;~ MouseMove, 593, 344             ;欧陆词典中的RelaPos
+;~ return
+
+;~ 2::     ;~ 在Anki中向右划取一个单词，复制，向下切换x3粘贴，切换到欧陆词典，移动鼠标Manager
+    ;~ Send {Ctrl Down}{Shift Down}{Right}{Ctrl Up}{Shift Up}
+    ;~ Send {Ctrl Down}c{Ctrl Up}
+    ;~ Send {Tab}{Ctrl Down}v{Ctrl Up}
+    ;~ Sleep 50
+    ;~ Send {Alt Down}{tab}{Alt Up}
+    ;~ Sleep 90
+    ;~ Send {Ctrl Down}v{Ctrl Up}
+    ;~ MouseMove, 593, 344
+;~ return  
+
+;~ 3::     ;~ 从欧陆词典复制到Anki
+    ;~ Send {Ctrl Down}c{Ctrl Up}
+    ;~ Send {Alt Down}{tab}{Alt Up}
+    ;~ Sleep 100
+    ;~ Send {Tab}{Ctrl Down}v{Ctrl Up}
+;~ return
+
+;~ 4::     ;~ 在Anki中选择下一个单词，并定位
+    ;~ MouseClick, left, 577, 613  ;最后一个单词位置
+    ;~ Send {Down}
+    ;~ MouseClick, left, 575, 746  ;第一行输入框位置
+;~ return
+
+
+
+;~ F1::
+    
+        ;~ Send ^+c    
+        ;~ Sleep 500
+        ;~ Send {down}
+;~ return
+
 ;~ ~F2::
     ;~ loop, 2 {
                 ;~ MouseMove, 0, -10, ,R
@@ -100,63 +147,19 @@ return
             ;~ }
 ;~ Return
 
-;~ ~Enter::
-    ;~ Sleep 200
-    ;~ Send {Down}{F2}
-    ;~ Sleep 200
-    ;~ Send {Right}_
-;~ Return
-
-
-F1::
-    
-        Send ^+c    
-        Sleep 500
-        Send {down}
-return
-
-;~ 1:: 
-    ;~ Send {Ctrl Down}{Shift Down}{Right}{Ctrl Up}{Shift Up}
-    ;~ Send {Ctrl Down}c{Ctrl Up}
-    ;~ Send {Tab}{Ctrl Down}v{Ctrl Up}
-    ;~ Sleep 50
-    ;~ Send {Alt Down}{tab}{Alt Up}
-    ;~ Sleep 90
-    ;~ Send {Ctrl Down}v{Ctrl Up}
-    ;~ MouseMove, 593, 344
-;~ return
-
-
-;~ 2:: 
-    ;~ Send {Ctrl Down}{Shift Down}{Right}{Ctrl Up}{Shift Up}
-    ;~ Send {Ctrl Down}c{Ctrl Up}
-    ;~ Send {Tab 3}{Ctrl Down}v{Ctrl Up}
-    ;~ Sleep 50
-    ;~ Send {Alt Down}{tab}{Alt Up}
-    ;~ Sleep 90
-    ;~ Send {Ctrl Down}v{Ctrl Up}
-    ;~ MouseMove, 593, 344
-;~ return
-
-;~ 3::
-    ;~ Send {Ctrl Down}c{Ctrl Up}
-    ;~ Send {Alt Down}{tab}{Alt Up}
-    ;~ Sleep 100
-    ;~ Send {Tab}{Ctrl Down}v{Ctrl Up}
-;~ return
-
-;~ 4::
-    ;~ MouseClick, left, 531, 279
-    ;~ Send {Down}
-    ;~ MouseClick, left, 356, 395
-;~ return
-
 ;~ F4::
     ;~ if !DllCall("User32\OpenInputDesktop","int",0*0,"int",0*0,"int",0x0001L*1)
     ;~ {
     ;~ run, cmd
     ;~ }
 ;~ return
+
+;~ ~Enter::
+    ;~ Sleep 200
+    ;~ Send {Down}{F2}
+    ;~ Sleep 200
+    ;~ Send {Right}_
+;~ Return
 
 
 
