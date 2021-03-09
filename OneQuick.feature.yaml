@@ -89,7 +89,7 @@ screen-border:
 clipboard:
   switch: 1
   hotkey:
-    ctrl_alt_b: xClipboard.ShowAllClips
+#    ctrl_alt_b: xClipboard.ShowAllClips
     ctrl_alt_c: xClipboard.CopyAndShowMenu
     ctrl_alt_v: xClipboard.ShowClipMenu
 
