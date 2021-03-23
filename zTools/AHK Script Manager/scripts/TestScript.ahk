@@ -53,10 +53,10 @@ global banane := 0
         while (banane=1)
         {
            loop, 1 {
-                MouseMove, 0, -10, ,R
-                MouseMove, 0, 10, ,R
-                MouseMove, 5, 0, ,R
-                MouseMove, -5, 0, ,R
+                MouseMove, 0, -1, ,R
+                MouseMove, 0, 1, ,R
+                MouseMove, 1, 0, ,R
+                MouseMove, -1, 0, ,R
                 
                 ;由于ahk新启动一个线程的时候，会暂停上一个线程。待新线程结束后，继续执行上一个线程。
                 ;所以第二个更改状态的线程改了flag后，需要上一个线程快速判断是否退出。
