@@ -53,8 +53,6 @@ global banane := 0
         while (banane=1)
         {
            loop, 1 {
-                MouseMove, 0, -1, ,R
-                MouseMove, 0, 1, ,R
                 MouseMove, 1, 0, ,R
                 MouseMove, -1, 0, ,R
                 
