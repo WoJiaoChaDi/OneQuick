@@ -60,7 +60,7 @@ class User_LAPTOP_CA75PL6O
 ;   | + |    Ctrl + Delete               | 剪切（右Ctrl）                                ;|
 ;   | + |    Ctrl + PrintScreen          | 复制（右Ctrl）                                ;|
 ;   | + |    Ctrl & Insert               | 粘贴（右Ctrl）                                ;|
-;   |   |    CapsLock + `                | 大小写切换                                    ;|
+;   |   |    CapsLock + ESC                | 大小写切换                                    ;|
 ;   | * |    CapsLock + E/S/D/F          | 映射↑←↓→(Ctrl单词, Alt选择)                   ;|
 ;   | * |    CapsLock + I/J/K/L          | 映射↑←↓→(Ctrl单词, Alt选择)                   ;|
 ;   | * |    CapsLock + XC               | 映射Home、End(Alt Compatible)                 ;|
@@ -149,12 +149,12 @@ class User_LAPTOP_CA75PL6O
 		WinGetClass, TRA_WinClass, ahk_id %TRA_WinID%
 		If ( TRA_WinClass = "Progman" )
 			Return
-		
+
 		IfNotInString, TRA_WinIDs, |%TRA_WinID%
 			TRA_WinIDs = %TRA_WinIDs%|%TRA_WinID%
 		TRA_WinAlpha := TRA_WinAlpha%TRA_WinID%
 		TRA_PixelColor := TRA_PixelColor%TRA_WinID%
-		
+
         ;最近一次热键包含的字符串+
 		IfInString, A_ThisHotkey, +
 			TRA_WinAlphaStep := 255 * 0.01 ; 1 percent steps
@@ -216,15 +216,15 @@ Return
 	WinGetClass, TRA_WinClass, ahk_id %TRA_WinID%
 	If ( TRA_WinClass = "Progman" )
 		Return
-	
+
     ;激活窗口
 	IfWinNotActive, ahk_id %TRA_WinID%
 		WinActivate, ahk_id %TRA_WinID%
-    
+
     ;拼接TRA窗口ID
 	IfNotInString, TRA_WinIDs, |%TRA_WinID%
 		TRA_WinIDs = %TRA_WinIDs%|%TRA_WinID%
-	
+
     ;如果触发包含鼠标中键，设置置顶并且修改透明度为40%
 	IfInString, A_ThisHotkey, MButton
 	{
@@ -234,10 +234,10 @@ Return
 	}else{
         Gosub, AOT_SetOn
     }
-	
+
 	TRA_WinAlpha := TRA_WinAlpha%TRA_WinID%
-	
-	; TODO : the transparency must be set off first, 
+
+	; TODO : the transparency must be set off first,
 	; this may be a bug of AutoHotkey
 	WinSet, TransColor, OFF, ahk_id %TRA_WinID%
 	PixelGetColor, TRA_PixelColor, %TRA_MouseX%, %TRA_MouseY%, RGB
@@ -330,10 +330,10 @@ return
 
 
 ;========================================================================================o|
-;                           CapsLock + ` | 大小写切换(同时禁用大小写)                    ;|
+;                           CapsLock + ESC | 大小写切换(同时禁用大小写)                  ;|
 ;      禁用 SetCapsLockState, AlwaysOff  | 在..\OneQuick\script\OneQuick.Core.ahk        ;|
 ;----------------------------------------------------------------------------------------o|
-CapsLock & `::
+CapsLock & ESC::
     GetKeyState, CapsLockState, CapsLock, T
     if CapsLockState = D
         SetCapsLockState, AlwaysOff
@@ -605,33 +605,27 @@ return
 
 
 ;========================================================================================o|
-;                         CapsLock + W/R | 删除光标前后字符(Ctrl单词, Shift全部)         ;|
+;                      CapsLock + W/R | 删除光标前后字符(Alt单词, Ctrl/Shift全部)        ;|
 ;----------------------------------------------------------------------------------------o|
 CapsLock & W::
-    if GetKeyState("control") = 0
+    if GetKeyState("alt") = 1
     {
-        if GetKeyState("shift") = 0
-        {
-            Send {Backspace}
-        } else {
-            Send ^+{Backspace}
-        }
-    } else {
         Send ^{Backspace}
+    } else if(GetKeyState("shift") = 1 or GetKeyState("ctrl") = 1) {
+            Send ^+{Backspace}
+    } else {
+        Send {Backspace}
     }
 return
 
 CapsLock & R::
-    if GetKeyState("control") = 0
+    if GetKeyState("alt") = 1
     {
-        if GetKeyState("shift") = 0
-        {
-            Send {Del}
-        } else {
-            Send ^+{Del}
-        }
-    } else {
         Send ^{Del}
+    } else if(GetKeyState("shift") = 1 or GetKeyState("ctrl") = 1) {
+            Send ^+{Del}
+    } else {
+        Send {Del}
     }
 return
 
