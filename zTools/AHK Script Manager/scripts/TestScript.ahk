@@ -6,10 +6,8 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 ;渲染菜单完成后，执行下一行代码
 gosub,TRAYMENU
-
-
-
 global banane := 0
+
 
 
 
