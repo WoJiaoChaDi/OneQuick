@@ -7,26 +7,46 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 ;渲染菜单完成后，执行下一行代码
 gosub,TRAYMENU
-global setTime := 1
-global internetName := 1
+
 global flag := 1
-global flag := 1
+global autoFlag := OneQuick.GetConfig("autorun", "para")
+global setTime := OneQuick.GetConfig("remindtime", "para")
+global internetName := OneQuick.GetConfig("netname", "para")
+
+
+;用于画Gui
+global Edit01
+global Edit02
 
 SetTimer, remindMe, 1000		;定时器定时执行截图方法  单位毫秒
+init()
 
+;~ 测试脚本
 !1::
-	IniRead, setTime, RemindConfig.ini, para, remindTime
-    IniRead, internetName, RemindConfig.ini, para, netName
-	
-	
-	ToolTipOnMouse(setTime)
+    MsgBox, %autoFlag%
+    MsgBox, %setTime%
+    MsgBox, %internetName%
+    
 return
+
+;~ 初始化
+init(){
+    autoflag := Regedit.IsAutorun(Regedit.AhkName, Regedit.AhkFullPath)
+    if(autoflag){
+        Menu, Tray, Check, 开机启动
+    }else{
+        Menu, Tray, UnCheck, 开机启动
+    }
+    
+    setTime := OneQuick.GetConfig("remindtime", "para")
+    internetName := OneQuick.GetConfig("netname", "para")
+}
 
 ;~ 提醒方法
 remindMe(){
     
-    IniRead, setTime, RemindConfig.ini, para, remindTime
-    IniRead, internetName, RemindConfig.ini, para, netName
+    ;~ IniRead, setTime, RemindConfig.ini, para, remindtime
+    ;~ IniRead, internetName, RemindConfig.ini, para, netname
     
     ;~ 获取当前时间
     nowTime = %A_Hour%:%A_Min%
@@ -38,9 +58,9 @@ remindMe(){
         flag:=!flag
         confirmWin()
         
-        sleep, 80000
+        ;添加60s睡眠时间，等待这一次分钟数过去
+        sleep, 60000
         flag:=!flag
-        
     }
 }
 
@@ -52,7 +72,7 @@ confirmWin(){
         closeInternet()
 }
 
-;~ 关闭按钮
+;~ 关闭网络按钮
 closeInternet(){
 
 	MouseGetPos, OutputVarX, OutputVarY
@@ -80,8 +100,89 @@ activeNetwork(){
         
 		ToolTipOnMouse(internetName . "切换成功")
     } else {
-	ToolTipOnMouse("未找到网络连接窗口")
+        ToolTipOnMouse("未找到网络连接窗口")
     }
+}
+
+;~ 更新设置参数
+setPara(){
+    Gui, Add, Text, x22 y19 w100 h30 +Center, 提醒时间
+    Gui, Add, Text, x22 y69 w100 h30 +Center, 网络名称
+    
+    paraTime := OneQuick.GetConfig("remindtime", "18:00", "para")
+    paraNetNm := OneQuick.GetConfig("netname", "以太网" , "para")
+    ;~ v给控件命名，后面用v后面的名称找空间
+    Gui, Add, Edit, x142 y19 w100 h30 +Center Limit5 vEdit01, %paraTime%
+    Gui, Add, Edit, x142 y69 w100 h30 +Center Limit20 vEdit02, %paraNetNm%
+
+    ;~ 点击空间后，运行g标签，指向g后面的标签，即MyButton
+    Gui, Add, Button, x82 y119 w100 h30 gMyButton, 确定
+    ;~ 如果没有g标签，则默认是 组件+名字的标签，即 Button确认
+    ;~ Gui, Add, Button, x82 y119 w100 h30 , 确定
+
+    Gui, Show, w271 h173, 设置
+    return
+
+    ;~ Button确定:
+        ;~ GuiControlGet, Edit02, Name, Edit02
+        ;~ MsgBox, %Edit02%
+    ;~ return
+
+    MyButton:
+    
+        updateFlag := 1
+        ;~ 寻找Edit01命名的控件,将值赋值给editVal01
+        GuiControlGet, editVal01, , Edit01
+        
+        ;~ 判断时间输入格式
+        idx_01 := SubStr(editVal01, 1, 1)
+        if idx_01 not in 0,1,2
+            gosub errorFormat
+            
+        idx_02 := SubStr(editVal01, 2, 1)
+        if idx_02 not in 0,1,2,3,4,5,6,7,8,9
+            gosub errorFormat
+        
+        idx_03 := SubStr(editVal01, 3, 1)
+        if idx_03 not in :
+            gosub errorFormat
+        
+        idx_04 := SubStr(editVal01, 4, 1)
+        if idx_04 not in 0,1,2,3,4,5
+            gosub errorFormat
+        
+        idx_05 := SubStr(editVal01, 5, 1)
+        if idx_05 not in 0,1,2,3,4,5,6,7,8,9
+            gosub errorFormat
+        
+        ;~ 判断是否更新
+        if(updateFlag){
+            OneQuick.SetConfig("remindtime", editVal01)
+        
+            ;~ 寻找Edit02命名的控件,将值赋值给Edit02
+            GuiControlGet, Edit02
+            OneQuick.SetConfig("netname", Edit02)
+            
+            ;~ 初始化设置
+            init()
+            
+            MsgBox, 设置成功！
+            
+            Gui, Destroy
+        }
+        
+    return
+    
+    GuiClose:
+    GuiEscape:
+        Gui, Destroy
+    return
+    
+    errorFormat:
+        MsgBox, 请输入正确的时间，如 18:00
+        updateFlag := 0
+    return
+    
 }
 
 ;~ 移除提示
@@ -98,16 +199,120 @@ ToolTipOnMouse(text){
 
 
 EXIT:
-ExitApp
+    ExitApp
+return
+
+
+;~ 关闭按钮
+registerAutoRun(){
+    ToolTip, 即将打开
+    SetTimer, RemoveToolTip, -5000
+    
+    SetAutorun("toggle")
+}
+
+;~ 开机自启动    ;函数，变量act的默认值为toggle
+SetAutorun(act="toggle")
+{
+    ;~ 先获配置文件 自启动值（如果配置文件中没有，则默认0）
+    cfg := OneQuick.GetConfig("autorun", 0)
+    ;~ 如果方法是想要获取配置文件，则用配置文件的值，否则用方法的参数
+    autorun := (act="config")? cfg :act
+    ;~ 如果方法参数是 toggle，则获取 配置文件相反的值，否则用刚刚配置文件的值
+    autorun := (act="toggle")? !cfg :autorun
+    
+    ;~ 切换配置文件， 用程序名字与路径注册
+    Regedit.Autorun(autorun, Regedit.AhkName, Regedit.AhkFullPath)
+        
+    ;~ 修改配置文件
+    OneQuick.SetConfig("autorun", autorun)
+    
+    ;~ 更新菜单
+    if(autorun)
+    {
+        Menu, Tray, Check, 开机启动
+    }
+    Else
+    {
+        Menu, Tray, UnCheck, 开机启动
+    }
+}
+
+
+class Regedit
+{
+    static Subkey_Autorun := "Software\Microsoft\Windows\CurrentVersion\Run"
+    static AhkName := "RemindMe"
+    static AhkFullPath := A_ScriptFullPath
+
+    ;~ Regedit.Autorun   注册开启自启
+    ;~ 参数：switch切换、name注册的程序名、path程序路径
+    Autorun(switch, name, path="")
+    {
+        if(switch)
+        {
+            RegWrite, REG_SZ, HKCU, % Regedit.Subkey_Autorun, % name, % path
+        }
+        Else
+        {
+            RegDelete, HKCU, % Regedit.Subkey_Autorun, % name
+        }
+    }
+
+    ;~ Regedit.IsAutorun 判断是否已经注册开机自启动
+    IsAutorun(name, path)
+    {
+        RegRead, output, HKCU, % Regedit.Subkey_Autorun, % name
+        return % output==path
+    }
+}
+
+class OneQuick
+{
+    static config_file := "RemindConfig.ini"
+    
+    ;~ 获取配置文件 autoWrite=true  默认如果没有获取到，则往配置文件里面写文件
+    GetConfig(key, default="", section="para", autoWrite=true)
+    {
+        IniRead, output, % OneQuick.config_file, % section, % key
+        if(output=="ERROR")
+        {
+            if(autoWrite) {
+                OneQuick.SetConfig(key, default, section)
+            }
+            return default
+        }
+        return output
+    }
+    
+    ;~ 设置配置文件
+    SetConfig(key, value, section="para")
+    {
+        IniWrite, % value, % OneQuick.config_file, % section, % key
+    }
+}
+
+
 
 ;渲染菜单
 TRAYMENU:
-    Menu,Tray,Tip, 自动切换网络		;鼠标弹窗
-    Menu,TRAY,Icon, %A_ScriptDir%\remindMe.ico, 1, 0  ;图标
-	Menu,TRAY,NoStandard
-	Menu,TRAY,DeleteAll
-	;~ Menu,TRAY,Add
-	Menu,TRAY,Add, 手动切换网络 , closeInternet
-	Menu,TRAY,Add, 退出（&E）,EXIT
+    Menu, Tray, Tip, 自动切换网络		;鼠标弹窗
+    Menu, Tray, Icon, %A_ScriptDir%\status_bar_toggle_lock.ico, 1, 0  ;图标
+	Menu, Tray, NoStandard  ;~ 删除所有标准菜单
+	Menu, Tray, DeleteAll   ;~ 清除其他菜单
+    
+    Menu, Tray, Add, 开机启动     ;添加空白开机启动，然后再关联一个切换的开关
+    Menu, Tray, Add             ;添加空白菜单
+	Menu, Tray, Add, 手动切换网络 (&Q) , closeInternet
+    Menu, Tray, Add, 配置 (&Q) , setPara
+	Menu, Tray, Add, 退出（&E）, EXIT
 return
+
+开机启动:
+    Menu, Tray, ToggleCheck, 开机启动
+    SetAutorun()
+return
+
+
+
 
