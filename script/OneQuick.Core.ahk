@@ -915,7 +915,8 @@ class OneQuick
             ,[lang("Exit"), "OneQuick.Exit"]        ;退出
             ,[]
             ,[lang("Open AutoHotkey.exe Folder"), "Sub_OneQuick_EXE_Loc"]   ;AHK安装目录
-            ,[lang("AutoHotKey Help"), "Sub_OneQuick_AHKHelp"]              ;打开AHK帮助
+            ,[lang("AhkToExe"), "Sub_Open_AhkToExe"]   ;打开AhkToExe
+            ,[lang("AutoHotKey Help"), "Sub_OneQuick_AHKHelp"]              ;打开AHK帮助            
             ,[lang("AutoHotKey HelpCn"), "Sub_OneQuick_AHKHelpCn"]          ;XuDong添加Quick右键菜单  前面那个是语言参数，在lang文件夹下，如果找到就对应翻译，找不到就用本身
             ,[lang("AutoAHK HelpCn"), "Sub_OneQuick_AutoAHKHelpCn"]          ;XuDong添加Quick右键菜单  前面那个是语言参数，在lang文件夹下，如果找到就对应翻译，找不到就用本身
             ,[lang("AutoHotKey HelpTemp"), "Sub_OneQuick_AHKHelpTemp"]      ;XuDong添加Quick右键菜单  前面那个是语言参数，在lang文件夹下，如果找到就对应翻译，找不到就用本身
@@ -1233,6 +1234,12 @@ Return
 Sub_OneQuick_EXE_Loc:
 splitpath, a_ahkpath, , dir
 run(dir)
+Return
+
+Sub_Open_AhkToExe:
+splitpath, a_ahkpath, , dir
+AhkToExePath := dir . "\Compiler\Ahk2Exe.exe"
+run(AhkToExePath)
 Return
 
 ; //////////////////////////////////////////////////////////////////////////
