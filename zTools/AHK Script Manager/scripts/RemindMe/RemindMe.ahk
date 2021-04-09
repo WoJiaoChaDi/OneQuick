@@ -26,7 +26,6 @@ init()
     MsgBox, %autoFlag%
     MsgBox, %setTime%
     MsgBox, %internetName%
-    
 return
 
 ;~ 初始化
@@ -106,7 +105,7 @@ activeNetwork(){
 
 ;~ 更新设置参数
 setPara(){
-    Gui, Add, Text, x22 y19 w100 h30 +Center, 提醒时间
+    Gui, Add, Text, x22 y25 w100 h30 +Center, 提醒时间
     Gui, Add, Text, x22 y69 w100 h30 +Center, 网络名称
     
     paraTime := OneQuick.GetConfig("remindtime", "18:00", "para")
@@ -297,7 +296,7 @@ class OneQuick
 ;渲染菜单
 TRAYMENU:
     Menu, Tray, Tip, 自动切换网络		;鼠标弹窗
-    Menu, Tray, Icon, %A_ScriptDir%\status_bar_toggle_lock.ico, 1, 0  ;图标
+    Menu, Tray, Icon, %A_ScriptDir%\imgur_compressed_02.ico, 1, 0  ;图标
 	Menu, Tray, NoStandard  ;~ 删除所有标准菜单
 	Menu, Tray, DeleteAll   ;~ 清除其他菜单
     
