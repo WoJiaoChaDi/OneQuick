@@ -307,7 +307,7 @@ TRAYMENU:
     Menu, Tray, Add, 开机启动     ;添加空白开机启动，然后再关联一个切换的开关
     Menu, Tray, Add             ;添加空白菜单
 	Menu, Tray, Add, 手动切换网络 (&Q) , closeInternet
-    Menu, Tray, Add, 配置 (&Q) , setPara
+    Menu, Tray, Add, 配置 (&S) , setPara
 	Menu, Tray, Add, 退出（&E）, EXIT
 return
 
