@@ -65,6 +65,10 @@ confirmWin(){
         closeInternet()
 }
 
+closeInternetByCmd(){
+    Run *RunAs netsh interface set interface "以太网" disable
+}
+
 ;~ 关闭网络按钮
 closeInternet(){
 
