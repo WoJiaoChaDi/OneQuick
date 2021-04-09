@@ -105,21 +105,21 @@ activeNetwork(){
 
 ;~ 更新设置参数
 setPara(){
-    Gui, Add, Text, x22 y25 w100 h30 +Center, 提醒时间
-    Gui, Add, Text, x22 y69 w100 h30 +Center, 网络名称
-    
+    Gui, Add, Text, x32 y29 w80 h30 +Right, 提醒时间：
+    Gui, Add, Text, x32 y69 w80 h30 +Right, 网络名称：
+
     paraTime := OneQuick.GetConfig("remindtime", "18:00", "para")
     paraNetNm := OneQuick.GetConfig("netname", "以太网" , "para")
     ;~ v给控件命名，后面用v后面的名称找空间
-    Gui, Add, Edit, x142 y19 w100 h30 +Center Limit5 vEdit01, %paraTime%
-    Gui, Add, Edit, x142 y69 w100 h30 +Center Limit20 vEdit02, %paraNetNm%
+    Gui, Add, Edit, x112 y25 w100 h20 +Center Limit5 vEdit01, %paraTime%
+    Gui, Add, Edit, x112 y65 w100 h20 +Center Limit20 vEdit02, %paraNetNm%
 
     ;~ 点击空间后，运行g标签，指向g后面的标签，即MyButton
-    Gui, Add, Button, x82 y119 w100 h30 gMyButton, 确定
+    Gui, Add, Button, x72 y109 w100 h30 gMyButton, 确定
     ;~ 如果没有g标签，则默认是 组件+名字的标签，即 Button确认
     ;~ Gui, Add, Button, x82 y119 w100 h30 , 确定
 
-    Gui, Show, w271 h173, 设置
+    Gui, Show, w247 h162, 设置
     return
 
     ;~ Button确定:
@@ -136,23 +136,28 @@ setPara(){
         ;~ 判断时间输入格式
         idx_01 := SubStr(editVal01, 1, 1)
         if idx_01 not in 0,1,2
-            gosub errorFormat
+            updateFlag := 0
             
         idx_02 := SubStr(editVal01, 2, 1)
         if idx_02 not in 0,1,2,3,4,5,6,7,8,9
-            gosub errorFormat
+            updateFlag := 0
         
         idx_03 := SubStr(editVal01, 3, 1)
         if idx_03 not in :
-            gosub errorFormat
+            updateFlag := 0
         
         idx_04 := SubStr(editVal01, 4, 1)
         if idx_04 not in 0,1,2,3,4,5
-            gosub errorFormat
+            updateFlag := 0
         
         idx_05 := SubStr(editVal01, 5, 1)
         if idx_05 not in 0,1,2,3,4,5,6,7,8,9
+            updateFlag := 0
+        
+        if(!updateFlag){
             gosub errorFormat
+            return
+        }
         
         ;~ 判断是否更新
         if(updateFlag){
@@ -179,7 +184,6 @@ setPara(){
     
     errorFormat:
         MsgBox, 请输入正确的时间，如 18:00
-        updateFlag := 0
     return
     
 }
