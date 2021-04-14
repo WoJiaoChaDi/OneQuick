@@ -49,7 +49,8 @@ remindMe(){
 		ToolTipOnMouse(A_Hour . ":" . A_Min)
         
         flag:=!flag
-        confirmWin()
+        ;~ confirmWin()
+        remindPanel()
         
         ;添加60s睡眠时间，等待这一次分钟数过去
         sleep, 60000
@@ -57,74 +58,41 @@ remindMe(){
     }
 }
 
-;~ 确认按钮
-confirmWin(){
-    msg = 现在时间是 %A_Hour%:%A_Min%:%A_Sec% ，是否切换网络？
-    MsgBox, 4,, %msg%
-    IfMsgBox Yes
-        closeInternet()
+;~ 禁用网络
+disableInternetByCmd(){
+    Run *RunAs InternetDisable.bat
 }
 
-closeInternetByCmd(){
-    Run *RunAs netsh interface set interface "以太网" disable
+;~ 启用网络
+enableInternetByCmd(){
+    Run *RunAs InternetEnable.bat
 }
 
-;~ 关闭网络按钮
-closeInternet(){
-
-	MouseGetPos, OutputVarX, OutputVarY
-    ToolTip, 即将打开网络连接，等待5秒, % OutputVarX, % OutputVarY-20
-    SetTimer, RemoveToolTip, -5000
-    run, ncpa.cpl
-    sleep, 5000
-    
-    activeNetwork()
-}
-
-;~ 激活网络连接窗口
-activeNetwork(){
-    IfWinExist, 网络连接
-    {
-		ToolTipOnMouse("找到网络连接窗口")
-        WinActivate
-        Send, %internetName%
-        sleep, 500
-        Send, {AppsKey}
-        sleep, 500
-        Send, {Down}
-        sleep, 500
-        Send, {Enter}
-        
-		ToolTipOnMouse(internetName . "切换成功")
-    } else {
-        ToolTipOnMouse("未找到网络连接窗口")
-    }
-}
-
-;~ 更新设置参数
-setPara(){
-    Gui, Add, Text, x32 y29 w80 h30 +Right, 提醒时间：
-    Gui, Add, Text, x32 y69 w80 h30 +Right, 网络名称：
+;~ 说明设置
+infoPanel(){
+    Gui, Destroy
 
     paraTime := OneQuick.GetConfig("remindtime", "18:00", "para")
     paraNetNm := OneQuick.GetConfig("netname", "以太网" , "para")
+    
+    Gui, Add, Text, x22 y19 w340 h100 +Left, 说明：`n`n1.点击"网络连接"按钮，找到网线端口对应的网络连接名称`n`n2.将"网络名称"项改为1中网络连接名称`n`n3.点击保存
+    Gui, Add, Button, x242 y119 w90 h30 gOpenNet, 网络连接
+    Gui, Add, Text, x22 y132 w70 h20 +Right, 提醒时间：
+    Gui, Add, Text, x32 y162 w60 h20 +Right, 网络名称：
     ;~ v给控件命名，后面用v后面的名称找空间
-    Gui, Add, Edit, x112 y25 w100 h20 +Center Limit5 vEdit01, %paraTime%
-    Gui, Add, Edit, x112 y65 w100 h20 +Center Limit20 vEdit02, %paraNetNm%
-
+    Gui, Add, Edit, x92 y129 w110 h20 +Left Limit5 vEdit01, %paraTime%
+    Gui, Add, Edit, x92 y159 w110 h20 +Left Limit20 vEdit02, %paraNetNm%
     ;~ 点击空间后，运行g标签，指向g后面的标签，即MyButton
-    Gui, Add, Button, x72 y109 w100 h30 gMyButton, 确定
-    ;~ 如果没有g标签，则默认是 组件+名字的标签，即 Button确认
-    ;~ Gui, Add, Button, x82 y119 w100 h30 , 确定
-
-    Gui, Show, w247 h162, 设置
+    Gui, Add, Button, x242 y159 w90 h30 gMyButton, 保存
+    
+    ; Generated using SmartGUI Creator for SciTE
+    Gui, Show, w392 h208, 设置
     return
-
-    ;~ Button确定:
-        ;~ GuiControlGet, Edit02, Name, Edit02
-        ;~ MsgBox, %Edit02%
-    ;~ return
-
+    
+    OpenNet:
+        run, ncpa.cpl
+    return
+    
     MyButton:
     
         updateFlag := 1
@@ -168,23 +136,60 @@ setPara(){
             ;~ 初始化设置
             init()
             
-            MsgBox, 设置成功！
+            MsgBox, , 提示, 设置成功！
             
             Gui, Destroy
         }
         
     return
     
-    GuiClose:
-    GuiEscape:
-        Gui, Destroy
-    return
-    
     errorFormat:
         MsgBox, 请输入正确的时间，如 18:00
     return
-    
 }
+
+
+;~ 提醒窗口
+remindPanel(){
+    Gui, Destroy
+    
+    Gui, Add, Button, x22 y69 w100 h30 genableButton, 启用网络
+    Gui, Add, Button, x142 y69 w100 h30 gdisableButton, 禁用网络
+    Gui, Add, Button, x262 y69 w100 h30 gcancelButtion, 取消
+    Gui, Add, Text, x22 y29 w340 h30 +Center, 现在时间是 %A_Hour%:%A_Min%:%A_Sec% ，是否切换网络？
+    ; Generated using SmartGUI Creator for SciTE
+    Gui, Show, w384 h131, 提醒
+    return
+
+    ;~ Button确定:
+        ;~ GuiControlGet, Edit02, Name, Edit02
+        ;~ MsgBox, %Edit02%
+    ;~ return
+
+    enableButton:
+        enableInternetByCmd()
+        Gui, Destroy
+    return
+    
+    disableButton:
+        disableInternetByCmd()
+        Gui, Destroy
+    return
+    
+    cancelButtion:
+        Gui, Destroy
+    return
+    
+    ;~ GuiClose:
+    ;~ GuiEscape:
+        ;~ Gui, Destroy
+    ;~ return
+}
+
+GuiClose:
+GuiEscape:
+    Gui, Destroy
+return
 
 ;~ 移除提示
 RemoveToolTip:
@@ -297,14 +302,18 @@ class OneQuick
 ;渲染菜单
 TRAYMENU:
     Menu, Tray, Tip, 自动切换网络		;鼠标弹窗
-    Menu, Tray, Icon, %A_ScriptDir%\imgur_compressed_02.ico, 1, 0  ;图标
+    Menu, Tray, Icon, %A_ScriptDir%\ico\imgur_compressed_02.ico, 1, 0  ;图标
 	Menu, Tray, NoStandard  ;~ 删除所有标准菜单
 	Menu, Tray, DeleteAll   ;~ 清除其他菜单
     
     Menu, Tray, Add, 开机启动     ;添加空白开机启动，然后再关联一个切换的开关
     Menu, Tray, Add             ;添加空白菜单
-	Menu, Tray, Add, 手动切换网络 (&Q) , closeInternet
-    Menu, Tray, Add, 配置 (&S) , setPara
+	;~ Menu, Tray, Add, 手动切换网络 (&Q) , closeInternet
+    ;~ Menu, Tray, Add, 手动提示 (&Q) , confirmWin
+    Menu, Tray, Add, 手动提示 (&T) , remindPanel
+    Menu, Tray, Add, 禁用网络 (&D) , disableInternetByCmd
+    Menu, Tray, Add, 启用网络 (&E) , enableInternetByCmd
+    Menu, Tray, Add, 设置 (&S) , infoPanel
 	Menu, Tray, Add, 退出（&E）, EXIT
 return
 
