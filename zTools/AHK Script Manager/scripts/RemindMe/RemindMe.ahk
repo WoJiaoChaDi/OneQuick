@@ -302,7 +302,7 @@ class OneQuick
 ;渲染菜单
 TRAYMENU:
     Menu, Tray, Tip, 自动切换网络		;鼠标弹窗
-    Menu, Tray, Icon, %A_ScriptDir%\ico\imgur_compressed_02.ico, 1, 0  ;图标
+    ;~ Menu, Tray, Icon, %A_ScriptDir%\ico\imgur_compressed_02.ico, 1, 0  ;图标
 	Menu, Tray, NoStandard  ;~ 删除所有标准菜单
 	Menu, Tray, DeleteAll   ;~ 清除其他菜单
     
@@ -314,7 +314,7 @@ TRAYMENU:
     Menu, Tray, Add, 禁用网络 (&D) , disableInternetByCmd
     Menu, Tray, Add, 启用网络 (&E) , enableInternetByCmd
     Menu, Tray, Add, 设置 (&S) , infoPanel
-	Menu, Tray, Add, 退出（&E）, EXIT
+	Menu, Tray, Add, 退出（&Q）, EXIT
 return
 
 开机启动:

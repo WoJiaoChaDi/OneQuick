@@ -1,1 +1,0 @@
-﻿Run *RunAs netsh interface set interface "以太网" disable

@@ -1,7 +1,7 @@
-rem å…³é—­è¾“å‡º
+rem ½ûÓÃÍøÂç
 @echo off
 
-rem ç”¨ç®¡ç†å‘˜æƒé™
+rem ÓÃ¹ÜÀíÔ±È¨ÏŞ
 >nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
 if '%errorlevel%' NEQ '0' (
 goto UACPrompt
@@ -16,13 +16,13 @@ if exist "%temp%\getadmin.vbs" ( del "%temp%\getadmin.vbs" )
 pushd "%CD%"
 CD /D "%~dp0"
 
-rem è¯»å–ini
+rem ¶ÁÈ¡ini
 For /f "tokens=1-2 delims==" %%i in (RemindConfig.ini) do (
-	rem è·å–iniçš„æŸä¸ªé…ç½®
+	rem »ñÈ¡iniµÄÄ³¸öÅäÖÃ
 	If /i "%%i"=="netname" (
-		rem æ ¹æ®é…ç½®æ‰§è¡Œåˆ‡æ¢ç½‘ç»œé…ç½®
-		rem å‰é¢éƒ¨åˆ†æ˜¯æŸ¥è¯¢ç½‘ç»œè®¯æ¯ï¼Œé€šè¿‡findstræ¥è¿‡æ»¤  ä½†æ˜¯ && åé¢çš„å¼€å…³ç½‘ç»œæ²¡æœ‰æ‰§è¡ŒæˆåŠŸï¼Œéœ€è¦çœ‹çœ‹å¦‚ä½•æŸ¥è¯¢å‚æ•°
-		rem netsh interface show interface|findstr "%%j"|findstr "å·²å¯ç”¨" && netsh interface set interface "%%j" disable
+		rem ¸ù¾İÅäÖÃÖ´ĞĞÇĞ»»ÍøÂçÅäÖÃ
+		rem Ç°Ãæ²¿·ÖÊÇ²éÑ¯ÍøÂçÑ¶Ï¢£¬Í¨¹ıfindstrÀ´¹ıÂË  µ«ÊÇ && ºóÃæµÄ¿ª¹ØÍøÂçÃ»ÓĞÖ´ĞĞ³É¹¦£¬ĞèÒª¿´¿´ÈçºÎ²éÑ¯²ÎÊı
+		rem netsh interface show interface|findstr "%%j"|findstr "ÒÑÆôÓÃ" && netsh interface set interface "%%j" disable
 		netsh interface set interface "%%j" disable
 	)
 )

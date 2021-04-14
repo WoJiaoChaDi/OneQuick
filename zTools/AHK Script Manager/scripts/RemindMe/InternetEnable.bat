@@ -1,4 +1,4 @@
-rem 关闭输出
+rem 启用网络
 @echo off
 
 rem 用管理员权限
