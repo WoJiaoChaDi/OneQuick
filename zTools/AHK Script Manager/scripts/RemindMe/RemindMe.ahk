@@ -302,7 +302,7 @@ class OneQuick
 ;渲染菜单
 TRAYMENU:
     Menu, Tray, Tip, 自动切换网络		;鼠标弹窗
-    ;~ Menu, Tray, Icon, %A_ScriptDir%\ico\imgur_compressed_02.ico, 1, 0  ;图标
+    Menu, Tray, Icon, %A_ScriptDir%\ico\imgur_compressed_02.ico, 1, 0  ;图标
 	Menu, Tray, NoStandard  ;~ 删除所有标准菜单
 	Menu, Tray, DeleteAll   ;~ 清除其他菜单
     

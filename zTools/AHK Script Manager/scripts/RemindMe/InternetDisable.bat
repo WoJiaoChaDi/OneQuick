@@ -26,3 +26,12 @@ For /f "tokens=1-2 delims==" %%i in (RemindConfig.ini) do (
 		netsh interface set interface "%%j" disable
 	)
 )
+
+For /f "tokens=1-2 delims==" %%i in (RemindConfig.ini) do (
+	rem 获取ini的某个配置
+	If /i "%%i"=="hotnetname" (
+		rem 根据配置执行切换网络配置
+		netsh interface set interface "%%j" enable
+	)
+)
+
