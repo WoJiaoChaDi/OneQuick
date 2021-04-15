@@ -66,16 +66,16 @@ Menu, Tray, Add, AHK Script Manager, Menu_Show
 Menu, Tray, ToggleEnable, AHK Script Manager
 Menu, Tray, Default, AHK Script Manager
 Menu, Tray, Add
-Menu, Tray, Add, ＞ 启动脚本, :scripts_unopen
-Menu, Tray, Add, ×  关闭脚本, :scripts_unclose
-Menu, Tray, Add, @ 编辑脚本, :scripts_edit
-Menu, Tray, Add, の 重载脚本, :scripts_reload
+Menu, Tray, Add, ＞ 启动脚本 (&S), :scripts_unopen
+Menu, Tray, Add, ×  关闭脚本 (&C), :scripts_unclose
+Menu, Tray, Add, @ 编辑脚本 (&E), :scripts_edit
+Menu, Tray, Add, の 重载脚本 (&G), :scripts_reload
 Menu, Tray, Add
-Menu, Tray, Add, 启动所有脚本, tsk_openAll
-Menu, Tray, Add, 关闭所有脚本, tsk_closeAll
+Menu, Tray, Add, 启动所有脚本 (&A), tsk_openAll
+Menu, Tray, Add, 关闭所有脚本 (&X), tsk_closeAll
 Menu, Tray, Add
-Menu, Tray, Add, 打开脚本目录, Menu_Tray_OpenDir
-Menu, Tray, Add, 我添加了新脚本, Menu_Tray_Reload
+Menu, Tray, Add, 打开脚本目录 (&Y), Menu_Tray_OpenDir
+Menu, Tray, Add, 我添加了新脚本 (&R), Menu_Tray_Reload
 Menu, Tray, Add
 Menu, Tray, Add, 退出, Menu_Tray_Exit
 Menu, Tray, NoStandard
